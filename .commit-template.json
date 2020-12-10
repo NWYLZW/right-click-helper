@@ -1,0 +1,73 @@
+{
+  "ci-template": "[${type}] (${scope}) ${desc}\n\n${long-desc}",
+  "types": [{
+    "name": "feat",
+    "title": "feature",
+    "desc": "添加了新功能"
+  }, {
+    "name": "fix",
+    "title": "fix bug",
+    "desc": "修复bug"
+  }, {
+    "name": "docs",
+    "title": "documentation change",
+    "desc": "文档变动"
+  }, {
+    "name": "style",
+    "title": "code style",
+    "desc": "格式 不影响代码运行的变动,空格,格式化,等等"
+  }, {
+    "name": "refactor",
+    "title": "refactor code",
+    "desc": "重构 即不是新增功能，也不是修改bug的代码变动"
+  }, {
+    "name": "perf",
+    "title": "performance",
+    "desc": "性能 提高代码性能的改变"
+  }, {
+    "name": "test",
+    "title": "test",
+    "desc": "增加测试或者修改测试"
+  }, {
+    "name": "build",
+    "title": "build",
+    "desc": "影响构建系统或外部依赖项的更改(maven,gradle,npm 等等)"
+  }, {
+    "name": "ci",
+    "title": "ci",
+    "desc": "对CI配置文件和脚本的更改"
+  }, {
+    "name": "chore",
+    "title": "chore",
+    "desc": "对非 src 和 test 目录的修改"
+  }, {
+    "name": "revert",
+    "title": "revert",
+    "desc": "版本回退"
+  }],
+  "scopes": [{
+    "name": "view",
+    "title": "view",
+    "desc": "视图被修改时使用"
+  }, {
+    "name": "component",
+    "title": "component",
+    "desc": "组件被修改时使用"
+  }, {
+    "name": "tool",
+    "title": "tool",
+    "desc": "工具被修改时使用"
+  }, {
+    "name": "config",
+    "title": "config",
+    "desc": "配置被修改时使用"
+  }, {
+    "name": "all",
+    "title": "all",
+    "desc": "均有改动时使用"
+  }, {
+    "name": "other",
+    "title": "other",
+    "desc": "其他内容被修改时使用"
+  }]
+}
