@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>image/icon/right-click-helper.ico</file>
+  </qresource>
+  <qresource prefix="ico">
+    <file>image/common-icon/close.png</file>
+    <file>image/common-icon/close-ed.png</file>
+    <file>image/common-icon/min.png</file>
+    <file>image/common-icon/min-ed.png</file>
+    <file>image/common-icon/more.png</file>
+    <file>image/common-icon/more-ed.png</file>
+    <file>image/common-icon/close.png</file>
+    <file>image/common-icon/min.png</file>
+  </qresource>
+</RCC>
