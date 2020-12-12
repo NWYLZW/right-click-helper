@@ -45,8 +45,7 @@
   <property name="styleSheet">
    <string notr="true">#MainWindow{
 	background-color: rgb(0, 0, 0);
-}
-</string>
+}</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
@@ -247,7 +246,7 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="content" native="true">
+   <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -256,9 +255,144 @@
       <height>651</height>
      </rect>
     </property>
+    <layout class="QHBoxLayout" name="content" stretch="1,22">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="leftMenu" native="true">
+       <property name="styleSheet">
+        <string notr="true">#mannagement {
+	border: none;
+	border-image: url(:/icon/image/icon/right-click-helper.ico);
+}
+#about {
+	border: none;
+	border-image: url(:/icon/image/icon/about.png);
+}
+#setting {
+	border: none;
+	border-image: url(:/icon/image/icon/setting.png);
+}
+#warehouse {
+	border: none;
+	border-image: url(:/icon/image/icon/warehouse.png);
+}</string>
+       </property>
+       <widget class="QGraphicsView" name="mannagement">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>9</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="cursor" stdset="0">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+       <widget class="QGraphicsView" name="setting">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="cursor" stdset="0">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>设置</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+       <widget class="QGraphicsView" name="warehouse">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="cursor" stdset="0">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>数据备份</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+       <widget class="QGraphicsView" name="about">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>129</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="cursor" stdset="0">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>关于本软件</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="ManagementController" name="showPage" native="true"/>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ManagementController</class>
+   <extends>QWidget</extends>
+   <header>src/rightClickHelper/controller/management/controller.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../resource/main.qrc"/>
  </resources>

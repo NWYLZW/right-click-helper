@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>management</class>
+ <widget class="QWidget" name="management">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>649</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1100</width>
+    <height>649</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1100</width>
+    <height>650</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QScrollBar:vertical {
+    background-color: rgb(250, 250, 250);
+    width: 6px;
+    margin: 0px;border: none;
+}
+QScrollBar::handle:vertical {
+    background-color: rgb(216, 216, 216);
+    min-height: 5px;
+    border-radius: 3px;
+}
+QScrollBar::handle:vertical:hover{background-color: rgb(181, 181, 181);}
+QScrollBar:horizontal {
+    background-color: rgb(250, 250, 250);
+    height: 6px;
+    margin: 0px;border: none;
+}
+QScrollBar::handle:horizontal {
+    background-color: rgb(216, 216, 216);
+    min-width: 5px;
+    border-radius: 3px;
+}
+QScrollBar::handle:horizontal:hover{background-color: rgb(181, 181, 181);}
+
+QScrollBar::up-arrow, QScrollBar::down-arrow,
+QScrollBar::right-arrow, QScrollBar::left-arrow,
+QScrollBar::add-page, QScrollBar::sub-page,
+QScrollBar::add-line, QScrollBar::sub-line {
+    border: none;background: none;color: none;height: 0;
+}</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1091</width>
+     <height>641</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="management_w" stretch="1,15">
+    <property name="spacing">
+     <number>5</number>
+    </property>
+    <item>
+     <widget class="QWidget" name="head" native="true">
+      <widget class="QLineEdit" name="searchInput">
+       <property name="geometry">
+        <rect>
+         <x>690</x>
+         <y>10</y>
+         <width>191</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="searchLabel">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>10</y>
+         <width>31</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Microsoft JhengHei UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>搜索</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="selKind">
+       <property name="geometry">
+        <rect>
+         <x>890</x>
+         <y>10</y>
+         <width>161</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>文件</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>文件夹</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>目录</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>目录背景</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>桌面背景</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>10</y>
+         <width>581</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei UI</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>文件夹/</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="itemScrollArea">
+      <property name="styleSheet">
+       <string notr="true">#itemScrollArea {
+	border: none;
+	background-color: rgb(250, 250, 250);
+}
+
+#itemScrollAreaWidget {
+	background-color: rgb(250, 250, 250);
+}</string>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="itemScrollAreaWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1089</width>
+         <height>594</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../../../resource/main.qrc"/>
+ </resources>
+ <connections/>
+</ui>

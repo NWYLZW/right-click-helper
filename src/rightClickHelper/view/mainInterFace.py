@@ -28,8 +28,7 @@ class Ui_MainWindow(object):
         MainWindow.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
         MainWindow.setStyleSheet("#MainWindow{\n"
 "    background-color: rgb(0, 0, 0);\n"
-"}\n"
-"")
+"}")
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         MainWindow.setDocumentMode(False)
         MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
@@ -125,9 +124,61 @@ class Ui_MainWindow(object):
         self.headBar_w.addLayout(self.topLeft)
         self.headBar_w.setStretch(0, 1)
         self.headBar_w.setStretch(1, 10)
-        self.content = QtWidgets.QWidget(self.main)
-        self.content.setGeometry(QtCore.QRect(20, 70, 1161, 651))
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.main)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 70, 1161, 651))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.content = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.content.setContentsMargins(0, 0, 0, 0)
+        self.content.setSpacing(10)
         self.content.setObjectName("content")
+        self.leftMenu = QtWidgets.QWidget(self.horizontalLayoutWidget)
+        self.leftMenu.setStyleSheet("#mannagement {\n"
+"    border: none;\n"
+"    border-image: url(:/icon/image/icon/right-click-helper.ico);\n"
+"}\n"
+"#about {\n"
+"    border: none;\n"
+"    border-image: url(:/icon/image/icon/about.png);\n"
+"}\n"
+"#setting {\n"
+"    border: none;\n"
+"    border-image: url(:/icon/image/icon/setting.png);\n"
+"}\n"
+"#warehouse {\n"
+"    border: none;\n"
+"    border-image: url(:/icon/image/icon/warehouse.png);\n"
+"}")
+        self.leftMenu.setObjectName("leftMenu")
+        self.mannagement = QtWidgets.QGraphicsView(self.leftMenu)
+        self.mannagement.setGeometry(QtCore.QRect(9, 9, 31, 31))
+        self.mannagement.setMaximumSize(QtCore.QSize(36, 36))
+        self.mannagement.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.mannagement.setStyleSheet("")
+        self.mannagement.setObjectName("mannagement")
+        self.setting = QtWidgets.QGraphicsView(self.leftMenu)
+        self.setting.setGeometry(QtCore.QRect(10, 90, 31, 31))
+        self.setting.setMaximumSize(QtCore.QSize(36, 36))
+        self.setting.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.setting.setStyleSheet("")
+        self.setting.setObjectName("setting")
+        self.warehouse = QtWidgets.QGraphicsView(self.leftMenu)
+        self.warehouse.setGeometry(QtCore.QRect(10, 50, 31, 31))
+        self.warehouse.setMaximumSize(QtCore.QSize(36, 36))
+        self.warehouse.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.warehouse.setStyleSheet("")
+        self.warehouse.setObjectName("warehouse")
+        self.about = QtWidgets.QGraphicsView(self.leftMenu)
+        self.about.setGeometry(QtCore.QRect(9, 129, 31, 31))
+        self.about.setMaximumSize(QtCore.QSize(36, 36))
+        self.about.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.about.setStyleSheet("")
+        self.about.setObjectName("about")
+        self.content.addWidget(self.leftMenu)
+        self.showPage = ManagementController(self.horizontalLayoutWidget)
+        self.showPage.setObjectName("showPage")
+        self.content.addWidget(self.showPage)
+        self.content.setStretch(0, 1)
+        self.content.setStretch(1, 22)
         MainWindow.setCentralWidget(self.main)
 
         self.retranslateUi(MainWindow)
@@ -143,4 +194,8 @@ class Ui_MainWindow(object):
         self.minWindow.setWhatsThis(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.closeWindow.setToolTip(_translate("MainWindow", "<html><head/><body><p>关闭</p></body></html>"))
         self.closeWindow.setWhatsThis(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
+        self.setting.setToolTip(_translate("MainWindow", "设置"))
+        self.warehouse.setToolTip(_translate("MainWindow", "数据备份"))
+        self.about.setToolTip(_translate("MainWindow", "关于本软件"))
+from src.rightClickHelper.controller.management.controller import ManagementController
 from src.resource import main_rc
