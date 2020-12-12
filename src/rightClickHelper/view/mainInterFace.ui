@@ -89,18 +89,16 @@
 }
 
 #minWindow {
+	border: none;
 	border-image: url(:/ico/image/common-icon/min.png);
-	background-repeat: no-repeat;
-	background-position: center;
 }
 #minWindow:hover {
 	border-image: url(:/ico/image/common-icon/min-ed.png);
 }
 
 #closeWindow {
+	border: none;
 	border-image: url(:/ico/image/common-icon/close.png);
-	background-repeat: no-repeat;
-	background-position: center;
 }
 #closeWindow:hover {
 	border-image: url(:/ico/image/common-icon/close-ed.png);
@@ -198,46 +196,46 @@
          <number>10</number>
         </property>
         <item>
-         <widget class="QGraphicsView" name="minWindow">
+         <widget class="QPushButton" name="minWindow">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>24</width>
             <height>24</height>
            </size>
           </property>
-          <property name="cursor" stdset="0">
+          <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;最小化&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="whatsThis">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QGraphicsView" name="closeWindow">
+         <widget class="QPushButton" name="closeWindow">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>24</width>
             <height>24</height>
            </size>
           </property>
-          <property name="cursor" stdset="0">
+          <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;关闭&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="whatsThis">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
@@ -396,5 +394,38 @@
  <resources>
   <include location="../../resource/main.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>closeWindow</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1166</x>
+     <y>39</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>599</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>minWindow</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showMinimized()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1132</x>
+     <y>39</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>599</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

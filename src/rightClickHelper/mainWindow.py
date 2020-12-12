@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 __all__ = ['MainWindow']
 
-from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QGraphicsDropShadowEffect
-from PyQt5.uic.properties import QtWidgets
+from PyQt5.QtWidgets import QMainWindow
 
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.view import mainInterFace
@@ -51,33 +49,5 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
     def mouseReleaseEvent(self, QMouseEvent):
         self.mDrag = False
 
-    def initToolBar(self):
-        def windowClick(element):
-            def __windowClick(event):
-                if event.buttons() == QtCore.Qt.LeftButton:
-                    element.clickType = QtCore.Qt.LeftButton
-                element.down = True
-            return __windowClick
-
-        def windowRelease(element):
-            def __windowRelease(event):
-                if element.clickType == QtCore.Qt.LeftButton:
-                    if element == self.closeWindow and element.down:
-                        self.close()
-                    elif element == self.minWindow and element.down:
-                        self.showMinimized()
-                element.down = False
-            return __windowRelease
-
-        def connectClick(element: QtWidgets, fun):
-            element.mousePressEvent = fun
-
-        def connectRelease(element: QtWidgets, fun):
-            element.mouseReleaseEvent = fun
-
-        for ele in [self.closeWindow, self.minWindow]:
-            connectClick(ele, windowClick(ele))
-            connectRelease(ele, windowRelease(ele))
-
     def _initEvent(self):
-        self.initToolBar()
+        pass

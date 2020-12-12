@@ -2,14 +2,17 @@
 # -*- coding: utf-8 -*-
 import re
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QHBoxLayout, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
 from src.rightClickHelper.controller.management.menuItemCard import MenuItemCard, MenuItemCard_Package, MenuItemCard_New
 from src.rightClickHelper.tool.regTool import RegTool, RegEnv, MenuItem
 
 from src.rightClickHelper.view.management import index as management
 
-class ManagementController(QtWidgets.QWidget, management.Ui_management):
+class ManagementController(
+    QtWidgets.QWidget,
+    management.Ui_management
+):
     def __init__(self, parent=None):
         super(ManagementController, self).__init__(parent)
         self._initUI()
@@ -18,6 +21,10 @@ class ManagementController(QtWidgets.QWidget, management.Ui_management):
 
     def _initUI(self):
         self.setupUi(self)
+        self.currentRegPath.setText(
+            self.selKind.currentText() + '/'
+        )
+
         self.itemScrollAreaWidgetVL = QVBoxLayout()
         self.itemScrollAreaWidgetVL.setContentsMargins(0, 0, 0, 0)
         self.itemScrollAreaWidget.setLayout(
@@ -130,6 +137,9 @@ class ManagementController(QtWidgets.QWidget, management.Ui_management):
             self.refreshMenuItems(self.regDatas.get(
                 self.selKind.currentText(), []
             ))
+            self.currentRegPath.setText(
+                self.selKind.currentText() + '/'
+            )
 
         def searchEnd():
             self.refreshShowMenuItems(

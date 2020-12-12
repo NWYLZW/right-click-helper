@@ -135,7 +135,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
         </property>
        </item>
       </widget>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="currentRegPath">
        <property name="geometry">
         <rect>
          <x>70</x>

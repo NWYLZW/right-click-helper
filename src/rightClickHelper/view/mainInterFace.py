@@ -49,18 +49,16 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "#minWindow {\n"
+"    border: none;\n"
 "    border-image: url(:/ico/image/common-icon/min.png);\n"
-"    background-repeat: no-repeat;\n"
-"    background-position: center;\n"
 "}\n"
 "#minWindow:hover {\n"
 "    border-image: url(:/ico/image/common-icon/min-ed.png);\n"
 "}\n"
 "\n"
 "#closeWindow {\n"
+"    border: none;\n"
 "    border-image: url(:/ico/image/common-icon/close.png);\n"
-"    background-repeat: no-repeat;\n"
-"    background-position: center;\n"
 "}\n"
 "#closeWindow:hover {\n"
 "    border-image: url(:/ico/image/common-icon/close-ed.png);\n"
@@ -109,16 +107,18 @@ class Ui_MainWindow(object):
         self.topLeft = QtWidgets.QHBoxLayout()
         self.topLeft.setSpacing(10)
         self.topLeft.setObjectName("topLeft")
-        self.minWindow = QtWidgets.QGraphicsView(self.layoutWidget)
+        self.minWindow = QtWidgets.QPushButton(self.layoutWidget)
+        self.minWindow.setMinimumSize(QtCore.QSize(24, 24))
         self.minWindow.setMaximumSize(QtCore.QSize(24, 24))
-        self.minWindow.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.minWindow.setStyleSheet("")
+        self.minWindow.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.minWindow.setText("")
         self.minWindow.setObjectName("minWindow")
         self.topLeft.addWidget(self.minWindow)
-        self.closeWindow = QtWidgets.QGraphicsView(self.layoutWidget)
+        self.closeWindow = QtWidgets.QPushButton(self.layoutWidget)
+        self.closeWindow.setMinimumSize(QtCore.QSize(24, 24))
         self.closeWindow.setMaximumSize(QtCore.QSize(24, 24))
-        self.closeWindow.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.closeWindow.setStyleSheet("")
+        self.closeWindow.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.closeWindow.setText("")
         self.closeWindow.setObjectName("closeWindow")
         self.topLeft.addWidget(self.closeWindow)
         self.headBar_w.addLayout(self.topLeft)
@@ -182,6 +182,8 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.main)
 
         self.retranslateUi(MainWindow)
+        self.closeWindow.clicked.connect(MainWindow.close)
+        self.minWindow.clicked.connect(MainWindow.showMinimized)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -190,10 +192,6 @@ class Ui_MainWindow(object):
         self.appTitle.setText(_translate("MainWindow", "Right Click Helper"))
         self.appVersion.setText(_translate("MainWindow", "1.0.0.0"))
         self.appMode.setText(_translate("MainWindow", "Mod"))
-        self.minWindow.setToolTip(_translate("MainWindow", "<html><head/><body><p>最小化</p></body></html>"))
-        self.minWindow.setWhatsThis(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
-        self.closeWindow.setToolTip(_translate("MainWindow", "<html><head/><body><p>关闭</p></body></html>"))
-        self.closeWindow.setWhatsThis(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.setting.setToolTip(_translate("MainWindow", "设置"))
         self.warehouse.setToolTip(_translate("MainWindow", "数据备份"))
         self.about.setToolTip(_translate("MainWindow", "关于本软件"))
