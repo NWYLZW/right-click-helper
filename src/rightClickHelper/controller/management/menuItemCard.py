@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os
 from abc import abstractmethod
 
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
+from src.rightClickHelper.tool.PathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.tool.regTool import MenuItem
 from src.rightClickHelper.tool.systemTool import SystemTool
@@ -99,6 +102,10 @@ class MenuItemCard_Package(
         if menuItem.icon != '':
             self.showIcon.setPixmap(
                 SystemTool.getIcon(menuItem.icon)
+            )
+        else:
+            self.showIcon.setPixmap(
+                QPixmap(PathTool.appPath() + r'\src\resource\image\icon\package.png').scaled(30, 30)
             )
 
         ions = [
