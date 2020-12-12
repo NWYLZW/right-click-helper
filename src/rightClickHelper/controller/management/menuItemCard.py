@@ -104,8 +104,10 @@ class MenuItemCard_Package(
                 SystemTool.getIcon(menuItem.icon)
             )
         else:
+            rect = self.showIcon.geometry()
             self.showIcon.setPixmap(
-                QPixmap(PathTool.appPath() + r'\src\resource\image\icon\package.png').scaled(30, 30)
+                QPixmap(PathTool.appPath() + r'\src\resource\image\icon\package.png')
+                    .scaled(rect.width(), rect.height())
             )
 
         ions = [
