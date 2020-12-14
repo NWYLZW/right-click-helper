@@ -1,26 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import sys, os
-
-if hasattr(sys, 'frozen'):
-    os.environ['PATH'] = sys._MEIPASS + ";" + os.environ['PATH']
+import sys, os, datetime
+from PyQt5.QtWidgets import QApplication
 
 from src.rightClickHelper.mainWindow import MainWindow
 
 if __name__ == '__main__':
-    from PyQt5.QtWidgets import QApplication
-    APP = QApplication(sys.argv)
-    mainWindow = MainWindow()
-    mainWindow.show()
+    try:
+        if hasattr(sys, 'frozen'):
+            os.environ['PATH'] = sys._MEIPASS + ";" + os.environ['PATH']
 
-    sys._excepthook = sys.excepthook
+        APP = QApplication(sys.argv)
+        mainWindow = MainWindow()
+        mainWindow.show()
 
-    def my_exception_hook(exctype, value, traceback):
-        print(exctype, value, traceback)
-        sys._excepthook(exctype, value, traceback)
-        sys.exit(1)
+        sys._excepthook = sys.excepthook
 
-    sys.excepthook = my_exception_hook
+        def my_exception_hook(exctype, value, traceback):
+            print(exctype, value, traceback)
+            sys._excepthook(exctype, value, traceback)
+            sys.exit(1)
 
-    try: sys.exit(APP.exec_())
-    except Exception as e: print("Exiting")
+        sys.excepthook = my_exception_hook
+
+        try: sys.exit(APP.exec_())
+        except: pass
+    except Exception as e:
+        import traceback
+        if not os.path.exists('./log'): os.mkdir('./log')
+
+        now = datetime.datetime.now()
+        with open(
+            f'./log/{now.year}-{now.month}-{now.day}.log'
+            , mode='a+', encoding='utf-8'
+        ) as file:
+            file.write(
+                now.strftime('[%Y-%m-%d %H:%M:%S]\n') + repr(e) + '\n' + traceback.format_exc() + '\n'
+            )

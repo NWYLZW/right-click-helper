@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import win32ui, win32gui
+import ctypes, win32ui, win32gui
+
 from PyQt5.QtWinExtras import QtWin
 
 class SystemTool:
@@ -25,3 +26,10 @@ class SystemTool:
         hdc.DrawIcon((0, 0), hIcon)
         hdc.DeleteDC()
         return hbmp.GetHandle()
+
+    @staticmethod
+    def isAdmin():
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except:
+            return False

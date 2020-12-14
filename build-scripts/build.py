@@ -3,5 +3,7 @@
 import os, shutil
 
 if __name__ == '__main__':
-    shutil.rmtree("./dist/")
-    os.system("pyinstaller ./start.spec")
+    shutil.rmtree('./dist/')
+    os.system(
+        'pyinstaller ./start.spec'
+    )

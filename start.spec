@@ -43,6 +43,7 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
+    uac_admin=True,
     upx_exclude=['./upx-3.96'],
     console=False,
     icon=appConfig['icon']
