@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 __all__ = ['MainWindow']
 
+from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow
 
+from src.rightClickHelper.tool.PathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.view import mainInterFace
 
@@ -21,6 +23,16 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
     def _initUI(self):
         self.setupUi(self)
         EffectTool.setBlur(self)
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(
+            QtGui.QPixmap(PathTool.appPath() + r'\src\resource\image\icon\right-click-helper.ico'),
+            QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
+        self.setWindowIcon(icon)
+
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("com.yijie.rightClickHelper")
 
     def _initData(self):
         self.mDrag = False

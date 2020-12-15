@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys, os, datetime
+
 from PyQt5.QtWidgets import QApplication
 
 from src.rightClickHelper.mainWindow import MainWindow
