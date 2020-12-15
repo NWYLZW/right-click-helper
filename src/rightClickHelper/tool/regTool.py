@@ -200,7 +200,7 @@ class RegTool:
     @staticmethod
     def setVal(
         env: RegEnv, path: str,
-        valueName: str, valueContent: str, regType: RegType = RegType.REG_SZ
+        valueName: str, valueContent, regType: RegType = RegType.REG_SZ
     ):
         if not SystemTool.isAdmin():
             raise PermissionError('Not started with administrator rights.')
@@ -291,14 +291,49 @@ class MenuItem:
         # type: bool
         # 不以当前目录为打开的工作目录
 
-    @staticmethod
-    def createMenuItem(
-        env: RegEnv, startPath: str
-    ):
-        pass
-
     def saveToReg(self):
-        pass
+        if self.regData.get('__val__', {}) == {}:
+            self.regData['__val__'] = {}
+        valRegData = self.regData['__val__']
+        valRegData[''] = (self.title, RegType.REG_SZ)
+        valRegData['Icon'] = (self.icon, RegType.REG_SZ)
+        path = self.regData['__path__']
+
+        def bool2Create(
+            boolValue,
+            valName, valContent, valType: RegType = RegType.REG_SZ,
+            valPath: (RegEnv, str) = (RegEnv.find(path[0]), path[1])
+        ):
+            if boolValue:
+                RegTool.setVal(
+                    valPath[0], valPath[1]
+                    , valName, valContent, valType
+                )
+            else:
+                RegTool.delVal(
+                    valPath[0], valPath[1]
+                    , valName
+                )
+
+        bool2Create(
+            self.isHide
+            , 'CommandFlags', CommandFlag.HIDE, RegType.REG_DWORD
+        )
+        bool2Create(self.isShift, 'Extended', '')
+        bool2Create(self.isExplorer, 'OnlyInBrowserWindow', '')
+
+        if not self.isPackage:
+            bool2Create(self.isNotWorkingDir, 'NoWorkingDirectory', '')
+
+            if self.regData.get('command', {}) == {}:
+                self.regData['command'] = {
+                    '__val__': {}
+                }
+            commandValRegData = self.regData['command']['__val__']
+            commandValRegData[''] = (self.command, RegType.REG_SZ)
+        else:
+            for child in self.children:
+                child.saveToReg()
 
     @property
     def children(self) -> []:
