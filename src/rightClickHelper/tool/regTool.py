@@ -296,8 +296,8 @@ class MenuItem:
         if self.regData.get('__val__', {}) == {}:
             self.regData['__val__'] = {}
         valRegData = self.regData['__val__']
-        valRegData[''] = (self.title, RegType.REG_SZ)
-        valRegData['Icon'] = (self.icon, RegType.REG_SZ)
+        valRegData[''] = (self.title, RegType.REG_SZ.value)
+        valRegData['Icon'] = (self.icon, RegType.REG_SZ.value)
         path = self.regData['__path__']
 
         def bool2Create(
@@ -316,25 +316,28 @@ class MenuItem:
                     , valName
                 )
 
+        if not self.isPackage:
+            if self.regData.get('command', {}) == {}:
+                self.regData['command'] = {
+                    '__val__': {}
+                }
+            commandValRegData = self.regData['command']['__val__']
+            commandValRegData[''] = (self.command, RegType.REG_SZ.value)
+
+            RegTool.writeKey(
+                self.regData
+            )
+            bool2Create(self.isNotWorkingDir, 'NoWorkingDirectory', '')
+        else:
+            for child in self.children:
+                child.saveToReg()
+
         bool2Create(
             self.isHide
             , 'CommandFlags', CommandFlag.HIDE.value, RegType.REG_DWORD
         )
         bool2Create(self.isShift, 'Extended', '')
         bool2Create(self.isExplorer, 'OnlyInBrowserWindow', '')
-
-        if not self.isPackage:
-            bool2Create(self.isNotWorkingDir, 'NoWorkingDirectory', '')
-
-            if self.regData.get('command', {}) == {}:
-                self.regData['command'] = {
-                    '__val__': {}
-                }
-            commandValRegData = self.regData['command']['__val__']
-            commandValRegData[''] = (self.command, RegType.REG_SZ)
-        else:
-            for child in self.children:
-                child.saveToReg()
 
     @property
     def children(self) -> []:
