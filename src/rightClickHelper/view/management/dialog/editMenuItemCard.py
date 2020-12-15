@@ -25,7 +25,15 @@ class Ui_Dialog(object):
 "}")
         self.content = QtWidgets.QWidget(Dialog)
         self.content.setGeometry(QtCore.QRect(10, 10, 340, 280))
-        self.content.setStyleSheet("#confirm, #cancle {\n"
+        self.content.setStyleSheet("#closeWindow {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/close.png);\n"
+"}\n"
+"#closeWindow:hover {\n"
+"    border-image: url(:/ico/image/common-icon/close-ed.png);\n"
+"}\n"
+"\n"
+"#confirm, #cancle {\n"
 "    height: 25px;\n"
 "    border: none;\n"
 "    border-radius: 4px;\n"
@@ -49,6 +57,17 @@ class Ui_Dialog(object):
 "    color: rgb(64, 169, 255);\n"
 "    border: 1px solid rgb(198, 226, 255);\n"
 "    background-color: rgb(236, 245, 255);\n"
+"}\n"
+"\n"
+"QLineEdit {\n"
+"    padding-left: 8px;\n"
+"    padding-top: 4px; padding-bottom: 4px;\n"
+"\n"
+"    border-radius: 4px;\n"
+"    border: 1px solid rgb(220, 223, 230);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 1px solid rgb(64, 158, 255);\n"
 "}")
         self.content.setObjectName("content")
         self.bottom = QtWidgets.QWidget(self.content)
@@ -78,7 +97,7 @@ class Ui_Dialog(object):
         self.confirm.setObjectName("confirm")
         self.bottomHL.addWidget(self.confirm)
         self.menuItem = QtWidgets.QWidget(self.content)
-        self.menuItem.setGeometry(QtCore.QRect(10, 10, 321, 211))
+        self.menuItem.setGeometry(QtCore.QRect(10, 40, 321, 181))
         self.menuItem.setMinimumSize(QtCore.QSize(120, 180))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
@@ -86,11 +105,11 @@ class Ui_Dialog(object):
         self.menuItem.setFont(font)
         self.menuItem.setStyleSheet("#icon {\n"
 "    border-radius: 10px;\n"
-"    background-color: rgb(255, 255, 255);\n"
+"    background-color: rgb(240, 240, 240);\n"
 "}")
         self.menuItem.setObjectName("menuItem")
         self.icon = QtWidgets.QLabel(self.menuItem)
-        self.icon.setGeometry(QtCore.QRect(10, 10, 81, 81))
+        self.icon.setGeometry(QtCore.QRect(0, 0, 81, 81))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei")
         font.setPointSize(10)
@@ -98,51 +117,102 @@ class Ui_Dialog(object):
         self.icon.setAlignment(QtCore.Qt.AlignCenter)
         self.icon.setObjectName("icon")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.menuItem)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(90, 0, 231, 101))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(90, 0, 231, 91))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setContentsMargins(5, 5, 5, 5)
-        self.verticalLayout.setSpacing(5)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
-        self.label.setMinimumSize(QtCore.QSize(50, 0))
+        self.topInputs = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.topInputs.setContentsMargins(5, 5, 5, 5)
+        self.topInputs.setSpacing(5)
+        self.topInputs.setObjectName("topInputs")
+        self.titleInputHL = QtWidgets.QHBoxLayout()
+        self.titleInputHL.setObjectName("titleInputHL")
+        self.titleInputLabel = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.titleInputLabel.setMinimumSize(QtCore.QSize(50, 0))
+        self.titleInputLabel.setMaximumSize(QtCore.QSize(50, 16777215))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.horizontalLayout_2.addWidget(self.label)
-        self.lineEdit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
+        self.titleInputLabel.setFont(font)
+        self.titleInputLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.titleInputLabel.setObjectName("titleInputLabel")
+        self.titleInputHL.addWidget(self.titleInputLabel)
+        self.titleInput = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setObjectName("lineEdit")
-        self.horizontalLayout_2.addWidget(self.lineEdit)
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label_2 = QtWidgets.QLabel(self.verticalLayoutWidget)
-        self.label_2.setMinimumSize(QtCore.QSize(50, 0))
+        self.titleInput.setFont(font)
+        self.titleInput.setObjectName("titleInput")
+        self.titleInputHL.addWidget(self.titleInput)
+        self.topInputs.addLayout(self.titleInputHL)
+        self.menuNameHL = QtWidgets.QHBoxLayout()
+        self.menuNameHL.setObjectName("menuNameHL")
+        self.menuNameLabel = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.menuNameLabel.setMinimumSize(QtCore.QSize(50, 0))
+        self.menuNameLabel.setMaximumSize(QtCore.QSize(50, 16777215))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout.addWidget(self.label_2)
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.verticalLayoutWidget)
+        self.menuNameLabel.setFont(font)
+        self.menuNameLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.menuNameLabel.setObjectName("menuNameLabel")
+        self.menuNameHL.addWidget(self.menuNameLabel)
+        self.menuNameInput = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.horizontalLayout.addWidget(self.lineEdit_2)
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.menuNameInput.setFont(font)
+        self.menuNameInput.setObjectName("menuNameInput")
+        self.menuNameHL.addWidget(self.menuNameInput)
+        self.topInputs.addLayout(self.menuNameHL)
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.menuItem)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(0, 90, 321, 51))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.bottomInputs = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.bottomInputs.setContentsMargins(5, 5, 5, 5)
+        self.bottomInputs.setSpacing(5)
+        self.bottomInputs.setObjectName("bottomInputs")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget_2)
+        self.label_3.setMinimumSize(QtCore.QSize(72, 0))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft JhengHei UI")
+        font.setPointSize(10)
+        self.label_3.setFont(font)
+        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName("label_3")
+        self.horizontalLayout_3.addWidget(self.label_3)
+        self.lineEdit_3 = QtWidgets.QLineEdit(self.verticalLayoutWidget_2)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft JhengHei UI")
+        font.setPointSize(10)
+        self.lineEdit_3.setFont(font)
+        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.horizontalLayout_3.addWidget(self.lineEdit_3)
+        self.bottomInputs.addLayout(self.horizontalLayout_3)
+        self.horizontalLayoutWidget_4 = QtWidgets.QWidget(self.menuItem)
+        self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(0, 140, 321, 41))
+        self.horizontalLayoutWidget_4.setObjectName("horizontalLayoutWidget_4")
+        self.btns = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_4)
+        self.btns.setContentsMargins(0, 0, 0, 0)
+        self.btns.setObjectName("btns")
+        self.closeWindow = QtWidgets.QPushButton(self.content)
+        self.closeWindow.setGeometry(QtCore.QRect(310, 10, 20, 20))
+        self.closeWindow.setMinimumSize(QtCore.QSize(20, 20))
+        self.closeWindow.setMaximumSize(QtCore.QSize(20, 20))
+        self.closeWindow.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.closeWindow.setText("")
+        self.closeWindow.setObjectName("closeWindow")
+        self.title = QtWidgets.QLabel(self.content)
+        self.title.setGeometry(QtCore.QRect(10, 0, 181, 41))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft JhengHei UI")
+        font.setPointSize(10)
+        self.title.setFont(font)
+        self.title.setObjectName("title")
 
         self.retranslateUi(Dialog)
         self.cancle.clicked.connect(Dialog.close)
+        self.closeWindow.clicked.connect(Dialog.close)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -151,5 +221,8 @@ class Ui_Dialog(object):
         self.cancle.setText(_translate("Dialog", "取消"))
         self.confirm.setText(_translate("Dialog", "确认"))
         self.icon.setText(_translate("Dialog", "应用无图标"))
-        self.label.setText(_translate("Dialog", "标题"))
-        self.label_2.setText(_translate("Dialog", "菜单名"))
+        self.titleInputLabel.setText(_translate("Dialog", "标题"))
+        self.menuNameLabel.setText(_translate("Dialog", "菜单名"))
+        self.label_3.setToolTip(_translate("Dialog", "点击菜单调用的程序"))
+        self.label_3.setText(_translate("Dialog", "点击指令"))
+        self.title.setText(_translate("Dialog", "标题"))

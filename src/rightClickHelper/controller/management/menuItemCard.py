@@ -96,7 +96,6 @@ class MenuItemCard(
     def _initSelfEvent(self):
         def createEditDialog(checked):
             dialog = EditMenuItemDialog()
-            dialog.show()
             dialog.exec()
 
         self.edit.clicked.connect(createEditDialog)
@@ -119,7 +118,6 @@ class MenuItemCard(
                     .scaled(rect.width(), rect.height())
             )
             self.status.setToolTip('图标不存在')
-
 
     def customSetData(self, menuItem: MenuItem):
         MenuItemCard_itf.setSwitchItem(self, menuItem)

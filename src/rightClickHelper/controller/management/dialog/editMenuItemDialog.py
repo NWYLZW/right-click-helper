@@ -16,9 +16,7 @@ class EditMenuItemDialog(
 
     def _initUI(self):
         self.setupUi(self)
-        EffectTool.setBlurs([
-            self, self.confirm, self.cancle
-        ])
+        EffectTool.setBlur(self)
 
     def _initData(self):
         pass

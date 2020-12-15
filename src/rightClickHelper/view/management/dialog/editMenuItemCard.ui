@@ -33,7 +33,15 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">#confirm, #cancle {
+    <string notr="true">#closeWindow {
+	border: none;
+	border-image: url(:/ico/image/common-icon/close.png);
+}
+#closeWindow:hover {
+	border-image: url(:/ico/image/common-icon/close-ed.png);
+}
+
+#confirm, #cancle {
 	height: 25px;
 	border: none;
 	border-radius: 4px;
@@ -57,6 +65,17 @@
 	color: rgb(64, 169, 255);
 	border: 1px solid rgb(198, 226, 255);
 	background-color: rgb(236, 245, 255);
+}
+
+QLineEdit {
+	padding-left: 8px;
+	padding-top: 4px; padding-bottom: 4px;
+
+	border-radius: 4px;
+	border: 1px solid rgb(220, 223, 230);
+}
+QLineEdit:focus {
+	border: 1px solid rgb(64, 158, 255);
 }</string>
    </property>
    <widget class="QWidget" name="bottom" native="true">
@@ -132,9 +151,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>40</y>
       <width>321</width>
-      <height>211</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -152,14 +171,14 @@
     <property name="styleSheet">
      <string notr="true">#icon {
 	border-radius: 10px;
-	background-color: rgb(255, 255, 255);
+	background-color: rgb(240, 240, 240);
 }</string>
     </property>
     <widget class="QLabel" name="icon">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>10</y>
+       <x>0</x>
+       <y>0</y>
        <width>81</width>
        <height>81</height>
       </rect>
@@ -183,10 +202,10 @@
        <x>90</x>
        <y>0</y>
        <width>231</width>
-       <height>101</height>
+       <height>91</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="topInputs">
       <property name="spacing">
        <number>5</number>
       </property>
@@ -203,13 +222,19 @@
        <number>5</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="titleInputHL">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="titleInputLabel">
           <property name="minimumSize">
            <size>
             <width>50</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="font">
@@ -221,10 +246,13 @@
           <property name="text">
            <string>标题</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="titleInput">
           <property name="font">
            <font>
             <family>Microsoft JhengHei UI</family>
@@ -236,13 +264,19 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="menuNameHL">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="menuNameLabel">
           <property name="minimumSize">
            <size>
             <width>50</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="font">
@@ -254,10 +288,13 @@
           <property name="text">
            <string>菜单名</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_2">
+         <widget class="QLineEdit" name="menuNameInput">
           <property name="font">
            <font>
             <family>Microsoft JhengHei UI</family>
@@ -270,6 +307,130 @@
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>90</y>
+       <width>321</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="bottomInputs">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="minimumSize">
+           <size>
+            <width>72</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Microsoft JhengHei UI</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>点击菜单调用的程序</string>
+          </property>
+          <property name="text">
+           <string>点击指令</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_3">
+          <property name="font">
+           <font>
+            <family>Microsoft JhengHei UI</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>140</y>
+       <width>321</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="btns"/>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="closeWindow">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>10</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="title">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft JhengHei UI</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>标题</string>
+    </property>
    </widget>
   </widget>
  </widget>
@@ -284,6 +445,22 @@
     <hint type="sourcelabel">
      <x>259</x>
      <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>closeWindow</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>329</x>
+     <y>29</y>
     </hint>
     <hint type="destinationlabel">
      <x>179</x>
