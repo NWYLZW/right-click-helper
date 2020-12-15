@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QGraphicsDropShadowEffect
+from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QWidget
 
 class EffectTool:
     @staticmethod
-    def setBlur(widget, blurRadius: int = 12):
+    def setBlur(widget: QWidget, blurRadius: int = 12, color: int = Qt.gray):
         # 去除默认边框
         widget.setWindowFlags(Qt.FramelessWindowHint)
         # 背景透明（就是ui中黑色背景的那个控件）
@@ -15,5 +15,10 @@ class EffectTool:
         effect = QGraphicsDropShadowEffect(widget)
         effect.setBlurRadius(blurRadius)
         effect.setOffset(0, 0)
-        effect.setColor(Qt.gray)
+        effect.setColor(color)
         widget.setGraphicsEffect(effect)
+
+    @staticmethod
+    def setBlurs(widgets: [QWidget], blurRadius: int = 12, color: int = Qt.gray):
+        for widget in widgets:
+            EffectTool.setBlur(widget, blurRadius, color)

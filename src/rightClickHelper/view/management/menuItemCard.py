@@ -26,7 +26,7 @@ class Ui_item(object):
 "}\n"
 "#maskCard {\n"
 "    border-radius: 10px;\n"
-"    background-color: rgba(100, 100, 100, .5);\n"
+"    background-color: rgba(100, 100, 100, .2);\n"
 "}\n"
 "\n"
 "#edit {\n"
@@ -64,12 +64,6 @@ class Ui_item(object):
         self.icon.setFont(font)
         self.icon.setAlignment(QtCore.Qt.AlignCenter)
         self.icon.setObjectName("icon")
-        self.edit = QtWidgets.QGraphicsView(self.main)
-        self.edit.setGeometry(QtCore.QRect(20, 140, 21, 21))
-        self.edit.setMaximumSize(QtCore.QSize(36, 36))
-        self.edit.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.edit.setStyleSheet("")
-        self.edit.setObjectName("edit")
         self.title = QtWidgets.QLabel(self.main)
         self.title.setGeometry(QtCore.QRect(20, 110, 81, 20))
         self.title.setMinimumSize(QtCore.QSize(0, 0))
@@ -80,12 +74,6 @@ class Ui_item(object):
         self.title.setFont(font)
         self.title.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.title.setObjectName("title")
-        self.more = QtWidgets.QGraphicsView(self.main)
-        self.more.setGeometry(QtCore.QRect(80, 140, 21, 21))
-        self.more.setMaximumSize(QtCore.QSize(36, 36))
-        self.more.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.more.setStyleSheet("")
-        self.more.setObjectName("more")
         self.maskCard = QtWidgets.QWidget(self.main)
         self.maskCard.setGeometry(QtCore.QRect(20, 20, 80, 80))
         self.maskCard.setMinimumSize(QtCore.QSize(80, 80))
@@ -107,12 +95,29 @@ class Ui_item(object):
         self.switchItem.setToolTip("")
         self.switchItem.setStyleSheet("")
         self.switchItem.setObjectName("switchItem")
-        self.remove = QtWidgets.QGraphicsView(self.main)
+        self.edit = QtWidgets.QPushButton(self.main)
+        self.edit.setGeometry(QtCore.QRect(20, 140, 21, 21))
+        self.edit.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.edit.setText("")
+        self.edit.setObjectName("edit")
+        self.remove = QtWidgets.QPushButton(self.main)
         self.remove.setGeometry(QtCore.QRect(50, 140, 21, 21))
-        self.remove.setMaximumSize(QtCore.QSize(36, 36))
-        self.remove.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.remove.setStyleSheet("")
+        self.remove.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.remove.setText("")
         self.remove.setObjectName("remove")
+        self.more = QtWidgets.QPushButton(self.main)
+        self.more.setGeometry(QtCore.QRect(80, 140, 21, 21))
+        self.more.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.more.setText("")
+        self.more.setObjectName("more")
+        self.status = QtWidgets.QLabel(self.main)
+        self.status.setGeometry(QtCore.QRect(80, 10, 31, 31))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(10)
+        self.status.setFont(font)
+        self.status.setAlignment(QtCore.Qt.AlignCenter)
+        self.status.setObjectName("status")
 
         self.retranslateUi(item)
         QtCore.QMetaObject.connectSlotsByName(item)
@@ -121,8 +126,6 @@ class Ui_item(object):
         _translate = QtCore.QCoreApplication.translate
         item.setWindowTitle(_translate("item", "Form"))
         self.icon.setText(_translate("item", "应用无图标"))
-        self.edit.setToolTip(_translate("item", "编辑"))
         self.title.setText(_translate("item", "标题"))
-        self.more.setToolTip(_translate("item", "更多"))
-        self.remove.setToolTip(_translate("item", "删除"))
+        self.status.setText(_translate("item", "S"))
 from src.resource import main_rc

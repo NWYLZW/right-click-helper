@@ -14,7 +14,8 @@ toBeBuiltRcFile = [
 ]
 toBeBuiltUiFile = [
     *glob(r'../src/rightClickHelper/view/*.ui'),
-    *glob(r'../src/rightClickHelper/view/management/*.ui')
+    *glob(r'../src/rightClickHelper/view/management/*.ui'),
+    *glob(r'../src/rightClickHelper/view/management/**/*.ui')
 ]
 ignoreFolders = [
 ]

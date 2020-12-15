@@ -6,6 +6,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
+from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
 from src.rightClickHelper.tool.PathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.tool.regTool import MenuItem
@@ -85,13 +86,40 @@ class MenuItemCard(
     def __init__(self, parent=None):
         super(MenuItemCard, self).__init__(parent)
         self._initUI()
+        self._initSelfUI()
         self._initEvent()
+        self._initSelfEvent()
+
+    def _initSelfUI(self):
+        pass
+
+    def _initSelfEvent(self):
+        def createEditDialog(checked):
+            dialog = EditMenuItemDialog()
+            dialog.show()
+            dialog.exec()
+
+        self.edit.clicked.connect(createEditDialog)
 
     def setIcon(self, menuItem: MenuItem):
         if menuItem.icon != '':
             self.icon.setPixmap(
                 SystemTool.getIcon(menuItem.icon)
             )
+            self.status.setText('')
+        else:
+            rect = self.icon.geometry()
+            self.icon.setPixmap(
+                QPixmap(PathTool.appPath() + r'\src\resource\image\icon\not-found.png')
+                    .scaled(rect.width(), rect.height())
+            )
+            rect = self.status.geometry()
+            self.status.setPixmap(
+                QPixmap(PathTool.appPath() + r'\src\resource\image\exclamation-mark.png')
+                    .scaled(rect.width(), rect.height())
+            )
+            self.status.setToolTip('图标不存在')
+
 
     def customSetData(self, menuItem: MenuItem):
         MenuItemCard_itf.setSwitchItem(self, menuItem)
