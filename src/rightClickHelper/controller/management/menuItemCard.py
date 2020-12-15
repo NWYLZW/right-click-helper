@@ -96,6 +96,9 @@ class MenuItemCard(
     def _initSelfEvent(self):
         def createEditDialog(checked):
             dialog = EditMenuItemDialog(None, self.menuItem)
+            dialog.submit.connect(
+                lambda menuItem: self.setData(menuItem)
+            )
             dialog.exec()
 
         self.edit.clicked.connect(createEditDialog)

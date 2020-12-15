@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog
 
@@ -12,6 +13,8 @@ from src.rightClickHelper.view.management.dialog import editMenuItemCard
 class EditMenuItemDialog(
     QDialog, editMenuItemCard.Ui_Dialog
 ):
+    s_submit = QtCore.pyqtSignal(MenuItem, name='submit')
+
     def __init__(self, parent=None, data: MenuItem = None):
         super(EditMenuItemDialog, self).__init__(parent)
         self._initUI()
@@ -45,12 +48,50 @@ class EditMenuItemDialog(
         self.commandInput\
             .setText(menuItem.command)
 
+        self.btnsStatusChange()
+
+    def btnsStatusChange(self):
         self.shift\
-            .setProperty('status', 'open' if menuItem.isShift else '')
+            .setProperty('status', 'open' if self.menuItem.isShift else '')
+        self.shift.clearFocus()
+        self.style().polish(self.shift)
+
         self.explorer\
-            .setProperty('status', 'open' if menuItem.isExplorer else '')
+            .setProperty('status', 'open' if self.menuItem.isExplorer else '')
+        self.explorer.clearFocus()
+        self.style().polish(self.explorer)
+
         self.notCurWorkDir\
-            .setProperty('status', 'open' if menuItem.isNotWorkingDir else '')
+            .setProperty('status', 'open' if self.menuItem.isNotWorkingDir else '')
+        self.notCurWorkDir.clearFocus()
+        self.style().polish(self.notCurWorkDir)
+
+    def onSubmit(self, e):
+        self.menuItem.name = self.titleInput.text()
+        self.menuItem.title = self.menuNameInput.text()
+        self.menuItem.command = self.commandInput.text()
+        self.menuItem.saveToReg()
+
+        self.submit.emit(self.menuItem)
+        self.close()
 
     def _initEvent(self):
-        pass
+        self.confirm.clicked.connect(self.onSubmit)
+
+        def createBtnsStatusChange(index):
+            def __createBtnsStatusChange(c):
+                if index == 1: self.menuItem.isShift = not self.menuItem.isShift
+                if index == 2: self.menuItem.isExplorer = not self.menuItem.isExplorer
+                if index == 3: self.menuItem.isNotWorkingDir = not self.menuItem.isNotWorkingDir
+                self.btnsStatusChange()
+            return __createBtnsStatusChange
+
+        waitConnectBtns = [
+            self.shift, self.explorer, self.notCurWorkDir
+        ]
+        for waitConnectBtn in waitConnectBtns:
+            waitConnectBtn.clicked.connect(
+                createBtnsStatusChange(
+                    waitConnectBtns.index(waitConnectBtn) + 1
+                )
+            )
