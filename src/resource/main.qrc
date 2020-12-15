@@ -6,6 +6,10 @@
     <file>image/icon/warehouse.png</file>
   </qresource>
   <qresource prefix="ico">
+    <file>image/common-icon/back-ed.png</file>
+    <file>image/common-icon/back.png</file>
+    <file>image/common-icon/home-ed.png</file>
+    <file>image/common-icon/home.png</file>
     <file>image/add-item.png</file>
     <file>image/add-item-ed.png</file>
     <file>image/switch-close.png</file>

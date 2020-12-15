@@ -21,10 +21,6 @@ class ManagementController(
 
     def _initUI(self):
         self.setupUi(self)
-        self.currentRegPath.setText(
-            self.selKind.currentText() + '/'
-        )
-
         self.itemScrollAreaWidgetVL = QVBoxLayout()
         self.itemScrollAreaWidgetVL.setContentsMargins(0, 0, 0, 0)
         self.itemScrollAreaWidget.setLayout(
@@ -61,6 +57,13 @@ class ManagementController(
         ) # type: MenuItemCard
         if itemType != 'new':
             self.menuItemCards.append(menuItemCard)
+
+            if itemType == 'package':
+                menuItemCard.clickTitle.connect(
+                    lambda menuItem: self.refreshMenuItems(
+                        (RegEnv.find(menuItem.regData['__path__'][0]), menuItem.regData['__path__'][1] + '\\shell')
+                    )
+                )
 
         menuItemCard.setGeometry(QtCore.QRect(
             index % lineNum * menuItemCard.width(), 0, menuItemCard.width(), menuItemCard.height()
@@ -102,11 +105,15 @@ class ManagementController(
                     )
         self.loadShowMenuItems()
 
-    def refreshMenuItems(self, regData: tuple):
+    def refreshMenuItems(self, path: tuple):
+        currentRegPath = path[1] # type: str
+        for menuItemRootName, menuItemsRoot in self.menuItemsRoots.items():
+            currentRegPath = currentRegPath.replace(menuItemsRoot[1], menuItemRootName)
+        self.currentRegPath.setText(currentRegPath)
         self.menuItems = []
         # type: [MenuItem]
 
-        regDataTree = RegTool.recursion(*regData)
+        regDataTree = RegTool.recursion(*path, depth=3)
         for key, val in regDataTree.items():
             if key[:2] != '__':
                 self.menuItems.append(
@@ -116,30 +123,27 @@ class ManagementController(
 
     def _initData(self):
         self.listHLWs = []  # type: [QWidget]
-        self.regDatas = {
+        self.menuItemsRoots = {
             '文件':
-                (RegEnv.HKEY_CLASSES_ROOT, r'*\shell', 3),
+                (RegEnv.HKEY_CLASSES_ROOT, r'*\shell'),
             '文件夹':
-                (RegEnv.HKEY_CLASSES_ROOT, r'Folder\shell', 3),
+                (RegEnv.HKEY_CLASSES_ROOT, r'Folder\shell'),
             '目录':
-                (RegEnv.HKEY_CLASSES_ROOT, r'Directory\shell', 3),
+                (RegEnv.HKEY_CLASSES_ROOT, r'Directory\shell'),
             '目录背景':
-                (RegEnv.HKEY_CLASSES_ROOT, r'Directory\Background\shell', 3),
+                (RegEnv.HKEY_CLASSES_ROOT, r'Directory\Background\shell'),
             '桌面背景':
-                (RegEnv.HKEY_CLASSES_ROOT, r'DesktopBackground\Shell', 3)
+                (RegEnv.HKEY_CLASSES_ROOT, r'DesktopBackground\Shell')
         }
-        self.refreshMenuItems(self.regDatas.get(
+        self.refreshMenuItems(self.menuItemsRoots.get(
             self.selKind.currentText(), []
         ))
 
     def createListRefresh(self, mode):
         def selEnd():
-            self.refreshMenuItems(self.regDatas.get(
+            self.refreshMenuItems(self.menuItemsRoots.get(
                 self.selKind.currentText(), []
             ))
-            self.currentRegPath.setText(
-                self.selKind.currentText() + '/'
-            )
 
         def searchEnd():
             self.refreshShowMenuItems(
@@ -160,3 +164,22 @@ class ManagementController(
             .connect(
                 self.createListRefresh('menuItems')
             )
+
+        self.home.clicked.connect(
+            lambda checked: self.refreshMenuItems(
+                self.menuItemsRoots.get(self.selKind.currentText(), [])
+            )
+        )
+
+        def getBackPath(path: str):
+            pathSplit = path.split('\\shell')
+            if len(pathSplit) == 2:
+                return path
+            return '\\shell'.join(pathSplit[:-2]) + '\\shell'
+
+        self.upPackage.clicked.connect(
+            lambda checked: self.refreshMenuItems((
+                self.menuItemsRoots.get(self.selKind.currentText(), [])[0],
+                getBackPath(self.menuItemsRoots.get(self.selKind.currentText(), [])[1])
+            ))
+        )

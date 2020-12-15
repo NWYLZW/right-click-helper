@@ -220,7 +220,8 @@ class RegTool:
         with winreg.OpenKey(
             env.value, path, access=winreg.KEY_SET_VALUE
         ) as regKey:
-            winreg.DeleteValue(regKey, valueName)
+            try: winreg.DeleteValue(regKey, valueName)
+            except: pass
 
     @staticmethod
     def getVal(
@@ -278,7 +279,7 @@ class MenuItem:
         self.isPackage  = regDataVal.get('SubCommands', [False])[0] == ''
         # type: bool
         # 二级菜单
-        self.isHide     = not (regDataVal.get('CommandFlags', [CommandFlag.NONE.value])[0] == CommandFlag.HIDE.value)
+        self.isHide     = regDataVal.get('CommandFlags', [CommandFlag.NONE.value])[0] == CommandFlag.HIDE.value
         # type: bool
         # 隐藏
         self.isShift    = regDataVal.get('Extended', [False])[0] == ''
@@ -317,7 +318,7 @@ class MenuItem:
 
         bool2Create(
             self.isHide
-            , 'CommandFlags', CommandFlag.HIDE, RegType.REG_DWORD
+            , 'CommandFlags', CommandFlag.HIDE.value, RegType.REG_DWORD
         )
         bool2Create(self.isShift, 'Extended', '')
         bool2Create(self.isExplorer, 'OnlyInBrowserWindow', '')

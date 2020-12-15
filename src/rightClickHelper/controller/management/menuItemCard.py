@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
 from abc import abstractmethod
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
@@ -26,10 +25,14 @@ class MenuItemCard_itf:
     def createChangeStatus(self):
         def changeStatus(event):
             result = QMessageBox.question(
-                self, '提示', '是否打开该右键菜单',
+                self, '提示', '是否' + ('打开' if self.menuItem.isHide else '关闭') + '该右键菜单',
                 QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
                 QMessageBox.Cancel
             )
+            if result == QMessageBox.Yes:
+                self.menuItem.isHide = not self.menuItem.isHide
+                self.menuItem.saveToReg()
+                self.setData(self.menuItem)
         return changeStatus
 
     def _initEvent(self):
@@ -66,6 +69,14 @@ class MenuItemCard_itf:
         self.setTitle(menuItem)
         self.customSetData(menuItem)
 
+    @staticmethod
+    def setSwitchItem(menuItemCard, menuItem: MenuItem):
+        menuItemCard.switchItem.setProperty('status', 'close' if menuItem.isHide else 'open')
+        menuItemCard.switchItem.setToolTip(
+            '隐藏该选项' if menuItem.isHide else '显示该选项'
+        )
+        menuItemCard.style().polish(menuItemCard.switchItem)
+
 class MenuItemCard(
     QtWidgets.QWidget,
     menuItemCard.Ui_item,
@@ -83,20 +94,30 @@ class MenuItemCard(
             )
 
     def customSetData(self, menuItem: MenuItem):
-        self.switchItem.setProperty('status', 'open' if menuItem.isHide else 'close')
-        self.switchItem.setToolTip(
-            '隐藏该选项' if menuItem.isHide else '显示该选项'
-        )
+        MenuItemCard_itf.setSwitchItem(self, menuItem)
 
 class MenuItemCard_Package(
     QtWidgets.QWidget,
     menuItemCard_package.Ui_item,
     MenuItemCard_itf
 ):
+    s_clickTitle = QtCore.pyqtSignal(MenuItem, name='clickTitle')
+
     def __init__(self, parent=None):
         super(MenuItemCard_Package, self).__init__(parent)
         self._initUI()
+        self._initSelfUI()
         self._initEvent()
+        self._initSelfEvent()
+
+    def _initSelfUI(self):
+        self.title.setCursor(
+            QtCore.Qt.PointingHandCursor
+        )
+
+    def _initSelfEvent(self):
+        self.title.mousePressEvent = lambda e: \
+            self.clickTitle.emit(self.menuItem) if e.buttons() == QtCore.Qt.LeftButton else None
 
     def setIcon(self, menuItem: MenuItem):
         if menuItem.icon != '':
@@ -119,11 +140,7 @@ class MenuItemCard_Package(
             ions[index].setPixmap(SystemTool.getIcon(child.icon))
 
     def customSetData(self, menuItem: MenuItem):
-        self.switchItem.setProperty('status', 'open' if menuItem.isHide else 'close')
-        self.switchItem.setToolTip(
-            '隐藏该选项' if menuItem.isHide else '显示该选项'
-        )
-
+        MenuItemCard_itf.setSwitchItem(self, menuItem)
 
 class MenuItemCard_New(
     QtWidgets.QWidget,

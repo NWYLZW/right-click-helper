@@ -54,6 +54,23 @@ class Ui_management(object):
         self.management_w.setSpacing(5)
         self.management_w.setObjectName("management_w")
         self.head = QtWidgets.QWidget(self.verticalLayoutWidget)
+        self.head.setStyleSheet("#home {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/home.png);\n"
+"}\n"
+"#home:hover {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/home-ed.png);\n"
+"}\n"
+"\n"
+"#upPackage {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/back.png);\n"
+"}\n"
+"#upPackage:hover {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/back-ed.png);\n"
+"}")
         self.head.setObjectName("head")
         self.searchInput = QtWidgets.QLineEdit(self.head)
         self.searchInput.setGeometry(QtCore.QRect(690, 10, 191, 21))
@@ -80,14 +97,16 @@ class Ui_management(object):
         font.setPointSize(10)
         self.currentRegPath.setFont(font)
         self.currentRegPath.setObjectName("currentRegPath")
-        self.pushButton = QtWidgets.QPushButton(self.head)
-        self.pushButton.setGeometry(QtCore.QRect(10, 10, 20, 20))
-        self.pushButton.setText("")
-        self.pushButton.setObjectName("pushButton")
-        self.pushButton_2 = QtWidgets.QPushButton(self.head)
-        self.pushButton_2.setGeometry(QtCore.QRect(40, 10, 20, 20))
-        self.pushButton_2.setText("")
-        self.pushButton_2.setObjectName("pushButton_2")
+        self.home = QtWidgets.QPushButton(self.head)
+        self.home.setGeometry(QtCore.QRect(10, 10, 20, 20))
+        self.home.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.home.setText("")
+        self.home.setObjectName("home")
+        self.upPackage = QtWidgets.QPushButton(self.head)
+        self.upPackage.setGeometry(QtCore.QRect(40, 10, 20, 20))
+        self.upPackage.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.upPackage.setText("")
+        self.upPackage.setObjectName("upPackage")
         self.management_w.addWidget(self.head)
         self.itemScrollArea = QtWidgets.QScrollArea(self.verticalLayoutWidget)
         self.itemScrollArea.setStyleSheet("#itemScrollArea {\n"
@@ -103,7 +122,7 @@ class Ui_management(object):
         self.itemScrollAreaWidget = QtWidgets.QWidget()
         self.itemScrollAreaWidget.setGeometry(QtCore.QRect(0, 0, 1089, 594))
         self.itemScrollAreaWidget.setMinimumSize(QtCore.QSize(0, 0))
-        self.itemScrollAreaWidget.setAutoFillBackground(True)
+        self.itemScrollAreaWidget.setAutoFillBackground(False)
         self.itemScrollAreaWidget.setObjectName("itemScrollAreaWidget")
         self.itemScrollArea.setWidget(self.itemScrollAreaWidget)
         self.management_w.addWidget(self.itemScrollArea)
