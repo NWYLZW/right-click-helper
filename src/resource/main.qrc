@@ -1,5 +1,12 @@
 <RCC>
   <qresource prefix="icon">
+    <file>image/shift-key.png</file>
+    <file>image/shift-key-sel.png</file>
+    <file>image/not-cur-work-dir.png</file>
+    <file>image/cur-work-dir.png</file>
+    <file>image/explorer.png</file>
+    <file>image/explorer-sel.png</file>
+    <file>image/bale.png</file>
     <file>image/icon/setting.png</file>
     <file>image/icon/about.png</file>
     <file>image/icon/right-click-helper.ico</file>

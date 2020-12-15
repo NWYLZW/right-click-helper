@@ -7,7 +7,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
-from src.rightClickHelper.tool.PathTool import PathTool
+from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.tool.regTool import MenuItem
 from src.rightClickHelper.tool.systemTool import SystemTool
@@ -95,7 +95,7 @@ class MenuItemCard(
 
     def _initSelfEvent(self):
         def createEditDialog(checked):
-            dialog = EditMenuItemDialog()
+            dialog = EditMenuItemDialog(None, self.menuItem)
             dialog.exec()
 
         self.edit.clicked.connect(createEditDialog)

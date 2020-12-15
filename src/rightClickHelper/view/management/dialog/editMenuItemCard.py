@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(360, 300)
+        Dialog.resize(480, 300)
         Dialog.setStyleSheet("#Dialog {\n"
 "    background-color: rgb(0, 0, 0);\n"
 "}\n"
@@ -24,7 +24,7 @@ class Ui_Dialog(object):
 "    background-color: rgb(255, 255, 255);\n"
 "}")
         self.content = QtWidgets.QWidget(Dialog)
-        self.content.setGeometry(QtCore.QRect(10, 10, 340, 280))
+        self.content.setGeometry(QtCore.QRect(10, 10, 460, 280))
         self.content.setStyleSheet("#closeWindow {\n"
 "    border: none;\n"
 "    border-image: url(:/ico/image/common-icon/close.png);\n"
@@ -71,14 +71,14 @@ class Ui_Dialog(object):
 "}")
         self.content.setObjectName("content")
         self.bottom = QtWidgets.QWidget(self.content)
-        self.bottom.setGeometry(QtCore.QRect(10, 220, 321, 61))
+        self.bottom.setGeometry(QtCore.QRect(10, 230, 441, 51))
         self.bottom.setObjectName("bottom")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.bottom)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 321, 61))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 441, 51))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.bottomHL = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
-        self.bottomHL.setContentsMargins(20, 0, 20, 0)
-        self.bottomHL.setSpacing(40)
+        self.bottomHL.setContentsMargins(40, 0, 40, 0)
+        self.bottomHL.setSpacing(80)
         self.bottomHL.setObjectName("bottomHL")
         self.cancle = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         font = QtGui.QFont()
@@ -97,7 +97,7 @@ class Ui_Dialog(object):
         self.confirm.setObjectName("confirm")
         self.bottomHL.addWidget(self.confirm)
         self.menuItem = QtWidgets.QWidget(self.content)
-        self.menuItem.setGeometry(QtCore.QRect(10, 40, 321, 181))
+        self.menuItem.setGeometry(QtCore.QRect(10, 40, 441, 191))
         self.menuItem.setMinimumSize(QtCore.QSize(120, 180))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
@@ -117,7 +117,7 @@ class Ui_Dialog(object):
         self.icon.setAlignment(QtCore.Qt.AlignCenter)
         self.icon.setObjectName("icon")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.menuItem)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(90, 0, 231, 91))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(90, 0, 351, 91))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.topInputs = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.topInputs.setContentsMargins(5, 5, 5, 5)
@@ -164,46 +164,94 @@ class Ui_Dialog(object):
         self.menuNameHL.addWidget(self.menuNameInput)
         self.topInputs.addLayout(self.menuNameHL)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.menuItem)
-        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(0, 90, 321, 51))
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(0, 90, 441, 51))
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
         self.bottomInputs = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
         self.bottomInputs.setContentsMargins(5, 5, 5, 5)
         self.bottomInputs.setSpacing(5)
         self.bottomInputs.setObjectName("bottomInputs")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget_2)
-        self.label_3.setMinimumSize(QtCore.QSize(72, 0))
+        self.commandInputHL = QtWidgets.QHBoxLayout()
+        self.commandInputHL.setObjectName("commandInputHL")
+        self.commandLabel = QtWidgets.QLabel(self.verticalLayoutWidget_2)
+        self.commandLabel.setMinimumSize(QtCore.QSize(72, 0))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_3.setObjectName("label_3")
-        self.horizontalLayout_3.addWidget(self.label_3)
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.verticalLayoutWidget_2)
+        self.commandLabel.setFont(font)
+        self.commandLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.commandLabel.setObjectName("commandLabel")
+        self.commandInputHL.addWidget(self.commandLabel)
+        self.commandInput = QtWidgets.QLineEdit(self.verticalLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
-        self.lineEdit_3.setFont(font)
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.horizontalLayout_3.addWidget(self.lineEdit_3)
-        self.bottomInputs.addLayout(self.horizontalLayout_3)
+        self.commandInput.setFont(font)
+        self.commandInput.setObjectName("commandInput")
+        self.commandInputHL.addWidget(self.commandInput)
+        self.bottomInputs.addLayout(self.commandInputHL)
         self.horizontalLayoutWidget_4 = QtWidgets.QWidget(self.menuItem)
-        self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(0, 140, 321, 41))
+        self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(0, 140, 441, 51))
         self.horizontalLayoutWidget_4.setObjectName("horizontalLayoutWidget_4")
-        self.btns = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_4)
-        self.btns.setContentsMargins(0, 0, 0, 0)
+        self.btnsHL = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_4)
+        self.btnsHL.setContentsMargins(0, 0, 0, 0)
+        self.btnsHL.setObjectName("btnsHL")
+        self.btns = QtWidgets.QWidget(self.horizontalLayoutWidget_4)
+        self.btns.setStyleSheet("QPushButton {\n"
+"    border:  none;\n"
+"}\n"
+"\n"
+"#shift {\n"
+"    border-image: url(:/icon/image/shift-key.png);\n"
+"}\n"
+"#shift[status=\'open\'] {\n"
+"    border-image: url(:/icon/image/shift-key-sel.png);\n"
+"}\n"
+"\n"
+"#explorer {\n"
+"    border-image: url(:/icon/image/explorer.png);\n"
+"}\n"
+"#explorer[status=\'open\'] {\n"
+"    border-image: url(:/icon/image/explorer-sel.png);\n"
+"}\n"
+"\n"
+"#notCurWorkDir {\n"
+"    border-image: url(:/icon/image/not-cur-work-dir.png);\n"
+"}\n"
+"#notCurWorkDir[status=\'open\'] {\n"
+"    border-image: url(:/icon/image/cur-work-dir.png);\n"
+"}")
         self.btns.setObjectName("btns")
+        self.shift = QtWidgets.QPushButton(self.btns)
+        self.shift.setGeometry(QtCore.QRect(10, 10, 48, 30))
+        self.shift.setMinimumSize(QtCore.QSize(20, 20))
+        self.shift.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.shift.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.shift.setText("")
+        self.shift.setObjectName("shift")
+        self.explorer = QtWidgets.QPushButton(self.btns)
+        self.explorer.setGeometry(QtCore.QRect(80, 10, 31, 31))
+        self.explorer.setMinimumSize(QtCore.QSize(20, 20))
+        self.explorer.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.explorer.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.explorer.setText("")
+        self.explorer.setObjectName("explorer")
+        self.notCurWorkDir = QtWidgets.QPushButton(self.btns)
+        self.notCurWorkDir.setGeometry(QtCore.QRect(130, 10, 31, 31))
+        self.notCurWorkDir.setMinimumSize(QtCore.QSize(20, 20))
+        self.notCurWorkDir.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.notCurWorkDir.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.notCurWorkDir.setText("")
+        self.notCurWorkDir.setObjectName("notCurWorkDir")
+        self.btnsHL.addWidget(self.btns)
         self.closeWindow = QtWidgets.QPushButton(self.content)
-        self.closeWindow.setGeometry(QtCore.QRect(310, 10, 20, 20))
+        self.closeWindow.setGeometry(QtCore.QRect(430, 10, 20, 20))
         self.closeWindow.setMinimumSize(QtCore.QSize(20, 20))
         self.closeWindow.setMaximumSize(QtCore.QSize(20, 20))
         self.closeWindow.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.closeWindow.setText("")
         self.closeWindow.setObjectName("closeWindow")
         self.title = QtWidgets.QLabel(self.content)
-        self.title.setGeometry(QtCore.QRect(10, 0, 181, 41))
+        self.title.setGeometry(QtCore.QRect(10, 0, 421, 41))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
@@ -223,6 +271,10 @@ class Ui_Dialog(object):
         self.icon.setText(_translate("Dialog", "应用无图标"))
         self.titleInputLabel.setText(_translate("Dialog", "标题"))
         self.menuNameLabel.setText(_translate("Dialog", "菜单名"))
-        self.label_3.setToolTip(_translate("Dialog", "点击菜单调用的程序"))
-        self.label_3.setText(_translate("Dialog", "点击指令"))
+        self.commandLabel.setToolTip(_translate("Dialog", "点击菜单调用的程序"))
+        self.commandLabel.setText(_translate("Dialog", "点击指令"))
+        self.shift.setToolTip(_translate("Dialog", "按下shift键时展示"))
+        self.explorer.setToolTip(_translate("Dialog", "只在文件浏览器中展示"))
+        self.notCurWorkDir.setToolTip(_translate("Dialog", "以当前文件夹为工作目录"))
         self.title.setText(_translate("Dialog", "标题"))
+from src.resource import main_rc

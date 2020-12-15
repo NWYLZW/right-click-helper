@@ -6,7 +6,7 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow
 
-from src.rightClickHelper.tool.PathTool import PathTool
+from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.view import mainInterFace
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
+    <width>480</width>
     <height>300</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>340</width>
+     <width>460</width>
      <height>280</height>
     </rect>
    </property>
@@ -82,9 +82,9 @@ QLineEdit:focus {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
-      <width>321</width>
-      <height>61</height>
+      <y>230</y>
+      <width>441</width>
+      <height>51</height>
      </rect>
     </property>
     <widget class="QWidget" name="horizontalLayoutWidget">
@@ -92,22 +92,22 @@ QLineEdit:focus {
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>321</width>
-       <height>61</height>
+       <width>441</width>
+       <height>51</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="bottomHL">
       <property name="spacing">
-       <number>40</number>
+       <number>80</number>
       </property>
       <property name="leftMargin">
-       <number>20</number>
+       <number>40</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>20</number>
+       <number>40</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -152,8 +152,8 @@ QLineEdit:focus {
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>321</width>
-      <height>181</height>
+      <width>441</width>
+      <height>191</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -201,7 +201,7 @@ QLineEdit:focus {
       <rect>
        <x>90</x>
        <y>0</y>
-       <width>231</width>
+       <width>351</width>
        <height>91</height>
       </rect>
      </property>
@@ -312,7 +312,7 @@ QLineEdit:focus {
       <rect>
        <x>0</x>
        <y>90</y>
-       <width>321</width>
+       <width>441</width>
        <height>51</height>
       </rect>
      </property>
@@ -333,9 +333,9 @@ QLineEdit:focus {
        <number>5</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="commandInputHL">
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="commandLabel">
           <property name="minimumSize">
            <size>
             <width>72</width>
@@ -360,7 +360,7 @@ QLineEdit:focus {
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_3">
+         <widget class="QLineEdit" name="commandInput">
           <property name="font">
            <font>
             <family>Microsoft JhengHei UI</family>
@@ -378,17 +378,141 @@ QLineEdit:focus {
       <rect>
        <x>0</x>
        <y>140</y>
-       <width>321</width>
-       <height>41</height>
+       <width>441</width>
+       <height>51</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="btns"/>
+     <layout class="QHBoxLayout" name="btnsHL">
+      <item>
+       <widget class="QWidget" name="btns" native="true">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border:  none;
+}
+
+#shift {
+	border-image: url(:/icon/image/shift-key.png);
+}
+#shift[status='open'] {
+	border-image: url(:/icon/image/shift-key-sel.png);
+}
+
+#explorer {
+	border-image: url(:/icon/image/explorer.png);
+}
+#explorer[status='open'] {
+	border-image: url(:/icon/image/explorer-sel.png);
+}
+
+#notCurWorkDir {
+	border-image: url(:/icon/image/not-cur-work-dir.png);
+}
+#notCurWorkDir[status='open'] {
+	border-image: url(:/icon/image/cur-work-dir.png);
+}</string>
+        </property>
+        <widget class="QPushButton" name="shift">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>48</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="toolTip">
+          <string>按下shift键时展示</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="explorer">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>10</y>
+           <width>31</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="toolTip">
+          <string>只在文件浏览器中展示</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="notCurWorkDir">
+         <property name="geometry">
+          <rect>
+           <x>130</x>
+           <y>10</y>
+           <width>31</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="toolTip">
+          <string>以当前文件夹为工作目录</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QPushButton" name="closeWindow">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>430</x>
       <y>10</y>
       <width>20</width>
       <height>20</height>
@@ -418,7 +542,7 @@ QLineEdit:focus {
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>181</width>
+      <width>421</width>
       <height>41</height>
      </rect>
     </property>
@@ -434,7 +558,9 @@ QLineEdit:focus {
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../resource/main.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>cancle</sender>
