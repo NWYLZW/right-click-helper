@@ -145,4 +145,7 @@ class Ui_item(object):
         item.setWindowTitle(_translate("item", "Form"))
         self.title.setText(_translate("item", "标题"))
         self.showIcon.setText(_translate("item", "I"))
+        self.edit.setToolTip(_translate("item", "编辑"))
+        self.remove.setToolTip(_translate("item", "删除"))
+        self.more.setToolTip(_translate("item", "更多"))
 from src.resource import main_rc

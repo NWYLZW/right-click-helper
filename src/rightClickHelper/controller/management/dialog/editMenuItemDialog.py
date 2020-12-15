@@ -38,9 +38,12 @@ class EditMenuItemDialog(
                     .scaled(rect.width(), rect.height())
             )
             self.icon.setToolTip('图标不存在')
-        self.menuNameInput.setText(menuItem.name)
-        self.titleInput.setText(menuItem.title)
-        self.commandInput.setText(menuItem.command)
+        self.titleInput\
+            .setText(menuItem.name)
+        self.menuNameInput\
+            .setText(menuItem.title)
+        self.commandInput\
+            .setText(menuItem.command)
 
         self.shift\
             .setProperty('status', 'open' if menuItem.isShift else '')
