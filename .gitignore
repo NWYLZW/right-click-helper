@@ -1,5 +1,8 @@
 .DS_Store
 
+# runtime log
+log
+
 # python packaging tool directories
 build
 dist
