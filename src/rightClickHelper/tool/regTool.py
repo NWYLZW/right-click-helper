@@ -270,6 +270,8 @@ class MenuItem:
         }).get('__val__', {})
 
         self.title      = regDataVal.get('', [''])[0]
+        if self.title == '':
+            self.title = regDataVal.get('MUIVerb', [''])[0]
         # type: str
         self.icon       = regDataVal.get('Icon', [''])[0]
         # type: str
