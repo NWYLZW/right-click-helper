@@ -9,7 +9,7 @@ from src.rightClickHelper.tool.regTool import RegTool, RegEnv
 from src.rightClickHelper.tool.systemTool import SystemTool
 
 class DragLabel(QLabel):
-    s_dragEndCallback = QtCore.pyqtSignal(name='dragEndCallback')
+    s_pathChange = QtCore.pyqtSignal(str, name='pathChange')
 
     def __init__(
         self, parent=None
@@ -43,7 +43,6 @@ class DragLabel(QLabel):
         print('dropEvent', e)
         self.path = e.mimeData().text()\
             .replace('file:///', '')
-        self.dragEndCallback.emit()
 
     def _refreshPixmap(self):
         if self.path == '': return
@@ -64,7 +63,7 @@ class DragLabel(QLabel):
             self.setPixmap(pixMap)
             self.repaint()
         except Exception as e:
-            print(e)
+            raise e
 
     @property
     def path(self):
@@ -73,5 +72,6 @@ class DragLabel(QLabel):
     @path.setter
     def path(self, path):
         self._path = path
-        self.setToolTip(path)
+        self.setToolTip('[点击修改]' + path)
         self._refreshPixmap()
+        self.pathChange.emit(self.path)

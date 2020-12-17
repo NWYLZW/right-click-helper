@@ -21,7 +21,7 @@ class EditMenuItemDialog(
 
     def _initUI(self):
         self.setupUi(self)
-        EffectTool.setBlur(self, 20)
+        EffectTool.setBlur(self)
 
     def _initData(self, menuItem: MenuItem = None):
         self.menuItem = menuItem
@@ -35,7 +35,7 @@ class EditMenuItemDialog(
             self.icon.path = menuItem.icon
         else:
             self.icon.path = PathTool.appPath() + r'\src\resource\image\icon\not-found.png'
-            self.icon.setToolTip('图标不存在')
+            self.icon.setToolTip('[点击修改]图标不存在')
         self.titleInput\
             .setText(menuItem.name)
         self.menuNameInput\
@@ -80,7 +80,6 @@ class EditMenuItemDialog(
                 if index == 3: self.menuItem.isNotWorkingDir = not self.menuItem.isNotWorkingDir
                 self.btnsStatusChange()
             return __createBtnsStatusChange
-
         waitConnectBtns = [
             self.shift, self.explorer, self.notCurWorkDir
         ]
@@ -90,3 +89,7 @@ class EditMenuItemDialog(
                     waitConnectBtns.index(waitConnectBtn) + 1
                 )
             )
+
+        self.icon.pathChange.connect(
+            lambda path: self.menuItem.__setattr__('icon', path)
+        )

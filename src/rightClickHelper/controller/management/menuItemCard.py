@@ -121,6 +121,7 @@ class MenuItemCard(
                     .scaled(rect.width(), rect.height())
             )
             self.status.setToolTip('图标不存在')
+        self.icon.repaint()
 
     def customSetData(self, menuItem: MenuItem):
         MenuItemCard_itf.setSwitchItem(self, menuItem)
@@ -166,6 +167,7 @@ class MenuItemCard_Package(
                 QPixmap(PathTool.appPath() + r'\src\resource\image\icon\package.png')
                     .scaled(rect.width(), rect.height())
             )
+        self.showIcon.repaint()
 
         ions = [
             self.icon_1, self.icon_2, self.icon_3, self.icon_4
@@ -174,6 +176,7 @@ class MenuItemCard_Package(
         for index in range(0, 4 if len(children) > 4 else len(children)):
             child = children[index]
             ions[index].setPixmap(SystemTool.getIcon(child.icon))
+            ions[index].repaint()
 
     def customSetData(self, menuItem: MenuItem):
         MenuItemCard_itf.setSwitchItem(self, menuItem)
