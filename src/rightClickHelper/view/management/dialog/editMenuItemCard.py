@@ -108,12 +108,13 @@ class Ui_Dialog(object):
 "    background-color: rgb(240, 240, 240);\n"
 "}")
         self.menuItem.setObjectName("menuItem")
-        self.icon = QtWidgets.QLabel(self.menuItem)
+        self.icon = DragLabel(self.menuItem)
         self.icon.setGeometry(QtCore.QRect(0, 0, 81, 81))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei")
         font.setPointSize(10)
         self.icon.setFont(font)
+        self.icon.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.icon.setAlignment(QtCore.Qt.AlignCenter)
         self.icon.setObjectName("icon")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.menuItem)
@@ -267,7 +268,8 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.cancle.setText(_translate("Dialog", "取消"))
-        self.confirm.setText(_translate("Dialog", "确认"))
+        self.confirm.setText(_translate("Dialog", "保存"))
+        self.icon.setToolTip(_translate("Dialog", "拖动图片或者exe文件可设置为图标"))
         self.icon.setText(_translate("Dialog", "应用无图标"))
         self.titleInputLabel.setText(_translate("Dialog", "标题"))
         self.menuNameLabel.setText(_translate("Dialog", "菜单名"))
@@ -277,4 +279,5 @@ class Ui_Dialog(object):
         self.explorer.setToolTip(_translate("Dialog", "只在文件浏览器中展示"))
         self.notCurWorkDir.setToolTip(_translate("Dialog", "以当前文件夹为工作目录"))
         self.title.setText(_translate("Dialog", "标题"))
+from src.rightClickHelper.component.label.dragLabel import DragLabel
 from src.resource import main_rc

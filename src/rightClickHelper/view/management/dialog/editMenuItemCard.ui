@@ -140,7 +140,7 @@ QLineEdit:focus {
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>确认</string>
+         <string>保存</string>
         </property>
        </widget>
       </item>
@@ -174,7 +174,7 @@ QLineEdit:focus {
 	background-color: rgb(240, 240, 240);
 }</string>
     </property>
-    <widget class="QLabel" name="icon">
+    <widget class="DragLabel" name="icon">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -188,6 +188,12 @@ QLineEdit:focus {
        <family>Microsoft JhengHei</family>
        <pointsize>10</pointsize>
       </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>拖动图片或者exe文件可设置为图标</string>
      </property>
      <property name="text">
       <string>应用无图标</string>
@@ -558,6 +564,13 @@ QLineEdit:focus {
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DragLabel</class>
+   <extends>QLabel</extends>
+   <header>src/rightClickHelper/component/label/dragLabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../../../resource/main.qrc"/>
  </resources>

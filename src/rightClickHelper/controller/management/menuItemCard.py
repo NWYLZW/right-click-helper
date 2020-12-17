@@ -145,6 +145,13 @@ class MenuItemCard_Package(
         )
 
     def _initSelfEvent(self):
+        def createEditDialog(checked):
+            dialog = EditMenuItemDialog(None, self.menuItem)
+            dialog.submit.connect(
+                lambda menuItem: self.setData(menuItem)
+            )
+            dialog.exec()
+        self.edit.clicked.connect(createEditDialog)
         self.title.mousePressEvent = lambda e: \
             self.clickTitle.emit(self.menuItem) if e.buttons() == QtCore.Qt.LeftButton else None
 
@@ -184,7 +191,10 @@ class MenuItemCard_New(
         self.setupUi(self)
         EffectTool.setBlur(self)
 
-    def _initEvent(self): pass
+    def _initEvent(self):
+        self.addBtn.clicked.connect(
+            lambda e: print(e)
+        )
 
     def setData(self, menuItem: MenuItem):
         self.menuItem = menuItem

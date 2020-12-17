@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog
 
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.tool.regTool import MenuItem
-from src.rightClickHelper.tool.systemTool import SystemTool
 from src.rightClickHelper.view.management.dialog import editMenuItemCard
 
 class EditMenuItemDialog(
@@ -15,10 +13,10 @@ class EditMenuItemDialog(
 ):
     s_submit = QtCore.pyqtSignal(MenuItem, name='submit')
 
-    def __init__(self, parent=None, data: MenuItem = None):
+    def __init__(self, parent=None, menuItem: MenuItem = None):
         super(EditMenuItemDialog, self).__init__(parent)
         self._initUI()
-        self._initData(data)
+        self._initData(menuItem)
         self._initEvent()
 
     def _initUI(self):
@@ -30,16 +28,13 @@ class EditMenuItemDialog(
         self.title.setText(
             '正在修改[' + menuItem.title + ']'
         )
+        self.icon.setProperty('selFileTitle', '选择文件作为该菜单项的左侧小图标')
+
+        self.icon.setProperty('fullProportion', 60)
         if menuItem.icon != '':
-            self.icon.setPixmap(
-                SystemTool.getIcon(menuItem.icon)
-            )
+            self.icon.path = menuItem.icon
         else:
-            rect = self.icon.geometry()
-            self.icon.setPixmap(
-                QPixmap(PathTool.appPath() + r'\src\resource\image\icon\not-found.png')
-                    .scaled(rect.width(), rect.height())
-            )
+            self.icon.path = PathTool.appPath() + r'\src\resource\image\icon\not-found.png'
             self.icon.setToolTip('图标不存在')
         self.titleInput\
             .setText(menuItem.name)
