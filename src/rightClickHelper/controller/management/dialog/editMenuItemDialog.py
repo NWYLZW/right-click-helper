@@ -26,7 +26,7 @@ class EditMenuItemDialog(
     def _initData(self, menuItem: MenuItem = None):
         self.menuItem = menuItem
         self.title.setText(
-            '正在修改[' + menuItem.title + ']'
+            '正在修改[' + menuItem.name + ']'
         )
         self.icon.setProperty('selFileTitle', '选择文件作为该菜单项的左侧小图标')
 

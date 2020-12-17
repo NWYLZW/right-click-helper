@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
 from src.rightClickHelper.controller.management.menuItemCard import MenuItemCard, MenuItemCard_Package, MenuItemCard_New
-from src.rightClickHelper.tool.regTool import RegTool, RegEnv, MenuItem
+from src.rightClickHelper.tool.regTool import RegTool, RegEnv, MenuItem, RegType
 
 from src.rightClickHelper.view.management import index as management
 
@@ -64,6 +64,10 @@ class ManagementController(
                         (RegEnv.find(menuItem.regData['__path__'][0]), menuItem.regData['__path__'][1] + '\\shell')
                     )
                 )
+        else:
+            menuItemCard.createMenuItemItemSuccess.connect(
+                lambda: self.refreshMenuItems(self.path)
+            )
 
         menuItemCard.setGeometry(QtCore.QRect(
             index % lineNum * menuItemCard.width(), 0, menuItemCard.width(), menuItemCard.height()
@@ -74,7 +78,12 @@ class ManagementController(
         self.clearShowMenuItems()
 
         waitLoadMenuItems = [
-            *self.showMenuItems, {}
+            *self.showMenuItems, MenuItem('new menuItem', {
+                '__path__': (self.path[0].value, self.path[1] + r'\new menuItem'),
+                '__val__': {
+                    '': ('', RegType.REG_SZ.value)
+                }
+            })
         ] # type: [MenuItem]
         for index in range(len(waitLoadMenuItems)):
             if index == len(waitLoadMenuItems) - 1:
@@ -106,6 +115,7 @@ class ManagementController(
         self.loadShowMenuItems()
 
     def refreshMenuItems(self, path: tuple):
+        self.path = path
         currentRegPath = path[1] # type: str
         for menuItemRootName, menuItemsRoot in self.menuItemsRoots.items():
             currentRegPath = currentRegPath.replace(menuItemsRoot[1], menuItemRootName)

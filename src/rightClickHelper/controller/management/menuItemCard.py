@@ -185,6 +185,8 @@ class MenuItemCard_New(
     QtWidgets.QWidget,
     menuItemCard_new.Ui_item
 ):
+    s_createMenuItemItemSuccess = QtCore.pyqtSignal(name='createMenuItemItemSuccess')
+
     def __init__(self, parent=None):
         super(MenuItemCard_New, self).__init__(parent)
         self._initUI()
@@ -195,9 +197,14 @@ class MenuItemCard_New(
         EffectTool.setBlur(self)
 
     def _initEvent(self):
-        self.addBtn.clicked.connect(
-            lambda e: print(e)
-        )
+        def createEditDialog(checked):
+            dialog = EditMenuItemDialog(None, self.menuItem)
+            dialog.submit.connect(
+                lambda menuItem: self.createMenuItemItemSuccess.emit()
+            )
+            dialog.exec()
+        self.addBtn.clicked\
+            .connect(createEditDialog)
 
     def setData(self, menuItem: MenuItem):
         self.menuItem = menuItem

@@ -39,7 +39,7 @@ class RegEnv(Enum):
         for item in RegEnv:
             if item.value == val:
                 return item
-        raise ValueError('RefEnv not found.')
+        raise ValueError('RegEnv not found.')
 
 class RegType(Enum):
     # https://docs.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types
@@ -300,6 +300,12 @@ class MenuItem:
         valRegData = self.regData['__val__']
         valRegData[''] = (self.title, RegType.REG_SZ.value)
         valRegData['Icon'] = (self.icon, RegType.REG_SZ.value)
+        self.regData['__path__'] = [
+            self.regData['__path__'][0], '\\'.join([
+                *self.regData['__path__'][1].split('\\')[:-1],
+                self.name
+            ])
+        ]
         path = self.regData['__path__']
 
         def bool2Create(
@@ -321,6 +327,7 @@ class MenuItem:
         if not self.isPackage:
             if self.regData.get('command', {}) == {}:
                 self.regData['command'] = {
+                    '__path__': (path[0], path[1]),
                     '__val__': {}
                 }
             commandValRegData = self.regData['command']['__val__']
