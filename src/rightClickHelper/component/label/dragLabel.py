@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QFileDialog
 
@@ -61,6 +62,7 @@ class DragLabel(QLabel):
                     , self.height() * fullProportion/100
                 )
             self.setPixmap(pixMap)
+            self.repaint()
         except Exception as e:
             print(e)
 

@@ -11,7 +11,7 @@ if __name__ == '__main__':
         if hasattr(sys, 'frozen'):
             os.environ['PATH'] = sys._MEIPASS + ";" + os.environ['PATH']
 
-        APP = QApplication(sys.argv)
+        app = QApplication(sys.argv)
         mainWindow = MainWindow()
         mainWindow.show()
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
         sys.excepthook = myExceptionHook
 
-        try: sys.exit(APP.exec_())
+        try: sys.exit(app.exec_())
         except: pass
     except Exception as e:
         import traceback
