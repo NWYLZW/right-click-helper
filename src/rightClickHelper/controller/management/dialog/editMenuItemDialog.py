@@ -122,14 +122,17 @@ class EditMenuItemDialog(
                 lambda path: self.menuItem.__setattr__('icon', path)
             )
 
-            self.selExeBtn.clicked.connect(
-                lambda c: (self.commandInput.setText(
-                    '"' + SystemTool.getFilePathByQFileDialog(
+            def changeCommand():
+                if not self.menuItem.isPackage:
+                    filePath = SystemTool.getFilePathByQFileDialog(
                         self, self.property('selFileTitle'), 'C:',
                         'Application (*.exe)'
-                    ) + '" "%1"') if not self.menuItem.isPackage else None
-                )
-            )
+                    )
+                    if filePath != '':
+                        self.icon.path = filePath
+                        self.commandInput.setText('"' + filePath + '" "%1"')
+            self.selExeBtn.clicked\
+                .connect(changeCommand)
 
         if self.property('ableChangePackageStatus'):
             def changePackageStatus(c):
