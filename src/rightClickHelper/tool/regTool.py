@@ -342,11 +342,11 @@ class MenuItem:
         if not self.isPackage:
             if self.regData.get('command', {}) == {}:
                 self.regData['command'] = {
-                    '__path__': (path[0], path[1]),
+                    '__path__': (path[0], path[1] + r'\command'),
                     '__val__': {}
                 }
             commandValRegData = self.regData['command']['__val__']
-            commandValRegData[''] = (self.command, RegType.REG_SZ.value)
+            commandValRegData[''] = (self.command.replace('/', '\\'), RegType.REG_SZ.value)
 
             RegTool.writeKey(
                 self.regData

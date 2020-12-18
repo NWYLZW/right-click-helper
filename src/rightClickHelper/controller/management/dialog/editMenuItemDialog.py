@@ -127,7 +127,7 @@ class EditMenuItemDialog(
                     filePath = SystemTool.getFilePathByQFileDialog(
                         self, self.property('selFileTitle'), 'C:',
                         'Application (*.exe)'
-                    )
+                    ).replace('/', '\\')
                     if filePath != '':
                         self.icon.path = filePath
                         self.commandInput.setText('"' + filePath + '" "%1"')
