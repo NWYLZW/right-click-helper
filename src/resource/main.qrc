@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="icon">
+    <file>image/package-sel.png</file>
+    <file>image/package.png</file>
+    <file>image/exe.png</file>
     <file>image/shift-key.png</file>
     <file>image/shift-key-sel.png</file>
     <file>image/not-cur-work-dir.png</file>

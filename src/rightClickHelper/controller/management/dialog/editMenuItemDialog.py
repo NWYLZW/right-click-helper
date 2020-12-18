@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
 
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
-from src.rightClickHelper.tool.regTool import MenuItem
+from src.rightClickHelper.tool.regTool import MenuItem, systemDir
+from src.rightClickHelper.tool.systemTool import SystemTool
 from src.rightClickHelper.view.management.dialog import editMenuItemCard
 
 class EditMenuItemDialog(
@@ -13,8 +15,10 @@ class EditMenuItemDialog(
 ):
     s_submit = QtCore.pyqtSignal(MenuItem, name='submit')
 
-    def __init__(self, parent=None, menuItem: MenuItem = None):
+    def __init__(self, parent=None, menuItem: MenuItem = None, properties: dict = {}):
         super(EditMenuItemDialog, self).__init__(parent)
+        for _propertyName, _property in properties.items():
+            self.setProperty(_propertyName, _property)
         self._initUI()
         self._initData(menuItem)
         self._initEvent()
@@ -44,6 +48,29 @@ class EditMenuItemDialog(
             .setText(menuItem.command)
 
         self.btnsStatusChange()
+
+        if self.menuItem.isPackage:
+            self.packbag.setToolTip('该菜单项为二级菜单')
+            self.packbag.setProperty('status', 'open')
+            self.style().polish(self.packbag)
+            self.packbag.clearFocus()
+
+            self.commandInput.setReadOnly(True)
+            self.commandInput\
+                .setCursor(Qt.ForbiddenCursor)
+            self.selExeBtn\
+                .setCursor(Qt.ForbiddenCursor)
+        else:
+            self.packbag.setToolTip('该菜单项不为二级菜单')
+            self.packbag.setProperty('status', '')
+            self.style().polish(self.packbag)
+            self.packbag.clearFocus()
+
+            self.commandInput.setReadOnly(False)
+            self.commandInput\
+                .setCursor(Qt.IBeamCursor)
+            self.selExeBtn\
+                .setCursor(Qt.PointingHandCursor)
 
     def btnsStatusChange(self):
         self.shift\
@@ -90,6 +117,26 @@ class EditMenuItemDialog(
                 )
             )
 
-        self.icon.pathChange.connect(
-            lambda path: self.menuItem.__setattr__('icon', path)
-        )
+        if not self.menuItem.isPackage:
+            self.icon.pathChange.connect(
+                lambda path: self.menuItem.__setattr__('icon', path)
+            )
+
+            self.selExeBtn.clicked.connect(
+                lambda c: (self.commandInput.setText(
+                    '"' + SystemTool.getFilePathByQFileDialog(
+                        self, self.property('selFileTitle'), 'C:',
+                        'Application (*.exe)'
+                    ) + '" "%1"') if not self.menuItem.isPackage else None
+                )
+            )
+
+        if self.property('ableChangePackageStatus'):
+            def changePackageStatus(c):
+                self.menuItem.isPackage = not self.menuItem.isPackage
+                self._initData(self.menuItem)
+            self.packbag.clicked.connect(changePackageStatus)
+        else:
+            self.packbag.setCursor(
+                Qt.ForbiddenCursor
+            )

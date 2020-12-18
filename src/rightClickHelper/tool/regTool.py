@@ -259,6 +259,21 @@ class RegTool:
         except Exception as e: raise e
         RegTool.delKey(*source)
 
+CURRENT_USER_USER_SHELL_FOLDERS = (
+    RegEnv.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
+)
+systemDir = {
+    'pictures': RegTool.getVal(
+        *CURRENT_USER_USER_SHELL_FOLDERS, valueName='My Pictures'
+    ).val,
+    'desktop': RegTool.getVal(
+        *CURRENT_USER_USER_SHELL_FOLDERS, valueName='Desktop'
+    ).val,
+    'documents': RegTool.getVal(
+        *CURRENT_USER_USER_SHELL_FOLDERS, valueName='Personal'
+    ).val
+}
+
 class MenuItem:
     def __init__(self, name: str, regData: dict):
         self.regData = regData

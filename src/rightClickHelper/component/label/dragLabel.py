@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QLabel, QFileDialog
+import re
 
-from src.rightClickHelper.tool.regTool import RegTool, RegEnv
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel
+
+from src.rightClickHelper.tool.regTool import systemDir
 from src.rightClickHelper.tool.systemTool import SystemTool
 
 class DragLabel(QLabel):
@@ -22,14 +23,12 @@ class DragLabel(QLabel):
 
     def mousePressEvent(self, ev: QtGui.QMouseEvent) -> None:
         if ev.buttons() == QtCore.Qt.LeftButton:
-            userPicturesPath = RegTool.getVal(
-                RegEnv.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders', 'My Pictures'
-            ).val
-            directoryPath = QFileDialog.getOpenFileName(
-                self, self.property('selFileTitle'), userPicturesPath, 'Picture File (*.png *.jpg *.jpeg *.ico);;Application (*.exe)'
-            )[0]
-            if directoryPath != '':
-                self.path = directoryPath
+            filePath = SystemTool.getFilePathByQFileDialog(
+                self, self.property('selFileTitle'), systemDir['pictures'],
+                'Picture File (*.png *.jpg *.jpeg *.ico);;Application (*.exe)'
+            )
+            if filePath != '':
+                self.path = filePath
 
     def dragEnterEvent(self, e):
         print('dragEnterEvent', e)
@@ -47,7 +46,7 @@ class DragLabel(QLabel):
     def _refreshPixmap(self):
         if self.path == '': return
         try:
-            if self.path.endswith('.exe'):
+            if self.path.endswith('exe') or re.search(r'\..*,-?\d+$', self.path):
                 pixMap = QPixmap(SystemTool.getIcon(self.path))
             else:
                 pixMap = QPixmap(self.path)

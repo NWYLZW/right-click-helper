@@ -64,6 +64,9 @@ class ManagementController(
                         (RegEnv.find(menuItem.regData['__path__'][0]), menuItem.regData['__path__'][1] + '\\shell')
                     )
                 )
+            menuItemCard.cardRemove.connect(
+                lambda: self.refreshMenuItems(self.path)
+            )
         else:
             menuItemCard.createMenuItemItemSuccess.connect(
                 lambda: self.refreshMenuItems(self.path)

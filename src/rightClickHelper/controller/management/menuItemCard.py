@@ -9,12 +9,13 @@ from PyQt5.QtWidgets import QMessageBox
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
-from src.rightClickHelper.tool.regTool import MenuItem
+from src.rightClickHelper.tool.regTool import MenuItem, RegTool, RegEnv
 from src.rightClickHelper.tool.systemTool import SystemTool
 
 from src.rightClickHelper.view.management import menuItemCard, menuItemCard_new, menuItemCard_package
 
 class MenuItemCard_itf:
+    s_cardRemove = QtCore.pyqtSignal(MenuItem, name='cardRemove')
     def _initUI(self):
         try:
             self.setupUi(self)
@@ -36,6 +37,8 @@ class MenuItemCard_itf:
                 self.setData(self.menuItem)
         return changeStatus
 
+    def doCardRemove(self): pass
+
     def _initEvent(self):
         try:
             self.icon.enterEvent = lambda e: \
@@ -49,6 +52,17 @@ class MenuItemCard_itf:
 
             self.switchItem.mousePressEvent = \
                 self.createChangeStatus()
+
+            def cardRemove(c):
+                result = QMessageBox.question(
+                    self, '提示', '是否删除该右键菜单',
+                                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+                    QMessageBox.Cancel
+                )
+                if result == QMessageBox.Yes:
+                    self.doCardRemove()
+                    self.cardRemove.emit(self.menuItem)
+            self.remove.clicked.connect(cardRemove)
         except Exception as e: raise e
 
     @abstractmethod
@@ -102,6 +116,12 @@ class MenuItemCard(
             dialog.exec()
 
         self.edit.clicked.connect(createEditDialog)
+
+    def doCardRemove(self):
+        path = self.menuItem.regData['__path__']
+        RegTool.delKey(
+            RegEnv.find(path[0]), path[1]
+        )
 
     def setIcon(self, menuItem: MenuItem):
         if menuItem.icon != '':
@@ -198,7 +218,9 @@ class MenuItemCard_New(
 
     def _initEvent(self):
         def createEditDialog(checked):
-            dialog = EditMenuItemDialog(None, self.menuItem)
+            dialog = EditMenuItemDialog(None, self.menuItem, {
+                'ableChangePackageStatus': True
+            })
             dialog.submit.connect(
                 lambda menuItem: self.createMenuItemItemSuccess.emit()
             )

@@ -59,6 +59,11 @@ class Ui_Dialog(object):
 "    background-color: rgb(236, 245, 255);\n"
 "}\n"
 "\n"
+"#selExeBtn {\n"
+"    border: none;\n"
+"    border-image: url(:/icon/image/exe.png);\n"
+"}\n"
+"\n"
 "QLineEdit {\n"
 "    padding-left: 8px;\n"
 "    padding-top: 4px; padding-bottom: 4px;\n"
@@ -189,6 +194,13 @@ class Ui_Dialog(object):
         self.commandInput.setFont(font)
         self.commandInput.setObjectName("commandInput")
         self.commandInputHL.addWidget(self.commandInput)
+        self.selExeBtn = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.selExeBtn.setMinimumSize(QtCore.QSize(32, 32))
+        self.selExeBtn.setMaximumSize(QtCore.QSize(32, 32))
+        self.selExeBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.selExeBtn.setText("")
+        self.selExeBtn.setObjectName("selExeBtn")
+        self.commandInputHL.addWidget(self.selExeBtn)
         self.bottomInputs.addLayout(self.commandInputHL)
         self.horizontalLayoutWidget_4 = QtWidgets.QWidget(self.menuItem)
         self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(0, 140, 441, 51))
@@ -220,29 +232,49 @@ class Ui_Dialog(object):
 "}\n"
 "#notCurWorkDir[status=\'open\'] {\n"
 "    border-image: url(:/icon/image/cur-work-dir.png);\n"
+"}\n"
+"\n"
+"#packbag {\n"
+"    border-image: url(:/icon/image/package.png);\n"
+"}\n"
+"#packbag[status=\'open\'] {\n"
+"    border-image: url(:/icon/image/package-sel.png);\n"
 "}")
         self.btns.setObjectName("btns")
-        self.shift = QtWidgets.QPushButton(self.btns)
-        self.shift.setGeometry(QtCore.QRect(10, 10, 48, 30))
-        self.shift.setMinimumSize(QtCore.QSize(20, 20))
-        self.shift.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.btns)
+        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(-1, 0, 181, 51))
+        self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.shift = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
+        self.shift.setMinimumSize(QtCore.QSize(48, 30))
+        self.shift.setMaximumSize(QtCore.QSize(48, 30))
         self.shift.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.shift.setText("")
         self.shift.setObjectName("shift")
-        self.explorer = QtWidgets.QPushButton(self.btns)
-        self.explorer.setGeometry(QtCore.QRect(80, 10, 31, 31))
-        self.explorer.setMinimumSize(QtCore.QSize(20, 20))
-        self.explorer.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.horizontalLayout.addWidget(self.shift)
+        self.explorer = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
+        self.explorer.setMinimumSize(QtCore.QSize(30, 30))
+        self.explorer.setMaximumSize(QtCore.QSize(30, 30))
         self.explorer.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.explorer.setText("")
         self.explorer.setObjectName("explorer")
-        self.notCurWorkDir = QtWidgets.QPushButton(self.btns)
-        self.notCurWorkDir.setGeometry(QtCore.QRect(130, 10, 31, 31))
+        self.horizontalLayout.addWidget(self.explorer)
+        self.notCurWorkDir = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.notCurWorkDir.setMinimumSize(QtCore.QSize(20, 20))
-        self.notCurWorkDir.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.notCurWorkDir.setMaximumSize(QtCore.QSize(30, 30))
         self.notCurWorkDir.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.notCurWorkDir.setText("")
         self.notCurWorkDir.setObjectName("notCurWorkDir")
+        self.horizontalLayout.addWidget(self.notCurWorkDir)
+        self.packbag = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
+        self.packbag.setMinimumSize(QtCore.QSize(20, 20))
+        self.packbag.setMaximumSize(QtCore.QSize(30, 30))
+        self.packbag.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.packbag.setText("")
+        self.packbag.setObjectName("packbag")
+        self.horizontalLayout.addWidget(self.packbag)
         self.btnsHL.addWidget(self.btns)
         self.closeWindow = QtWidgets.QPushButton(self.content)
         self.closeWindow.setGeometry(QtCore.QRect(430, 10, 20, 20))
@@ -275,9 +307,11 @@ class Ui_Dialog(object):
         self.menuNameLabel.setText(_translate("Dialog", "菜单名"))
         self.commandLabel.setToolTip(_translate("Dialog", "点击菜单调用的程序"))
         self.commandLabel.setText(_translate("Dialog", "点击指令"))
+        self.selExeBtn.setToolTip(_translate("Dialog", "选择一个exe程序"))
         self.shift.setToolTip(_translate("Dialog", "按下shift键时展示"))
         self.explorer.setToolTip(_translate("Dialog", "只在文件浏览器中展示"))
         self.notCurWorkDir.setToolTip(_translate("Dialog", "以当前文件夹为工作目录"))
+        self.packbag.setToolTip(_translate("Dialog", "是否为菜单"))
         self.title.setText(_translate("Dialog", "标题"))
 from src.rightClickHelper.component.label.dragLabel import DragLabel
 from src.resource import main_rc
