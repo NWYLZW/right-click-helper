@@ -3,6 +3,6 @@
 
 configData = {
     'appName': 'Right Click Helper',
-    'appVersion': '1.0.0.1',
+    'appVersion': '1.0.1.0',
     'appMode': '[development]',
 }
