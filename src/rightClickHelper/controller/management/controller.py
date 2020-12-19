@@ -103,7 +103,7 @@ class ManagementController(
 
         lineHeight = 180
         self.itemScrollAreaWidget\
-            .setMinimumHeight(len(self.listHLWs) * lineHeight)
+            .setMaximumHeight(len(self.listHLWs) * lineHeight)
 
     def refreshShowMenuItems(self, searchStr: str = ''):
         if searchStr == '':
