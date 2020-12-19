@@ -327,6 +327,7 @@ class MenuItem:
             self.regData['__val__'] = {}
         valRegData = self.regData['__val__']
         valRegData[''] = (self.title, RegType.REG_SZ.value)
+        valRegData['MUIVerb'] = (self.title, RegType.REG_SZ.value)
         valRegData['Icon'] = (self.icon, RegType.REG_SZ.value)
         self.regData['__path__'] = (
             self.regData['__path__'][0], '\\'.join([
@@ -384,14 +385,15 @@ class MenuItem:
             self.regData['__path__'][0]
         )
         if mv:
-            RegTool.mvKey(
-                (regEnv, self.regData['__path__'][1]), (
-                    regEnv, '\\'.join([
-                        *self.regData['__path__'][1].split('\\')[:-1],
-                        self.__name
-                    ])
-                )
+            sourcePath = (regEnv, self.regData['__path__'][1])
+            targetPath = (
+                regEnv, '\\'.join([
+                    *self.regData['__path__'][1].split('\\')[:-1],
+                    self.__name
+                ])
             )
+            if sourcePath != targetPath:
+                RegTool.mvKey(sourcePath, targetPath)
             self._name = self.__name
 
     @property
