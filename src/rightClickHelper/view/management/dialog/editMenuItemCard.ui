@@ -557,7 +557,7 @@ QLineEdit:focus {
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="toolTip">
-             <string>是否为菜单</string>
+             <string>是否为子级菜单</string>
             </property>
             <property name="text">
              <string/>

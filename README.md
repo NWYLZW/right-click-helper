@@ -1,8 +1,8 @@
 # Right Click Helper
 <p align="center">
   <a href="" target="_blank" rel="noopener noreferrer">
-    <img width="100"
-        src="./src/resource/image/icon/right-click-helper.ico"
+    <img width="128"
+        src="https://raw.githubusercontent.com/NWYLZW/right-click-helper/master/src/resource/image/icon/right-click-helper.ico"
         alt="Right Click Helper Logo">
   </a>
 </p>
