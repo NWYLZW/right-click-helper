@@ -89,6 +89,10 @@ class EditMenuItemDialog(
         self.style().polish(self.notCurWorkDir)
 
     def onSubmit(self, e):
+        if self.icon.path != PathTool.appPath() + r'\src\resource\image\icon\not-found.png':
+            self.menuItem.icon = self.icon.path
+        else:
+            self.menuItem.icon = ''
         self.menuItem.name = self.titleInput.text()
         self.menuItem.title = self.menuNameInput.text()
         self.menuItem.command = self.commandInput.text()

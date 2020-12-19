@@ -205,7 +205,7 @@ class MenuItemCard_New(
     QtWidgets.QWidget,
     menuItemCard_new.Ui_item
 ):
-    s_createMenuItemItemSuccess = QtCore.pyqtSignal(name='createMenuItemItemSuccess')
+    s_createMenuItemSuccess = QtCore.pyqtSignal(name='createMenuItemSuccess')
 
     def __init__(self, parent=None):
         super(MenuItemCard_New, self).__init__(parent)
@@ -222,7 +222,7 @@ class MenuItemCard_New(
                 'ableChangePackageStatus': True
             })
             dialog.submit.connect(
-                lambda menuItem: self.createMenuItemItemSuccess.emit()
+                lambda menuItem: self.createMenuItemSuccess.emit()
             )
             dialog.exec()
         self.addBtn.clicked\

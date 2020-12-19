@@ -217,11 +217,15 @@ class RegTool:
         if not SystemTool.isAdmin():
             raise PermissionError('Not started with administrator rights.')
 
-        with winreg.OpenKey(
-            env.value, path, access=winreg.KEY_SET_VALUE
-        ) as regKey:
-            try: winreg.DeleteValue(regKey, valueName)
-            except: pass
+        try:
+            with winreg.OpenKey(
+                env.value, path, access=winreg.KEY_SET_VALUE
+            ) as regKey:
+                winreg.DeleteValue(regKey, valueName)
+        except Exception as e:
+            print(
+                str(env) + '[' + path + '].' + valueName + ': ' + str(e)
+            )
 
     @staticmethod
     def getVal(
@@ -277,7 +281,8 @@ systemDir = {
 class MenuItem:
     def __init__(self, name: str, regData: dict):
         self.regData = regData
-        self.name    = name
+        self._name   = name
+        self.__name  = ''
 
         regDataVal = regData.get('__val__', {})
         commandVal = regData.get('command', {
@@ -309,18 +314,26 @@ class MenuItem:
         # type: bool
         # 不以当前目录为打开的工作目录
 
-    def saveToReg(self):
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self.__name = newName
+
+    def saveToReg(self, mv: bool = True):
         if self.regData.get('__val__', {}) == {}:
             self.regData['__val__'] = {}
         valRegData = self.regData['__val__']
         valRegData[''] = (self.title, RegType.REG_SZ.value)
         valRegData['Icon'] = (self.icon, RegType.REG_SZ.value)
-        self.regData['__path__'] = [
+        self.regData['__path__'] = (
             self.regData['__path__'][0], '\\'.join([
                 *self.regData['__path__'][1].split('\\')[:-1],
                 self.name
             ])
-        ]
+        )
         path = self.regData['__path__']
 
         def bool2Create(
@@ -347,21 +360,39 @@ class MenuItem:
                 }
             commandValRegData = self.regData['command']['__val__']
             commandValRegData[''] = (self.command.replace('/', '\\'), RegType.REG_SZ.value)
-
-            RegTool.writeKey(
-                self.regData
-            )
-            bool2Create(self.isNotWorkingDir, 'NoWorkingDirectory', '')
         else:
-            for child in self.children:
-                child.saveToReg()
+            if self.regData.get('shell', {}) == {}:
+                self.regData['shell'] = {
+                    '__path__': (path[0], path[1] + r'\shell'),
+                    '__val__': {}
+                }
 
-        bool2Create(
-            self.isHide
-            , 'CommandFlags', CommandFlag.HIDE.value, RegType.REG_DWORD
+        for child in self.children:
+            child.saveToReg(False)
+        RegTool.writeKey(
+            self.regData
         )
-        bool2Create(self.isShift, 'Extended', '')
+
+        if not self.isPackage:
+            bool2Create(self.isNotWorkingDir, 'NoWorkingDirectory', '')
+        bool2Create(self.isHide,     'CommandFlags',        CommandFlag.HIDE.value, RegType.REG_DWORD)
+        bool2Create(self.isPackage,  'SubCommands',         '')
+        bool2Create(self.isShift,    'Extended',            '')
         bool2Create(self.isExplorer, 'OnlyInBrowserWindow', '')
+
+        regEnv = RegEnv.find(
+            self.regData['__path__'][0]
+        )
+        if mv:
+            RegTool.mvKey(
+                (regEnv, self.regData['__path__'][1]), (
+                    regEnv, '\\'.join([
+                        *self.regData['__path__'][1].split('\\')[:-1],
+                        self.__name
+                    ])
+                )
+            )
+            self._name = self.__name
 
     @property
     def children(self) -> []:
@@ -371,6 +402,9 @@ class MenuItem:
         returnChildren = []
         envVal, path = self.regData.get('__path__')
 
+        if not RegTool.keyExist(
+            RegEnv.find(envVal), path, 'shell'
+        ): return []
         regDataTree = RegTool.recursion(
             RegEnv.find(envVal), path + '\\shell', 3
         )

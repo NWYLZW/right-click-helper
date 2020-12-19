@@ -68,7 +68,7 @@ class ManagementController(
                 lambda: self.refreshMenuItems(self.path)
             )
         else:
-            menuItemCard.createMenuItemItemSuccess.connect(
+            menuItemCard.createMenuItemSuccess.connect(
                 lambda: self.refreshMenuItems(self.path)
             )
 
@@ -184,15 +184,14 @@ class ManagementController(
             )
         )
 
-        def getBackPath(path: str):
-            pathSplit = path.split('\\shell')
+        def getBackPath():
+            pathSplit = self.path[1].split('\\shell')
             if len(pathSplit) == 2:
-                return path
+                return self.path[1]
             return '\\shell'.join(pathSplit[:-2]) + '\\shell'
 
         self.upPackage.clicked.connect(
             lambda checked: self.refreshMenuItems((
-                self.menuItemsRoots.get(self.selKind.currentText(), [])[0],
-                getBackPath(self.menuItemsRoots.get(self.selKind.currentText(), [])[1])
+                self.menuItemsRoots.get(self.selKind.currentText(), [])[0], getBackPath()
             ))
         )
