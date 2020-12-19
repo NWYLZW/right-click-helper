@@ -1,17 +1,27 @@
 # Right Click Helper
+<p align="center">
+  <a href="" target="_blank" rel="noopener noreferrer">
+    <img width="100"
+        src="./src/resource/image/icon/right-click-helper.ico"
+        alt="Right Click Helper Logo">
+  </a>
+</p>
 
 ## 介绍
-由python pyqt开发的一款windows环境下右键菜单管理工具
+由python pyqt模块开发的一款windows环境下卡片化右键菜单选项管理工具
 
 ## 功能点
+* [x] 巨好看的UI
+* [x] 卡片化的管理右键菜单项
 * [ ] 拖拽的方式管理右键菜单
-* [ ] 防止误操作，备份当前配置
+* [ ] 备份当前配置，并分享
 
 ## 预览图
 
-![](./markdownRc/0.png)
-
-![](./markdownRc/1.png)
+![](./markdownRc/0.jpg)
+![](./markdownRc/1.jpg)
+![](./markdownRc/2.jpg)
+![](./markdownRc/3.jpg)
 
 ## 再开发指导
 * 创建虚拟环境[ps: **python == 3.9**]
