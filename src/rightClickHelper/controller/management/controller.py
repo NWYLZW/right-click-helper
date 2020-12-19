@@ -195,3 +195,7 @@ class ManagementController(
                 self.menuItemsRoots.get(self.selKind.currentText(), [])[0], getBackPath()
             ))
         )
+
+        self.refresh.clicked.connect(
+            lambda c: self.refreshMenuItems(self.path)
+        )

@@ -70,43 +70,99 @@ class Ui_management(object):
 "#upPackage:hover {\n"
 "    border: none;\n"
 "    border-image: url(:/ico/image/common-icon/back-ed.png);\n"
+"}\n"
+"\n"
+"#refresh {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/refresh.png);\n"
+"}\n"
+"#refresh:hover {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/refresh-ed.png);\n"
+"}\n"
+"\n"
+"#more {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/more.png);\n"
+"}\n"
+"#more:hover {\n"
+"    border: none;\n"
+"    border-image: url(:/ico/image/common-icon/more-ed.png);\n"
+"}\n"
+"\n"
+"QLineEdit {\n"
+"    padding-left: 8px;\n"
+"    padding-top: 4px; padding-bottom: 4px;\n"
+"\n"
+"    border-radius: 4px;\n"
+"    border: 1px solid rgb(220, 223, 230);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 1px solid rgb(64, 158, 255);\n"
 "}")
         self.head.setObjectName("head")
-        self.searchInput = QtWidgets.QLineEdit(self.head)
-        self.searchInput.setGeometry(QtCore.QRect(690, 10, 191, 21))
-        self.searchInput.setObjectName("searchInput")
-        self.searchLabel = QtWidgets.QLabel(self.head)
-        self.searchLabel.setGeometry(QtCore.QRect(660, 10, 31, 21))
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.head)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1091, 41))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.headHL = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.headHL.setContentsMargins(10, 0, 10, 0)
+        self.headHL.setSpacing(10)
+        self.headHL.setObjectName("headHL")
+        self.home = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.home.setMinimumSize(QtCore.QSize(20, 20))
+        self.home.setMaximumSize(QtCore.QSize(20, 20))
+        self.home.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.home.setText("")
+        self.home.setObjectName("home")
+        self.headHL.addWidget(self.home)
+        self.upPackage = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.upPackage.setMinimumSize(QtCore.QSize(20, 20))
+        self.upPackage.setMaximumSize(QtCore.QSize(20, 20))
+        self.upPackage.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.upPackage.setText("")
+        self.upPackage.setObjectName("upPackage")
+        self.headHL.addWidget(self.upPackage)
+        self.refresh = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.refresh.setMinimumSize(QtCore.QSize(20, 20))
+        self.refresh.setMaximumSize(QtCore.QSize(20, 20))
+        self.refresh.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.refresh.setText("")
+        self.refresh.setObjectName("refresh")
+        self.headHL.addWidget(self.refresh)
+        self.currentRegPath = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.currentRegPath.setMinimumSize(QtCore.QSize(600, 0))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(10)
+        self.currentRegPath.setFont(font)
+        self.currentRegPath.setObjectName("currentRegPath")
+        self.headHL.addWidget(self.currentRegPath)
+        self.more = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.more.setMinimumSize(QtCore.QSize(20, 20))
+        self.more.setMaximumSize(QtCore.QSize(20, 20))
+        self.more.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.more.setText("")
+        self.more.setObjectName("more")
+        self.headHL.addWidget(self.more)
+        self.searchLabel = QtWidgets.QLabel(self.horizontalLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei UI")
         font.setPointSize(10)
         self.searchLabel.setFont(font)
         self.searchLabel.setObjectName("searchLabel")
-        self.selKind = QtWidgets.QComboBox(self.head)
-        self.selKind.setGeometry(QtCore.QRect(890, 10, 161, 21))
+        self.headHL.addWidget(self.searchLabel)
+        self.searchInput = QtWidgets.QLineEdit(self.horizontalLayoutWidget)
+        self.searchInput.setObjectName("searchInput")
+        self.headHL.addWidget(self.searchInput)
+        self.selKind = QtWidgets.QComboBox(self.horizontalLayoutWidget)
+        self.selKind.setMinimumSize(QtCore.QSize(100, 0))
         self.selKind.setObjectName("selKind")
         self.selKind.addItem("")
         self.selKind.addItem("")
         self.selKind.addItem("")
         self.selKind.addItem("")
         self.selKind.addItem("")
-        self.currentRegPath = QtWidgets.QLabel(self.head)
-        self.currentRegPath.setGeometry(QtCore.QRect(70, 10, 581, 20))
-        font = QtGui.QFont()
-        font.setFamily("Microsoft YaHei UI")
-        font.setPointSize(10)
-        self.currentRegPath.setFont(font)
-        self.currentRegPath.setObjectName("currentRegPath")
-        self.home = QtWidgets.QPushButton(self.head)
-        self.home.setGeometry(QtCore.QRect(10, 10, 20, 20))
-        self.home.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.home.setText("")
-        self.home.setObjectName("home")
-        self.upPackage = QtWidgets.QPushButton(self.head)
-        self.upPackage.setGeometry(QtCore.QRect(40, 10, 20, 20))
-        self.upPackage.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.upPackage.setText("")
-        self.upPackage.setObjectName("upPackage")
+        self.headHL.addWidget(self.selKind)
         self.management_w.addWidget(self.head)
         self.itemScrollArea = QtWidgets.QScrollArea(self.verticalLayoutWidget)
         self.itemScrollArea.setStyleSheet("#itemScrollArea {\n"
@@ -135,11 +191,11 @@ class Ui_management(object):
     def retranslateUi(self, management):
         _translate = QtCore.QCoreApplication.translate
         management.setWindowTitle(_translate("management", "Form"))
+        self.currentRegPath.setText(_translate("management", "文件夹/"))
         self.searchLabel.setText(_translate("management", "搜索"))
         self.selKind.setItemText(0, _translate("management", "文件"))
         self.selKind.setItemText(1, _translate("management", "文件夹"))
         self.selKind.setItemText(2, _translate("management", "目录"))
         self.selKind.setItemText(3, _translate("management", "目录背景"))
         self.selKind.setItemText(4, _translate("management", "桌面背景"))
-        self.currentRegPath.setText(_translate("management", "文件夹/"))
 from src.resource import main_rc

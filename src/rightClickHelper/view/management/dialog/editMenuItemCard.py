@@ -311,7 +311,7 @@ class Ui_Dialog(object):
         self.shift.setToolTip(_translate("Dialog", "按下shift键时展示"))
         self.explorer.setToolTip(_translate("Dialog", "只在文件浏览器中展示"))
         self.notCurWorkDir.setToolTip(_translate("Dialog", "以当前文件夹为工作目录"))
-        self.packbag.setToolTip(_translate("Dialog", "是否为菜单"))
+        self.packbag.setToolTip(_translate("Dialog", "是否为子级菜单"))
         self.title.setText(_translate("Dialog", "标题"))
 from src.rightClickHelper.component.label.dragLabel import DragLabel
 from src.resource import main_rc
