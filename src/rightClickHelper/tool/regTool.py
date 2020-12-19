@@ -168,6 +168,8 @@ class RegTool:
 
     @staticmethod
     def writeKey(regData: dict):
+        if regData == {}: return
+
         regEnvVal, path = regData['__path__']
         regEnv = RegEnv.find(regEnvVal)
         if not RegTool.pathExist(regEnv, path):
@@ -222,10 +224,7 @@ class RegTool:
                 env.value, path, access=winreg.KEY_SET_VALUE
             ) as regKey:
                 winreg.DeleteValue(regKey, valueName)
-        except Exception as e:
-            print(
-                str(env) + '[' + path + '].' + valueName + ': ' + str(e)
-            )
+        except: pass
 
     @staticmethod
     def getVal(

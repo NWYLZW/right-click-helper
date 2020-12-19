@@ -83,6 +83,7 @@ class MenuItemCard_itf:
         self.setIcon(menuItem)
         self.setTitle(menuItem)
         self.customSetData(menuItem)
+        self.repaint()
 
     @staticmethod
     def setSwitchItem(menuItemCard, menuItem: MenuItem):
@@ -195,6 +196,8 @@ class MenuItemCard_Package(
         children = menuItem.children
         for index in range(0, 4 if len(children) > 4 else len(children)):
             child = children[index]
+            if child.icon == '': continue
+
             ions[index].setPixmap(SystemTool.getIcon(child.icon))
             ions[index].repaint()
 

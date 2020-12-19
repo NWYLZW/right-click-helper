@@ -191,7 +191,11 @@ class Ui_management(object):
     def retranslateUi(self, management):
         _translate = QtCore.QCoreApplication.translate
         management.setWindowTitle(_translate("management", "Form"))
+        self.home.setToolTip(_translate("management", "根目录"))
+        self.upPackage.setToolTip(_translate("management", "上一级"))
+        self.refresh.setToolTip(_translate("management", "刷新"))
         self.currentRegPath.setText(_translate("management", "文件夹/"))
+        self.more.setToolTip(_translate("management", "更多"))
         self.searchLabel.setText(_translate("management", "搜索"))
         self.selKind.setItemText(0, _translate("management", "文件"))
         self.selKind.setItemText(1, _translate("management", "文件夹"))
