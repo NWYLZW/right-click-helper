@@ -68,22 +68,52 @@
    </property>
    <property name="styleSheet">
     <string notr="true">#main{
-	background-color: rgb(255,255,255);
-	margin:10px;
+	margin: 10px;
 	border-radius: 10px;
+	background-color: rgb(255,255,255);
 }</string>
    </property>
-   <widget class="QWidget" name="headBar" native="true">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>1161</width>
-      <height>41</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1201</width>
+      <height>741</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">#appIcon {
+    <layout class="QVBoxLayout" name="mainVL">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="headBar" native="true">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#headBar {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(171, 220, 255, 255), stop:1 rgba(3, 150, 255, 255));
+	border-bottom: 1px solid rgb(236, 236, 236);
+}
+#appIcon {
 	border: none;
 	border-image: url(:/icon/image/icon/right-click-helper.ico);
 }
@@ -104,163 +134,168 @@
 	border-image: url(:/ico/image/common-icon/close-ed.png);
 }
 </string>
-    </property>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>1161</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="headBar_w" stretch="1,10,0">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="topRight" stretch="0,0,0,0">
-        <property name="spacing">
-         <number>10</number>
+       </property>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1181</width>
+          <height>51</height>
+         </rect>
         </property>
-        <item>
-         <widget class="QGraphicsView" name="appIcon">
-          <property name="maximumSize">
-           <size>
-            <width>36</width>
-            <height>36</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="appTitle">
-          <property name="font">
-           <font>
-            <family>Microsoft YaHei UI</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Right Click Helper</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="appVersion">
-          <property name="font">
-           <font>
-            <family>Microsoft YaHei UI</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>1.0.0.0</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="appMode">
-          <property name="font">
-           <font>
-            <family>Microsoft YaHei UI</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Mod</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>400</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="topLeft">
-        <property name="spacing">
-         <number>10</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="minWindow">
-          <property name="minimumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="closeWindow">
-          <property name="minimumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>1161</width>
-      <height>651</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="content" stretch="1,22">
-     <property name="spacing">
-      <number>10</number>
-     </property>
+        <layout class="QHBoxLayout" name="headBar_w" stretch="1,10,0">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="topRight" stretch="0,0,0,0">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QGraphicsView" name="appIcon">
+             <property name="maximumSize">
+              <size>
+               <width>36</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="appTitle">
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei UI</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Right Click Helper</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="appVersion">
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei UI</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>1.0.0.0</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="appMode">
+             <property name="font">
+              <font>
+               <family>Microsoft YaHei UI</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Mod</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>400</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="topLeft">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="minWindow">
+             <property name="minimumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="closeWindow">
+             <property name="minimumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
      <item>
-      <widget class="QWidget" name="leftMenu" native="true">
-       <property name="styleSheet">
-        <string notr="true">#mannagement {
+      <layout class="QHBoxLayout" name="content" stretch="1,22">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="leftMenu" native="true">
+         <property name="styleSheet">
+          <string notr="true">#mannagement {
 	border: none;
 	border-image: url(:/icon/image/icon/right-click-helper.ico);
 }
@@ -276,108 +311,110 @@
 	border: none;
 	border-image: url(:/icon/image/icon/warehouse.png);
 }</string>
-       </property>
-       <widget class="QGraphicsView" name="mannagement">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>9</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
-        <property name="cursor" stdset="0">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-       <widget class="QGraphicsView" name="setting">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
-        <property name="cursor" stdset="0">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="toolTip">
-         <string>设置</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-       <widget class="QGraphicsView" name="warehouse">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
-        <property name="cursor" stdset="0">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="toolTip">
-         <string>数据备份</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-       <widget class="QGraphicsView" name="about">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>129</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
-        <property name="cursor" stdset="0">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="toolTip">
-         <string>关于本软件</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="ManagementController" name="showPage" native="true"/>
+         </property>
+         <widget class="QGraphicsView" name="mannagement">
+          <property name="geometry">
+           <rect>
+            <x>9</x>
+            <y>9</y>
+            <width>31</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>36</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="cursor" stdset="0">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
+         <widget class="QGraphicsView" name="setting">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>31</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>36</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="cursor" stdset="0">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>设置</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
+         <widget class="QGraphicsView" name="warehouse">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>50</y>
+            <width>31</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>36</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="cursor" stdset="0">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>数据备份</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
+         <widget class="QGraphicsView" name="about">
+          <property name="geometry">
+           <rect>
+            <x>9</x>
+            <y>129</y>
+            <width>31</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>36</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="cursor" stdset="0">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>关于本软件</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="ManagementController" name="showPage" native="true"/>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -396,13 +433,13 @@
  </resources>
  <connections>
   <connection>
-   <sender>closeWindow</sender>
+   <sender>minWindow</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>close()</slot>
+   <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1166</x>
+     <x>1113</x>
      <y>39</y>
     </hint>
     <hint type="destinationlabel">
@@ -412,13 +449,13 @@
    </hints>
   </connection>
   <connection>
-   <sender>minWindow</sender>
+   <sender>closeWindow</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>showMinimized()</slot>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1132</x>
+     <x>1167</x>
      <y>39</y>
     </hint>
     <hint type="destinationlabel">

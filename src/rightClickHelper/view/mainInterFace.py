@@ -36,14 +36,27 @@ class Ui_MainWindow(object):
         self.main = QtWidgets.QWidget(MainWindow)
         self.main.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.main.setStyleSheet("#main{\n"
-"    background-color: rgb(255,255,255);\n"
-"    margin:10px;\n"
+"    margin: 10px;\n"
 "    border-radius: 10px;\n"
+"    background-color: rgb(255,255,255);\n"
 "}")
         self.main.setObjectName("main")
-        self.headBar = QtWidgets.QWidget(self.main)
-        self.headBar.setGeometry(QtCore.QRect(20, 20, 1161, 41))
-        self.headBar.setStyleSheet("#appIcon {\n"
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.main)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 741))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.mainVL = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.mainVL.setContentsMargins(10, 0, 10, 10)
+        self.mainVL.setSpacing(10)
+        self.mainVL.setObjectName("mainVL")
+        self.headBar = QtWidgets.QWidget(self.verticalLayoutWidget)
+        self.headBar.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.headBar.setStyleSheet("#headBar {\n"
+"    border-top-left-radius: 10px;\n"
+"    border-top-right-radius: 10px;\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(171, 220, 255, 255), stop:1 rgba(3, 150, 255, 255));\n"
+"    border-bottom: 1px solid rgb(236, 236, 236);\n"
+"}\n"
+"#appIcon {\n"
 "    border: none;\n"
 "    border-image: url(:/icon/image/icon/right-click-helper.ico);\n"
 "}\n"
@@ -66,10 +79,10 @@ class Ui_MainWindow(object):
 "")
         self.headBar.setObjectName("headBar")
         self.layoutWidget = QtWidgets.QWidget(self.headBar)
-        self.layoutWidget.setGeometry(QtCore.QRect(0, 0, 1161, 40))
+        self.layoutWidget.setGeometry(QtCore.QRect(0, 0, 1181, 51))
         self.layoutWidget.setObjectName("layoutWidget")
         self.headBar_w = QtWidgets.QHBoxLayout(self.layoutWidget)
-        self.headBar_w.setContentsMargins(0, 0, 0, 0)
+        self.headBar_w.setContentsMargins(5, 5, 5, 5)
         self.headBar_w.setSpacing(0)
         self.headBar_w.setObjectName("headBar_w")
         self.topRight = QtWidgets.QHBoxLayout()
@@ -124,14 +137,11 @@ class Ui_MainWindow(object):
         self.headBar_w.addLayout(self.topLeft)
         self.headBar_w.setStretch(0, 1)
         self.headBar_w.setStretch(1, 10)
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.main)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 70, 1161, 651))
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
-        self.content = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
-        self.content.setContentsMargins(0, 0, 0, 0)
+        self.mainVL.addWidget(self.headBar)
+        self.content = QtWidgets.QHBoxLayout()
         self.content.setSpacing(10)
         self.content.setObjectName("content")
-        self.leftMenu = QtWidgets.QWidget(self.horizontalLayoutWidget)
+        self.leftMenu = QtWidgets.QWidget(self.verticalLayoutWidget)
         self.leftMenu.setStyleSheet("#mannagement {\n"
 "    border: none;\n"
 "    border-image: url(:/icon/image/icon/right-click-helper.ico);\n"
@@ -174,16 +184,17 @@ class Ui_MainWindow(object):
         self.about.setStyleSheet("")
         self.about.setObjectName("about")
         self.content.addWidget(self.leftMenu)
-        self.showPage = ManagementController(self.horizontalLayoutWidget)
+        self.showPage = ManagementController(self.verticalLayoutWidget)
         self.showPage.setObjectName("showPage")
         self.content.addWidget(self.showPage)
         self.content.setStretch(0, 1)
         self.content.setStretch(1, 22)
+        self.mainVL.addLayout(self.content)
         MainWindow.setCentralWidget(self.main)
 
         self.retranslateUi(MainWindow)
+        self.minWindow.clicked.connect(MainWindow.hide)
         self.closeWindow.clicked.connect(MainWindow.close)
-        self.minWindow.clicked.connect(MainWindow.showMinimized)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
