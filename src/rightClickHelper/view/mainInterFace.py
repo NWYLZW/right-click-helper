@@ -46,15 +46,15 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.mainVL = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.mainVL.setContentsMargins(10, 0, 10, 10)
-        self.mainVL.setSpacing(10)
+        self.mainVL.setSpacing(0)
         self.mainVL.setObjectName("mainVL")
         self.headBar = QtWidgets.QWidget(self.verticalLayoutWidget)
         self.headBar.setMaximumSize(QtCore.QSize(16777215, 50))
         self.headBar.setStyleSheet("#headBar {\n"
 "    border-top-left-radius: 10px;\n"
 "    border-top-right-radius: 10px;\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(171, 220, 255, 255), stop:1 rgba(3, 150, 255, 255));\n"
-"    border-bottom: 1px solid rgb(236, 236, 236);\n"
+"    background-color: qlineargradient(spread:reflect, x1:0, y1:0.511, x2:1, y2:0.489, stop:0 rgba(0, 198, 251, 255), stop:1 rgba(0, 91, 234, 255));\n"
+"    border-bottom: 1px solid rgba(0, 91, 234, 255);\n"
 "}\n"
 "#appIcon {\n"
 "    border: none;\n"
@@ -139,10 +139,14 @@ class Ui_MainWindow(object):
         self.headBar_w.setStretch(1, 10)
         self.mainVL.addWidget(self.headBar)
         self.content = QtWidgets.QHBoxLayout()
+        self.content.setContentsMargins(10, 10, 10, 10)
         self.content.setSpacing(10)
         self.content.setObjectName("content")
         self.leftMenu = QtWidgets.QWidget(self.verticalLayoutWidget)
-        self.leftMenu.setStyleSheet("#mannagement {\n"
+        self.leftMenu.setStyleSheet("#leftMenu {\n"
+"    background-color: rgb(236, 236, 236);\n"
+"}\n"
+"#mannagement {\n"
 "    border: none;\n"
 "    border-image: url(:/icon/image/icon/right-click-helper.ico);\n"
 "}\n"
@@ -159,30 +163,41 @@ class Ui_MainWindow(object):
 "    border-image: url(:/icon/image/icon/warehouse.png);\n"
 "}")
         self.leftMenu.setObjectName("leftMenu")
-        self.mannagement = QtWidgets.QGraphicsView(self.leftMenu)
-        self.mannagement.setGeometry(QtCore.QRect(9, 9, 31, 31))
-        self.mannagement.setMaximumSize(QtCore.QSize(36, 36))
-        self.mannagement.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.mannagement.setStyleSheet("")
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.leftMenu)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(0, 0, 51, 181))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.leftMenuVL = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.leftMenuVL.setContentsMargins(10, 10, 10, 10)
+        self.leftMenuVL.setSpacing(10)
+        self.leftMenuVL.setObjectName("leftMenuVL")
+        self.mannagement = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.mannagement.setMinimumSize(QtCore.QSize(30, 30))
+        self.mannagement.setMaximumSize(QtCore.QSize(30, 30))
+        self.mannagement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.mannagement.setText("")
         self.mannagement.setObjectName("mannagement")
-        self.setting = QtWidgets.QGraphicsView(self.leftMenu)
-        self.setting.setGeometry(QtCore.QRect(10, 90, 31, 31))
-        self.setting.setMaximumSize(QtCore.QSize(36, 36))
-        self.setting.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.setting.setStyleSheet("")
-        self.setting.setObjectName("setting")
-        self.warehouse = QtWidgets.QGraphicsView(self.leftMenu)
-        self.warehouse.setGeometry(QtCore.QRect(10, 50, 31, 31))
-        self.warehouse.setMaximumSize(QtCore.QSize(36, 36))
-        self.warehouse.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.warehouse.setStyleSheet("")
+        self.leftMenuVL.addWidget(self.mannagement)
+        self.warehouse = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.warehouse.setMinimumSize(QtCore.QSize(30, 30))
+        self.warehouse.setMaximumSize(QtCore.QSize(30, 30))
+        self.warehouse.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.warehouse.setText("")
         self.warehouse.setObjectName("warehouse")
-        self.about = QtWidgets.QGraphicsView(self.leftMenu)
-        self.about.setGeometry(QtCore.QRect(9, 129, 31, 31))
-        self.about.setMaximumSize(QtCore.QSize(36, 36))
-        self.about.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.about.setStyleSheet("")
+        self.leftMenuVL.addWidget(self.warehouse)
+        self.setting = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.setting.setMinimumSize(QtCore.QSize(30, 30))
+        self.setting.setMaximumSize(QtCore.QSize(30, 30))
+        self.setting.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.setting.setText("")
+        self.setting.setObjectName("setting")
+        self.leftMenuVL.addWidget(self.setting)
+        self.about = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.about.setMinimumSize(QtCore.QSize(30, 30))
+        self.about.setMaximumSize(QtCore.QSize(30, 30))
+        self.about.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.about.setText("")
         self.about.setObjectName("about")
+        self.leftMenuVL.addWidget(self.about)
         self.content.addWidget(self.leftMenu)
         self.showPage = ManagementController(self.verticalLayoutWidget)
         self.showPage.setObjectName("showPage")
@@ -203,8 +218,5 @@ class Ui_MainWindow(object):
         self.appTitle.setText(_translate("MainWindow", "Right Click Helper"))
         self.appVersion.setText(_translate("MainWindow", "1.0.0.0"))
         self.appMode.setText(_translate("MainWindow", "Mod"))
-        self.setting.setToolTip(_translate("MainWindow", "设置"))
-        self.warehouse.setToolTip(_translate("MainWindow", "数据备份"))
-        self.about.setToolTip(_translate("MainWindow", "关于本软件"))
 from src.rightClickHelper.controller.management.controller import ManagementController
 from src.resource import main_rc

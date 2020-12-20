@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QWidget
 
 class EffectTool:
     @staticmethod
-    def setBlur(widget: QWidget, blurRadius: int = 12, color: int = Qt.gray):
+    def setBlur(widget: QWidget, shadowRadius: int = 12, shadowColor: int = Qt.gray):
         # 去除默认边框
         widget.setWindowFlags(Qt.FramelessWindowHint)
         # 背景透明（就是ui中黑色背景的那个控件）
@@ -13,9 +13,9 @@ class EffectTool:
 
         # 添加阴影
         effect = QGraphicsDropShadowEffect(widget)
-        effect.setBlurRadius(blurRadius)
+        effect.setBlurRadius(shadowRadius)
         effect.setOffset(0, 0)
-        effect.setColor(color)
+        effect.setColor(shadowColor)
         widget.setGraphicsEffect(effect)
 
     @staticmethod
