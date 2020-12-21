@@ -27,15 +27,7 @@ class TestPopoverWidget(unittest.TestCase):
 
         label = QLabel()
         label.setText('test')
-        label.setObjectName('label')
-        label.setStyleSheet('''
-        #label {
-            margin: 10px; padding: 5px;
-            border-radius: 4px;
-            background-color: white;
-        }
-        ''')
-        Popover.setPopover(widget, label, {
+        Popover.setPopoverWithBackground(widget, label, {
             'position': 'right'
         })
 

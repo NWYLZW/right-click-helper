@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from PyQt5.QtCore import QPoint
-from PyQt5.QtWidgets import QWidget
+import random
+from typing import Callable
+
+from PyQt5.QtCore import QPoint, Qt
+from PyQt5.QtGui import QPainter, QColor, QPolygon
+from PyQt5.QtWidgets import QWidget, QGridLayout
 
 from src.rightClickHelper.component.popover.basePopover import BasePopover
 from src.rightClickHelper.tool.animationTool import AnimationTool
@@ -14,7 +18,9 @@ class Popover(
         super().__init__(parent, properties)
 
     @staticmethod
-    def __setPopoverInHover(widget: QWidget, popoverWidget: QWidget, properties: dict = {}):
+    def __setPopoverInHover(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+    ):
         widget.popover: Popover = None
         sourceEnterEvent = widget.enterEvent
         sourceLeaveEvent = widget.leaveEvent
@@ -39,11 +45,41 @@ class Popover(
         widget.leaveEvent = hidePopover
 
     @staticmethod
-    def setPopover(widget: QWidget, popoverWidget: QWidget, properties: dict = {}):
+    def setPopover(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+    ):
         triggerMode = WidgetTool.getProperty('popover-trigger-mode', 'hover')(widget)
         {
             'hover': Popover.__setPopoverInHover
         }.get(triggerMode, Popover.__setPopoverInHover)(widget, popoverWidget, properties)
+
+    @staticmethod
+    def setPopoverWithBackground(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}, dealMainWidget: Callable = None
+    ):
+        GL = QGridLayout()
+        mainWidget = QWidget()
+        mainWidget.setLayout(GL)
+        GL.addWidget(popoverWidget)
+
+        triangleWidget = QWidget()
+        painter = QPainter(triangleWidget)
+        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor(255, 255, 255))
+
+        if dealMainWidget is not None:
+            dealMainWidget(mainWidget)
+        else:
+            mainWidget.setObjectName('mainWidget-' + str(random.randint(0, 1000000)))
+            mainWidget.setStyleSheet(f'''\
+                #{mainWidget.objectName()} {{
+                    margin: 10px;
+                    border-radius: 4px;
+                    background-color: white;
+                }}''')
+
+        Popover.setPopover(widget, mainWidget, properties)
 
     def show(self, widget: QWidget) -> None:
         super().show()
