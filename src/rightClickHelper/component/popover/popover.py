@@ -77,6 +77,7 @@ class Popover(
                     background-color: rgba(255, 255, 255, 255);
                 }}''')
 
+        properties['withTriangle'] = True
         Popover.setPopover(widget, mainWidget, properties)
 
     def show(self, widget: QWidget) -> None:
@@ -148,49 +149,51 @@ class Popover(
     def paintEvent(
         self, event: QtGui.QPaintEvent
     ) -> None:
-        painter = QPainter(self)
+        if WidgetTool.getProperty('withTriangle', True):
+            painter = QPainter(self)
 
-        painter.setRenderHint(QPainter.Antialiasing, True)
-        painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor(255, 255, 255))
+            painter.setRenderHint(QPainter.Antialiasing, True)
+            painter.setPen(Qt.NoPen)
+            painter.setBrush(QColor(255, 255, 255))
 
-        triangle = QPolygon()
-        side = 12
-        offset = {
-            'top': [
-                int(self.width()/2) - int(side/2),
-                self.height() - 2*self.shadowRadius
-            ],
-            'bottom': [
-                int(self.width()/2) - int(side/2),
-                2*self.shadowRadius - side
-            ],
-            'left': [
-                self.width() - 2*self.shadowRadius,
-                int(self.height()/2) - int(side/2)
-            ],
-            'right': [
-                2*self.shadowRadius - side,
-                int(self.height()/2) - int(side/2)
-            ]
-        }[self.position]
-        pos = {
-            'top':      (int(side/2) + offset[0], 0           + offset[1]),
-            'bottom':   (int(side/2) + offset[0], side        + offset[1]),
-            'left':     (0           + offset[0], int(side/2) + offset[1]),
-            'right':    (side        + offset[0], int(side/2) + offset[1]),
-        }
-        triangles = {
-            'top': [*pos['bottom'], *pos['left'], *pos['right']],
-            'bottom': [*pos['top'], *pos['left'], *pos['right']],
-            'left': [*pos['top'], *pos['right'], *pos['bottom']],
-            'right': [*pos['top'], *pos['left'], *pos['bottom']],
-        }
-        triangle.setPoints(triangles[self.position])
-        painter.drawPolygon(triangle)
-        painterPath = QPainterPath()
-        painterPath.addPolygon(QPolygonF(triangle))
-        painter.fillPath(painterPath, painter.brush())
+            triangle = QPolygon()
+            side = 12
+            offset = {
+                'top': [
+                    int(self.width()/2) - int(side/2),
+                    self.height() - 2*self.shadowRadius
+                ],
+                'bottom': [
+                    int(self.width()/2) - int(side/2),
+                    2*self.shadowRadius - side
+                ],
+                'left': [
+                    self.width() - 2*self.shadowRadius,
+                    int(self.height()/2) - int(side/2)
+                ],
+                'right': [
+                    2*self.shadowRadius - side,
+                    int(self.height()/2) - int(side/2)
+                ]
+            }[self.position]
+            pos = {
+                'top':      (int(side/2) + offset[0], 0           + offset[1]),
+                'bottom':   (int(side/2) + offset[0], side        + offset[1]),
+                'left':     (0           + offset[0], int(side/2) + offset[1]),
+                'right':    (side        + offset[0], int(side/2) + offset[1]),
+            }
+            triangles = {
+                'top': [*pos['bottom'], *pos['left'], *pos['right']],
+                'bottom': [*pos['top'], *pos['left'], *pos['right']],
+                'left': [*pos['top'], *pos['right'], *pos['bottom']],
+                'right': [*pos['top'], *pos['left'], *pos['bottom']],
+            }
+            triangle.setPoints(triangles[self.position])
+            painter.drawPolygon(triangle)
+            painterPath = QPainterPath()
+            painterPath.addPolygon(QPolygonF(triangle))
+            painter.fillPath(painterPath, painter.brush())
+        super(Popover, self).paintEvent(event)
 
     @property
     def position(self):
