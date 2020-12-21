@@ -48,9 +48,12 @@ class TestPopoverWidget(unittest.TestCase):
             label.setGeometry(0, 0, 100, 40)
             label.setStyleSheet('''\
                 margin: 5px;
+                color: white;
             ''')
             Popover.setPopoverWithBackground(widget, label, {
                 'position': 'right'
+            }, setting={
+                'background-color': [48, 49, 51]
             })
 
             positions = [

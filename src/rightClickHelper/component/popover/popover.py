@@ -56,7 +56,8 @@ class Popover(
 
     @staticmethod
     def setPopoverWithBackground(
-        widget: QWidget, popoverWidget: QWidget, properties: dict = {}, dealMainWidget: Callable = None
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , dealMainWidget: Callable = None, setting: dict = {}
     ):
         GL = QGridLayout()
         mainWidget = QWidget()
@@ -70,11 +71,14 @@ class Popover(
             dealMainWidget(mainWidget)
         else:
             mainWidget.setObjectName('mainWidget-' + str(random.randint(0, 1000000)))
+            mainWidget.settingBackgroundColor = setting.get('background-color', [255, 255, 255, 255])
             mainWidget.setStyleSheet(f'''\
                 #{mainWidget.objectName()} {{
                     margin: 10px;
                     border-radius: 4px;
-                    background-color: rgba(255, 255, 255, 255);
+                    background-color: rgba({','.join(
+                        [str(color) for color in mainWidget.settingBackgroundColor]
+                    )});
                 }}''')
 
         properties['withTriangle'] = True
@@ -154,7 +158,7 @@ class Popover(
 
             painter.setRenderHint(QPainter.Antialiasing, True)
             painter.setPen(Qt.NoPen)
-            painter.setBrush(QColor(255, 255, 255))
+            painter.setBrush(QColor(*self.widget().settingBackgroundColor[:3]))
 
             triangle = QPolygon()
             side = 12
