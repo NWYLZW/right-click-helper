@@ -74,7 +74,7 @@ class Popover(
                 #{mainWidget.objectName()} {{
                     margin: 10px;
                     border-radius: 4px;
-                    background-color: rgba(255, 255, 255);
+                    background-color: rgba(255, 255, 255, 255);
                 }}''')
 
         Popover.setPopover(widget, mainWidget, properties)
@@ -155,22 +155,22 @@ class Popover(
         painter.setBrush(QColor(255, 255, 255))
 
         triangle = QPolygon()
-        side = 14
+        side = 12
         offset = {
             'top': [
                 int(self.width()/2) - int(side/2),
-                self.height() - int(3*side/2)
+                self.height() - 2*self.shadowRadius
             ],
             'bottom': [
                 int(self.width()/2) - int(side/2),
-                self.shadowRadius - int(side/3)
+                2*self.shadowRadius - side
             ],
             'left': [
-                self.width() - int(3*side/2),
+                self.width() - 2*self.shadowRadius,
                 int(self.height()/2) - int(side/2)
             ],
             'right': [
-                self.shadowRadius - int(side/4),
+                2*self.shadowRadius - side,
                 int(self.height()/2) - int(side/2)
             ]
         }[self.position]

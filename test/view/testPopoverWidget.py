@@ -43,7 +43,6 @@ class TestPopoverWidget(unittest.TestCase):
         def changePosition(c):
             positions[4] += 1
             widget.popover.setProperty('position', positions[positions[4] % 4])
-            widget.popover.repaint()
         push1.clicked.connect(changePosition)
 
         window.show()
