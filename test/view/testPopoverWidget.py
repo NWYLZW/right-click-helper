@@ -3,7 +3,7 @@
 import unittest
 
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QWidget, QMainWindow, QLabel, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QMainWindow, QLabel, QHBoxLayout, QPushButton
 
 from src.rightClickHelper.component.popover.popover import Popover
 from src.rightClickHelper.tool.effectTool import EffectTool
@@ -27,9 +27,24 @@ class TestPopoverWidget(unittest.TestCase):
 
         label = QLabel()
         label.setText('test')
+        label.setGeometry(0, 0, 100, 40)
+        label.setStyleSheet('''\
+            margin: 5px;
+        ''')
         Popover.setPopoverWithBackground(widget, label, {
             'position': 'right'
         })
+
+        positions = [
+            'right', 'top', 'bottom', 'left', 0
+        ]
+        push1 = QPushButton(widget)
+        push1.setText('changePosition')
+        def changePosition(c):
+            positions[4] += 1
+            widget.popover.setProperty('position', positions[positions[4] % 4])
+            widget.popover.repaint()
+        push1.clicked.connect(changePosition)
 
         window.show()
         sys._excepthook = sys.excepthook

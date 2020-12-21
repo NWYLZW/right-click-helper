@@ -3,8 +3,9 @@
 import random
 from typing import Callable
 
+from PyQt5 import QtGui
 from PyQt5.QtCore import QPoint, Qt
-from PyQt5.QtGui import QPainter, QColor, QPolygon
+from PyQt5.QtGui import QPainter, QColor, QPolygon, QPainterPath, QPolygonF
 from PyQt5.QtWidgets import QWidget, QGridLayout
 
 from src.rightClickHelper.component.popover.basePopover import BasePopover
@@ -60,13 +61,10 @@ class Popover(
         GL = QGridLayout()
         mainWidget = QWidget()
         mainWidget.setLayout(GL)
+        mainWidget.setMaximumSize(
+            popoverWidget.size()
+        )
         GL.addWidget(popoverWidget)
-
-        triangleWidget = QWidget()
-        painter = QPainter(triangleWidget)
-        painter.setRenderHint(QPainter.Antialiasing, True)
-        painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor(255, 255, 255))
 
         if dealMainWidget is not None:
             dealMainWidget(mainWidget)
@@ -76,7 +74,7 @@ class Popover(
                 #{mainWidget.objectName()} {{
                     margin: 10px;
                     border-radius: 4px;
-                    background-color: white;
+                    background-color: rgba(255, 255, 255);
                 }}''')
 
         Popover.setPopover(widget, mainWidget, properties)
@@ -146,6 +144,53 @@ class Popover(
         animation.finished.connect(
             lambda: super(Popover, self).hide()
         )
+
+    def paintEvent(
+        self, event: QtGui.QPaintEvent
+    ) -> None:
+        painter = QPainter(self)
+
+        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor(255, 255, 255))
+
+        triangle = QPolygon()
+        side = 14
+        offset = {
+            'top': [
+                int(self.width()/2) - int(side/2),
+                self.height() - int(3*side/2)
+            ],
+            'bottom': [
+                int(self.width()/2) - int(side/2),
+                self.shadowRadius - int(side/3)
+            ],
+            'left': [
+                self.width() - int(3*side/2),
+                int(self.height()/2) - int(side/2)
+            ],
+            'right': [
+                self.shadowRadius - int(side/4),
+                int(self.height()/2) - int(side/2)
+            ]
+        }[self.position]
+        pos = {
+            'top':      (int(side/2) + offset[0], 0           + offset[1]),
+            'bottom':   (int(side/2) + offset[0], side        + offset[1]),
+            'left':     (0           + offset[0], int(side/2) + offset[1]),
+            'right':    (side        + offset[0], int(side/2) + offset[1]),
+        }
+        triangles = {
+            'top': [*pos['bottom'], *pos['left'], *pos['right']],
+            'bottom': [*pos['top'], *pos['left'], *pos['right']],
+            'left': [*pos['top'], *pos['right'], *pos['bottom']],
+            'right': [*pos['top'], *pos['left'], *pos['bottom']],
+        }
+        triangle.setPoints(triangles[self.position])
+        painter.drawPolygon(triangle)
+        painterPath = QPainterPath()
+        painterPath.addPolygon(QPolygonF(triangle))
+        painter.fillPath(painterPath, painter.brush())
 
     @property
     def position(self):

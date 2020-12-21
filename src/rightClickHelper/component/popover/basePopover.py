@@ -37,3 +37,11 @@ class BasePopover(
         if returnData.get('value', True):
             return super().setProperty(name, value)
         return False
+
+    @property
+    def shadowRadius(self):
+        return WidgetTool.getProperty('shadowRadius', 10)(self)
+
+    @shadowRadius.setter
+    def shadowRadius(self, val: str):
+        self.setProperty('shadowRadius', val)
