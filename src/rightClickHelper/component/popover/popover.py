@@ -149,7 +149,7 @@ class Popover(
     def paintEvent(
         self, event: QtGui.QPaintEvent
     ) -> None:
-        if WidgetTool.getProperty('withTriangle', True):
+        if WidgetTool.getProperty('withTriangle', False)(self):
             painter = QPainter(self)
 
             painter.setRenderHint(QPainter.Antialiasing, True)

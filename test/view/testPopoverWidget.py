@@ -8,6 +8,32 @@ from src.rightClickHelper.component.popover.popover import Popover
 from test.tool.testTool import TestTool
 
 class TestPopoverWidget(unittest.TestCase):
+    def test_Popover(self):
+        def setMainWindowContent(app, window):
+            widget = QWidget()
+            window.setCentralWidget(widget)
+
+            widget.setObjectName('w001')
+            widget.setMaximumSize(360, 360)
+            widget.setStyleSheet('#w001 {background-color: red;}')
+
+            label = QLabel()
+            label.setMaximumSize(100, 40)
+            label.setText('test')
+            label.setObjectName('label')
+            label.setStyleSheet('''
+            #label {
+                margin: 10px; padding: 5px;
+                border-radius: 4px;
+                background-color: white;
+            }
+            ''')
+            Popover.setPopover(widget, label, {
+                'position': 'right'
+            })
+
+        TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))
+
     def test_WithBackgroundPopover(self):
         def setMainWindowContent(app, window):
             widget = QWidget()
