@@ -5,6 +5,7 @@ import unittest
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
 
 from src.rightClickHelper.component.popover.popover import Popover
+from src.rightClickHelper.component.popover.tooltip import Tooltip
 from test.tool.testTool import TestTool
 
 class TestPopoverWidget(unittest.TestCase):
@@ -65,5 +66,18 @@ class TestPopoverWidget(unittest.TestCase):
                 positions[4] += 1
                 widget.popover.setProperty('position', positions[positions[4] % 4])
             push1.clicked.connect(changePosition)
+
+        TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))
+
+    def test_TooltipPopover(self):
+        def setMainWindowContent(app, window):
+            widget = QWidget()
+            window.setCentralWidget(widget)
+
+            widget.setObjectName('w001')
+            widget.setMaximumSize(360, 360)
+            widget.setStyleSheet('#w001 {background-color: red;}')
+
+            Tooltip.setTooltip(widget, '我不知道啊 ')
 
         TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))
