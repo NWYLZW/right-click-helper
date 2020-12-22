@@ -134,7 +134,7 @@ class ElePySelect(
             WidgetTool.getTextWidth(self.label) + self.rightIcon.width() + 40
         )
 
-        self.repaint(); self.update()
+        self.parent().repaint(); self.parent().update()
 
     def _initData(self):
         self.selIndexList = WidgetTool.getProperty('sel-index-list', [])(self)
