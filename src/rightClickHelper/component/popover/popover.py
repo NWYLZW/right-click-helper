@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import random
-from typing import Callable
+from typing import Callable, ClassVar
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import QPoint, Qt
@@ -21,6 +21,7 @@ class Popover(
     @staticmethod
     def __setPopoverInHover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , PopoverClass: ClassVar = None
     ):
         widget.popover: Popover = None
         sourceEnterEvent = widget.enterEvent
@@ -29,7 +30,7 @@ class Popover(
         def showPopover(event):
             sourceEnterEvent(event)
             if widget.popover is None:
-                widget.popover = Popover(widget, properties)
+                widget.popover = PopoverClass(widget, properties)
             widget.popover.setWidget(popoverWidget)
             widget.popover.show(widget)
 
@@ -46,26 +47,58 @@ class Popover(
         widget.leaveEvent = hidePopover
 
     @staticmethod
+    def __setPopoverInClick(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , PopoverClass: ClassVar = None
+    ):
+        widget.popover: Popover = None
+        sourceMousePressEvent = widget.mousePressEvent
+
+        data = {'count': 0}
+        def changePopoverStatus(event: QtGui.QMouseEvent):
+            sourceMousePressEvent(event)
+            if event.buttons() == Qt.LeftButton:
+                if data['count'] % 2 == 0:
+                    if widget.popover is None:
+                        widget.popover = PopoverClass(widget, properties)
+                    widget.popover.setWidget(popoverWidget)
+                    widget.popover.show(widget)
+                else:
+                    if widget.popover is not None:
+                        widget.popover.hide()
+
+                data['count'] += 1
+                widget.repaint(); widget.update()
+
+        widget.mousePressEvent = changePopoverStatus
+
+    @staticmethod
     def setPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , PopoverClass: ClassVar = None
     ):
-        triggerMode = WidgetTool.getProperty('popover-trigger-mode', 'hover')(widget)
+        if PopoverClass is None: PopoverClass = Popover
+
+        triggerMode = properties.get('popover-trigger', 'hover')
         {
-            'hover': Popover.__setPopoverInHover
-        }.get(triggerMode, Popover.__setPopoverInHover)(widget, popoverWidget, properties)
+            'hover': Popover.__setPopoverInHover,
+            'click': Popover.__setPopoverInClick,
+        }.get(triggerMode, Popover.__setPopoverInHover)(widget, popoverWidget, properties, PopoverClass)
 
     @staticmethod
     def setPopoverWithBackground(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , dealMainWidget: Callable = None, setting: dict = {}
+        , PopoverClass: ClassVar = None
     ):
         GL = QGridLayout()
         mainWidget = QWidget()
         mainWidget.setLayout(GL)
         mainWidget.setFixedSize(
-            popoverWidget.size().width() + properties.get('shadowRadius', 10) * 2 + 10,
-            popoverWidget.size().height()
+            popoverWidget.size().width()  + properties.get('shadowRadius', 10) * 2 + 10,
+            popoverWidget.size().height() + properties.get('shadowRadius', 10) * 2
         )
+        mainWidget.popoverContent = popoverWidget
         GL.addWidget(popoverWidget)
 
         if dealMainWidget is not None:
@@ -83,7 +116,7 @@ class Popover(
                 }}''')
 
         properties['withTriangle'] = True
-        Popover.setPopover(widget, mainWidget, properties)
+        Popover.setPopover(widget, mainWidget, properties, PopoverClass)
 
     def show(self, widget: QWidget) -> None:
         super().show()
