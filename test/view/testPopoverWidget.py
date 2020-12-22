@@ -100,11 +100,17 @@ class TestPopoverWidget(unittest.TestCase):
                 background-color: rgb(250, 250, 250);
             }''')
 
+            def itemSel(popoverMenuItem, widget):
+                print(popoverMenuItem)
+                print(widget)
+
             MenuPopover.setMenu(
                 label, [
                     PopoverMenuItem('测试选项148941516'),
                     PopoverMenuItem('测试选项2'),
                 ], mode=MenuPopoverMode.DARK
+                , popoverCreated=lambda popover: popover
+                    .itemClicked.connect(itemSel)
             )
 
         TestTool.createTestWindow(setMainWindowContent, (400, 400))

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from enum import Enum
+from typing import Callable
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
@@ -136,7 +137,7 @@ class MenuPopover(
     @staticmethod
     def setMenu(
         widget: QWidget, items: [PopoverMenuItem], properties: dict = {},
-        mode: MenuPopoverMode = MenuPopoverMode.LIGHT
+        mode: MenuPopoverMode = MenuPopoverMode.LIGHT, popoverCreated: Callable = None
     ):
         properties['popover-trigger'] = properties.get('popover-trigger', 'click')
         properties['menu-popover-items'] = items
@@ -154,5 +155,6 @@ class MenuPopover(
         Popover.setPopoverWithBackground(
             widget, menuItems, properties
             , setting=setting
+            , popoverCreated=popoverCreated
             , PopoverClass=MenuPopover
         )
