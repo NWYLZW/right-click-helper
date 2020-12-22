@@ -7,7 +7,7 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
-from src.rightClickHelper.component.popover.popover import Popover
+from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
 class MenuPopoverMode(Enum):
@@ -75,8 +75,8 @@ class PopoverMenuItem:
             menuItemW, QSize(WidgetTool.getTextWidth(title) + 20, 25)
         )
 
-class MenuPopover(
-    Popover
+class ElePyMenuPopover(
+    ElePyPopover
 ):
     itemClicked = pyqtSignal(PopoverMenuItem, QWidget, name='itemClicked')
 
@@ -91,7 +91,7 @@ class MenuPopover(
         )
 
     def setWidget(self, widget: QWidget) -> None:
-        super(MenuPopover, self).setWidget(widget)
+        super(ElePyMenuPopover, self).setWidget(widget)
         self.refreshData()
 
     def refreshData(self, items: [PopoverMenuItem] = None):
@@ -152,9 +152,9 @@ class MenuPopover(
             setting['background-color'] = [255, 255, 255]
         elif mode == MenuPopoverMode.DARK:
             setting['background-color'] = [48, 49, 51]
-        Popover.setPopoverWithBackground(
+        ElePyPopover.setPopoverWithBackground(
             widget, menuItems, properties
             , setting=setting
             , popoverCreated=popoverCreated
-            , PopoverClass=MenuPopover
+            , PopoverClass=ElePyMenuPopover
         )

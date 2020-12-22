@@ -12,7 +12,7 @@ from src.rightClickHelper.component.popover.basePopover import BasePopover
 from src.rightClickHelper.tool.animationTool import AnimationTool
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
-class Popover(
+class ElePyPopover(
     BasePopover
 ):
     def __init__(self, parent=None, properties: dict = {}):
@@ -23,7 +23,7 @@ class Popover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar = None, popoverCreated: Callable = None
     ):
-        widget.popover: Popover = None
+        widget.popover: ElePyPopover = None
         sourceEnterEvent = widget.enterEvent
         sourceLeaveEvent = widget.leaveEvent
 
@@ -52,7 +52,7 @@ class Popover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar = None, popoverCreated: Callable = None
     ):
-        widget.popover: Popover = None
+        widget.popover: ElePyPopover = None
         sourceMousePressEvent = widget.mousePressEvent
 
         data = {'count': 0}
@@ -79,13 +79,13 @@ class Popover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar = None, popoverCreated: Callable = None
     ):
-        if PopoverClass is None: PopoverClass = Popover
+        if PopoverClass is None: PopoverClass = ElePyPopover
 
         triggerMode = properties.get('popover-trigger', 'hover')
         {
-            'hover': Popover.__setPopoverInHover,
-            'click': Popover.__setPopoverInClick,
-        }.get(triggerMode, Popover.__setPopoverInHover)(
+            'hover': ElePyPopover.__setPopoverInHover,
+            'click': ElePyPopover.__setPopoverInClick,
+        }.get(triggerMode, ElePyPopover.__setPopoverInHover)(
             widget, popoverWidget, properties
             , PopoverClass, popoverCreated
         )
@@ -121,7 +121,7 @@ class Popover(
                 }}''')
 
         properties['withTriangle'] = True
-        Popover.setPopover(
+        ElePyPopover.setPopover(
             widget, mainWidget, properties
             , PopoverClass, popoverCreated
         )
@@ -189,7 +189,7 @@ class Popover(
         })(self)
         animation.start()
         animation.finished.connect(
-            lambda: super(Popover, self).hide()
+            lambda: super(ElePyPopover, self).hide()
         )
 
     def paintEvent(
@@ -239,7 +239,7 @@ class Popover(
             painterPath = QPainterPath()
             painterPath.addPolygon(QPolygonF(triangle))
             painter.fillPath(painterPath, painter.brush())
-        super(Popover, self).paintEvent(event)
+        super(ElePyPopover, self).paintEvent(event)
 
     @property
     def position(self):

@@ -4,9 +4,9 @@ import unittest
 
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
 
-from src.rightClickHelper.component.popover.menuPopover import MenuPopover, PopoverMenuItem, MenuPopoverMode
-from src.rightClickHelper.component.popover.popover import Popover
-from src.rightClickHelper.component.popover.tooltip import Tooltip
+from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
+from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
+from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from test.tool.testTool import TestTool
 
 class TestPopoverWidget(unittest.TestCase):
@@ -30,7 +30,7 @@ class TestPopoverWidget(unittest.TestCase):
                 background-color: white;
             }
             ''')
-            Popover.setPopover(widget, label, {
+            ElePyPopover.setPopover(widget, label, {
                 'position': 'right'
             })
 
@@ -52,7 +52,7 @@ class TestPopoverWidget(unittest.TestCase):
                 margin: 5px;
                 color: white;
             ''')
-            Popover.setPopoverWithBackground(widget, label, {
+            ElePyPopover.setPopoverWithBackground(widget, label, {
                 'position': 'right'
             }, setting={
                 'background-color': [48, 49, 51]
@@ -79,7 +79,7 @@ class TestPopoverWidget(unittest.TestCase):
             widget.setMaximumSize(360, 360)
             widget.setStyleSheet('#w001 {background-color: red;}')
 
-            Tooltip.setTooltip(
+            ElePyTooltip.setTooltip(
                 widget, '2345678911111测试中文111111testEnglish11111111198765432'
             )
 
@@ -104,7 +104,7 @@ class TestPopoverWidget(unittest.TestCase):
                 print(popoverMenuItem)
                 print(widget)
 
-            MenuPopover.setMenu(
+            ElePyMenuPopover.setMenu(
                 label, [
                     PopoverMenuItem('测试选项148941516'),
                     PopoverMenuItem('测试选项2'),

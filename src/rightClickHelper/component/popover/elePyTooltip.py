@@ -6,15 +6,15 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QLabel
 
-from src.rightClickHelper.component.popover.popover import Popover
+from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
 class ToolTipMode(Enum):
     LIGHT   = 0X000000
     DARK    = 0X000001
 
-class Tooltip(
-    Popover
+class ElePyTooltip(
+    ElePyPopover
 ):
     def __init__(self, parent=None, properties: dict = {}):
         super().__init__(parent, properties)
@@ -50,6 +50,6 @@ class Tooltip(
             ''')
             setting['background-color'] = [48, 49, 51]
 
-        Popover.setPopoverWithBackground(widget, tooltip, {
+        ElePyPopover.setPopoverWithBackground(widget, tooltip, {
             'position': position
-        }, setting=setting, PopoverClass=Tooltip)
+        }, setting=setting, PopoverClass=ElePyTooltip)
