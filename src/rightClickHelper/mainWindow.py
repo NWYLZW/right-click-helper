@@ -39,11 +39,11 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
 
         from src.rightClickHelper.config import configData
         self.appTitle\
-            .setText(configData['appName'])
+            .setPlaceholder(configData['appName'])
         self.appVersion\
-            .setText(configData['appVersion'])
+            .setPlaceholder(configData['appVersion'])
         self.appMode\
-            .setText(configData['appMode'])
+            .setPlaceholder(configData['appMode'])
 
         # self.test.setPixmap(SystemHelper.getIcon(r'%systemroot%\system32\themecpl.dll,-1'))
 

@@ -4,6 +4,7 @@ import unittest
 
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
 
+from src.rightClickHelper.component.form.elePySelect import ElePySelect
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
 from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
@@ -114,3 +115,21 @@ class TestPopoverWidget(unittest.TestCase):
             )
 
         TestTool.createTestWindow(setMainWindowContent, (400, 400))
+
+    def test_Select(self):
+        def setMainWindowContent(app, window):
+            mainW = QWidget()
+
+            select = ElePySelect(mainW, properties={
+                'select-menu-items': [
+                    PopoverMenuItem('测试下拉选择1'),
+                    PopoverMenuItem('测试下拉选择2'),
+                ]
+            })
+            select.change.connect(
+                lambda m, indexList, selItems: print(m.title, indexList, selItems)
+            )
+
+            window.setCentralWidget(mainW)
+
+        TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))

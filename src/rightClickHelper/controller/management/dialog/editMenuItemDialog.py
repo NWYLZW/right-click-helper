@@ -29,7 +29,7 @@ class EditMenuItemDialog(
 
     def _initData(self, menuItem: MenuItem = None):
         self.menuItem = menuItem
-        self.title.setText(
+        self.title.setPlaceholder(
             '正在修改[' + menuItem.name + ']'
         )
         self.icon.setProperty('selFileTitle', '选择文件作为该菜单项的左侧小图标')
@@ -41,11 +41,11 @@ class EditMenuItemDialog(
             self.icon.path = PathTool.appPath() + r'\src\resource\image\icon\not-found.png'
             self.icon.setToolTip('[点击修改]图标不存在')
         self.titleInput\
-            .setText(menuItem.name)
+            .setPlaceholder(menuItem.name)
         self.menuNameInput\
-            .setText(menuItem.title)
+            .setPlaceholder(menuItem.title)
         self.commandInput\
-            .setText(menuItem.command)
+            .setPlaceholder(menuItem.command)
 
         self.btnsStatusChange()
 
@@ -134,7 +134,7 @@ class EditMenuItemDialog(
                     ).replace('/', '\\')
                     if filePath != '':
                         self.icon.path = filePath
-                        self.commandInput.setText('"' + filePath + '" "%1"')
+                        self.commandInput.setPlaceholder('"' + filePath + '" "%1"')
             self.selExeBtn.clicked\
                 .connect(changeCommand)
 

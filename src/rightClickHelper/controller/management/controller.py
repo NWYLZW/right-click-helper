@@ -122,7 +122,7 @@ class ManagementController(
         currentRegPath = path[1] # type: str
         for menuItemRootName, menuItemsRoot in self.menuItemsRoots.items():
             currentRegPath = currentRegPath.replace(menuItemsRoot[1], menuItemRootName)
-        self.currentRegPath.setText(currentRegPath)
+        self.currentRegPath.setPlaceholder(currentRegPath)
         self.menuItems = []
         # type: [MenuItem]
 
