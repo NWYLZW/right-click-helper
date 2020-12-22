@@ -84,6 +84,10 @@ class MenuPopover(
     ):
         super().__init__(parent, properties)
         self.menuItemWs = []
+        self.propertyChange.connect(
+            lambda name, value, returnData:
+                self.refreshData(value) if name == 'menu-popover-items' else None
+        )
 
     def setWidget(self, widget: QWidget) -> None:
         super(MenuPopover, self).setWidget(widget)
