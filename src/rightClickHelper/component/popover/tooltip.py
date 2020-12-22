@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from enum import Enum
 
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QLabel
 
 from src.rightClickHelper.component.popover.popover import Popover
@@ -17,13 +19,25 @@ class Tooltip(
         super(Tooltip).__init__(parent, properties)
 
     @staticmethod
-    def setTooltip(widget: QWidget, text: str, position: str = 'bottom', mode: ToolTipMode = ToolTipMode.DARK):
+    def setTooltip(
+        widget: QWidget, text: str, position: str = 'bottom', mode: ToolTipMode = ToolTipMode.DARK
+    ):
         tooltip = QLabel()
+        tooltip.setAlignment(Qt.AlignCenter)
         tooltip.setText(text)
-        tooltip.setGeometry(
-            0, 0,
-            int(tooltip.fontMetrics().boundingRect(tooltip.text()).width()*1.5), 40
-        )
+
+        font = QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(10)
+        tooltip.setFont(font)
+
+        width = tooltip.fontMetrics()\
+            .boundingRect(
+                tooltip.text()
+            ).width() + 10
+
+        tooltip.setFixedWidth(width)
+        tooltip.setMaximumHeight(45)
 
         if mode == ToolTipMode.LIGHT:
             tooltip.setStyleSheet('''\

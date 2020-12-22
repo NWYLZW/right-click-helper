@@ -62,8 +62,9 @@ class Popover(
         GL = QGridLayout()
         mainWidget = QWidget()
         mainWidget.setLayout(GL)
-        mainWidget.setMaximumSize(
-            popoverWidget.size()
+        mainWidget.setFixedSize(
+            popoverWidget.size().width() + properties.get('shadowRadius', 10) * 2 + 10,
+            popoverWidget.size().height()
         )
         GL.addWidget(popoverWidget)
 

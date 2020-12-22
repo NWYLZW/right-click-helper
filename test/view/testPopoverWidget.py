@@ -78,6 +78,8 @@ class TestPopoverWidget(unittest.TestCase):
             widget.setMaximumSize(360, 360)
             widget.setStyleSheet('#w001 {background-color: red;}')
 
-            Tooltip.setTooltip(widget, '我不知道啊 ')
+            Tooltip.setTooltip(
+                widget, '2345678911111测试中文111111testEnglish11111111198765432'
+            )
 
         TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))
