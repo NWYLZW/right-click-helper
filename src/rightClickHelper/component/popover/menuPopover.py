@@ -15,10 +15,11 @@ class MenuPopoverMode(Enum):
 
 class PopoverMenuItem:
     def __init__(
-        self, title: str, icon: str = ''
+        self, title: str, icon: str = '', clickedAutoHide: bool = True
     ):
         self.title = title
         self.icon = icon
+        self.clickedAutoHide = clickedAutoHide
 
     def createWidget(
         self, parent: QWidget, mode: MenuPopoverMode = MenuPopoverMode.LIGHT
@@ -82,6 +83,7 @@ class MenuPopover(
         self, parent=None, properties: dict = {}
     ):
         super().__init__(parent, properties)
+        self.menuItemWs = []
 
     def setWidget(self, widget: QWidget) -> None:
         super(MenuPopover, self).setWidget(widget)
@@ -100,11 +102,12 @@ class MenuPopover(
             def forwardClicked(event: QtGui.QMouseEvent):
                 if event.buttons() == Qt.LeftButton:
                     self.itemClicked.emit(menuItem, widget)
+                    if menuItem.clickedAutoHide:
+                        self.hide()
 
             return forwardClicked
 
         maxWidth = 0; sumHeight = 0
-        menuItemWs = []
         for menuItem in items:  # type: PopoverMenuItem
             (menuItemW, size) = menuItem.createWidget(
                 menuItems, mode=WidgetTool.getProperty(
@@ -117,9 +120,9 @@ class MenuPopover(
             menuItemsHL.addWidget(menuItemW)
             menuItemW.mousePressEvent = createForwardClicked(menuItem, menuItemW)
 
-            menuItemWs.append(menuItemW)
+            self.menuItemWs.append(menuItemW)
 
-        for menuItemW in menuItemWs: menuItemW.computedAllItemMaxWidth(maxWidth)
+        for menuItemW in self.menuItemWs: menuItemW.computedAllItemMaxWidth(maxWidth)
         menuItems.setFixedSize(maxWidth, sumHeight + 10)
         self.widget().setFixedSize(
             menuItems.size().width()  + self.shadowRadius * 2 + 10,

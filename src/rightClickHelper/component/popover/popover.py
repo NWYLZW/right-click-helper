@@ -31,7 +31,7 @@ class Popover(
             sourceEnterEvent(event)
             if widget.popover is None:
                 widget.popover = PopoverClass(widget, properties)
-            widget.popover.setWidget(popoverWidget)
+                widget.popover.setWidget(popoverWidget)
             widget.popover.show(widget)
 
             widget.repaint(); widget.update()
@@ -61,7 +61,7 @@ class Popover(
                 if data['count'] % 2 == 0:
                     if widget.popover is None:
                         widget.popover = PopoverClass(widget, properties)
-                    widget.popover.setWidget(popoverWidget)
+                        widget.popover.setWidget(popoverWidget)
                     widget.popover.show(widget)
                 else:
                     if widget.popover is not None:
