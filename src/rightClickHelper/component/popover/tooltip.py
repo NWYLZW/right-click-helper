@@ -39,23 +39,20 @@ class Tooltip(
         tooltip.setFixedWidth(width)
         tooltip.setMaximumHeight(45)
 
+        setting = {}
         if mode == ToolTipMode.LIGHT:
             tooltip.setStyleSheet('''\
                 margin: 5px;
                 color: black;
             ''')
-            Popover.setPopoverWithBackground(widget, tooltip, {
-                'position': position
-            }, setting={
-                'background-color': [255, 255, 255]
-            })
+            setting['background-color'] = [255, 255, 255]
         elif mode == ToolTipMode.DARK:
             tooltip.setStyleSheet('''\
                 margin: 5px;
                 color: white;
             ''')
-            Popover.setPopoverWithBackground(widget, tooltip, {
-                'position': position
-            }, setting={
-                'background-color': [48, 49, 51]
-            })
+            setting['background-color'] = [48, 49, 51]
+
+        Popover.setPopoverWithBackground(widget, tooltip, {
+            'position': position
+        }, setting=setting)

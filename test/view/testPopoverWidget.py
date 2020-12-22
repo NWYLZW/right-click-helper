@@ -4,6 +4,7 @@ import unittest
 
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
 
+from src.rightClickHelper.component.popover.menuPopover import MenuPopover, MenuItem
 from src.rightClickHelper.component.popover.popover import Popover
 from src.rightClickHelper.component.popover.tooltip import Tooltip
 from test.tool.testTool import TestTool
@@ -80,6 +81,23 @@ class TestPopoverWidget(unittest.TestCase):
 
             Tooltip.setTooltip(
                 widget, '2345678911111测试中文111111testEnglish11111111198765432'
+            )
+
+        TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))
+
+    def test_MenuPopover(self):
+        def setMainWindowContent(app, window):
+            widget = QWidget()
+            window.setCentralWidget(widget)
+
+            widget.setObjectName('w001')
+            widget.setMaximumSize(360, 360)
+            widget.setStyleSheet('#w001 {background-color: red;}')
+
+            MenuPopover.setMenu(
+                widget, [
+                    MenuItem('测试选项')
+                ]
             )
 
         TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))
