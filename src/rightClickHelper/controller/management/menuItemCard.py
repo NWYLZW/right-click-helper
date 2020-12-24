@@ -74,7 +74,7 @@ class MenuItemCard_itf:
 
     def setTitle(self, menuItem: MenuItem):
         try:
-            self.title.setPlaceholder(menuItem.name)
+            self.title.setText(menuItem.name)
             self.title.setToolTip(menuItem.name)
         except Exception as e: raise e
 
@@ -129,7 +129,7 @@ class MenuItemCard(
             self.icon.setPixmap(
                 SystemTool.getIcon(menuItem.icon)
             )
-            self.status.setPlaceholder('')
+            self.status.setText('')
         else:
             rect = self.icon.geometry()
             self.icon.setPixmap(

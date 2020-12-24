@@ -4,6 +4,7 @@ import re
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
+from src.rightClickHelper.component.popover.elePyMenuPopover import PopoverMenuItem
 from src.rightClickHelper.controller.management.menuItemCard import MenuItemCard, MenuItemCard_Package, MenuItemCard_New
 from src.rightClickHelper.tool.regTool import RegTool, RegEnv, MenuItem, RegType
 
@@ -122,7 +123,7 @@ class ManagementController(
         currentRegPath = path[1] # type: str
         for menuItemRootName, menuItemsRoot in self.menuItemsRoots.items():
             currentRegPath = currentRegPath.replace(menuItemsRoot[1], menuItemRootName)
-        self.currentRegPath.setPlaceholder(currentRegPath)
+        self.currentRegPath.setText(currentRegPath)
         self.menuItems = []
         # type: [MenuItem]
 
@@ -148,23 +149,23 @@ class ManagementController(
             '桌面背景':
                 (RegEnv.HKEY_CLASSES_ROOT, r'DesktopBackground\Shell')
         }
+        self.selKind.setProperties({
+            'sel-index-list': [0],
+            'select-menu-items': [
+                PopoverMenuItem(key) for key in self.menuItemsRoots
+            ]
+        })
         self.refreshMenuItems(self.menuItemsRoots.get(
             self.selKind.currentText(), []
         ))
 
     def createListRefresh(self, mode):
-        def selEnd():
-            self.refreshMenuItems(self.menuItemsRoots.get(
-                self.selKind.currentText(), []
-            ))
-
         def searchEnd():
             self.refreshShowMenuItems(
                 self.searchInput.text()
             )
 
         return {
-            'menuItems': selEnd,
             'showMenuItems': searchEnd
         }.get(mode, lambda: print('未知错误'))
 
@@ -173,10 +174,11 @@ class ManagementController(
             .connect(
                 self.createListRefresh('showMenuItems')
             )
-        self.selKind.currentTextChanged \
-            .connect(
-                self.createListRefresh('menuItems')
-            )
+        self.selKind.change.connect(
+            lambda menuItem, selList, allSelList: self.refreshMenuItems(self.menuItemsRoots.get(
+                menuItem.title, []
+            ))
+        )
 
         self.home.clicked.connect(
             lambda checked: self.refreshMenuItems(

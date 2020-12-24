@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, QLineF, pyqtSignal
 from PyQt5.QtGui import QPaintEvent, QPainter, QColor
 from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget
 
-from src.rightClickHelper.component.elePyWidget import ElePyWidget
+from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, MenuPopoverMode, PopoverMenuItem
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
@@ -64,20 +64,11 @@ class ElePySelect(
         ])
 
     def _initUI(self):
-        menuItems = WidgetTool.getProperty(
-            'select-menu-items', []
-        )(self)
-
         self.setCursor(Qt.PointingHandCursor)
         self.setLayout(QHBoxLayout())
         content = QWidget(self)
         content.setObjectName('ElePySelect-content')
         self.layout().addWidget(content)
-        ElePyMenuPopover.setMenu(
-            content, menuItems, mode=WidgetTool.getProperty(
-                'select-mode', MenuPopoverMode.LIGHT
-            )(self), popoverCreated=self.setMenuPopover
-        )
         content.setStyleSheet('''\
         #ElePySelect-content {
             border: 1px solid rgb(220, 223, 230);
@@ -100,6 +91,14 @@ class ElePySelect(
         self.rightIcon.paintEvent = self.drawRightIcon
 
         self.popoverContent = content
+        menuItems = WidgetTool.getProperty(
+            'select-menu-items', []
+        )(self)
+        ElePyMenuPopover.setMenu(
+            self.popoverContent, menuItems, mode=WidgetTool.getProperty(
+                'select-mode', MenuPopoverMode.LIGHT
+            )(self), createPopover=self.setMenuPopover
+        )
 
     def updateLabel(self):
         placeholder = WidgetTool.getProperty(
@@ -136,11 +135,18 @@ class ElePySelect(
 
         self.parent().repaint(); self.parent().update()
 
+    @watchProperty(['sel-index-list'])
+    def selIndexListChange(self):
+        print('none')
+
     def _initData(self):
         self.selIndexList = WidgetTool.getProperty('sel-index-list', [])(self)
         self.updateLabel()
 
     def _initEvent(self): pass
+
+    def currentText(self):
+        return self.label.text()
 
     def menuPopover(self):
         return self._menuPopover
@@ -162,8 +168,11 @@ class ElePySelect(
             return True
         return False
 
-    def setMenuPopover(self, menuPopover: ElePyMenuPopover):
-        self._menuPopover = menuPopover
+    def setMenuPopover(self, PopoverClass: ElePyMenuPopover, widget, properties):
+        properties['menu-popover-items'] = WidgetTool.getProperty(
+            'select-menu-items', []
+        )(self)
+        self._menuPopover = PopoverClass(widget, properties)
 
         def itemClicked(menuItem, widget):
             selectType = WidgetTool.getProperty('select-type', 'single')(self)
@@ -181,3 +190,5 @@ class ElePySelect(
             self.updateLabel()
 
         self._menuPopover.itemClicked.connect(itemClicked)
+
+        return self._menuPopover

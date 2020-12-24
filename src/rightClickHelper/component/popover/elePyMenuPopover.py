@@ -137,7 +137,7 @@ class ElePyMenuPopover(
     @staticmethod
     def setMenu(
         widget: QWidget, items: [PopoverMenuItem], properties: dict = {},
-        mode: MenuPopoverMode = MenuPopoverMode.LIGHT, popoverCreated: Callable = None
+        mode: MenuPopoverMode = MenuPopoverMode.LIGHT, createPopover: Callable = None
     ):
         properties['popover-trigger'] = properties.get('popover-trigger', 'click')
         properties['menu-popover-items'] = items
@@ -155,6 +155,6 @@ class ElePyMenuPopover(
         ElePyPopover.setPopoverWithBackground(
             widget, menuItems, properties
             , setting=setting
-            , popoverCreated=popoverCreated
+            , createPopover=createPopover
             , PopoverClass=ElePyMenuPopover
         )

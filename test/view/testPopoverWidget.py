@@ -101,17 +101,21 @@ class TestPopoverWidget(unittest.TestCase):
                 background-color: rgb(250, 250, 250);
             }''')
 
-            def itemSel(popoverMenuItem, widget):
-                print(popoverMenuItem)
-                print(widget)
+            def createPopover(PopoverClass: ElePyMenuPopover, widget, properties):
+                popover = PopoverClass(widget, properties)
+
+                def __itemClick(popoverMenuItem, widget):
+                    print(popoverMenuItem)
+                    print(widget)
+                popover.itemClicked.connect(__itemClick)
+                return popover
 
             ElePyMenuPopover.setMenu(
                 label, [
                     PopoverMenuItem('测试选项148941516'),
                     PopoverMenuItem('测试选项2'),
                 ], mode=MenuPopoverMode.DARK
-                , popoverCreated=lambda popover: popover
-                    .itemClicked.connect(itemSel)
+                , createPopover=createPopover
             )
 
         TestTool.createTestWindow(setMainWindowContent, (400, 400))

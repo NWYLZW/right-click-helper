@@ -21,7 +21,7 @@ class ElePyPopover(
     @staticmethod
     def __setPopoverInHover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, popoverCreated: Callable = None
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
     ):
         widget.popover: ElePyPopover = None
         sourceEnterEvent = widget.enterEvent
@@ -30,9 +30,11 @@ class ElePyPopover(
         def showPopover(event):
             sourceEnterEvent(event)
             if widget.popover is None:
-                widget.popover = PopoverClass(widget, properties)
+                if createPopover is None:
+                    widget.popover = PopoverClass(widget, properties)
+                else:
+                    widget.popover = createPopover(PopoverClass, widget, properties)
                 widget.popover.setWidget(popoverWidget)
-                if popoverCreated is not None: popoverCreated(widget.popover)
             widget.popover.show(widget)
 
             widget.repaint(); widget.update()
@@ -50,7 +52,7 @@ class ElePyPopover(
     @staticmethod
     def __setPopoverInClick(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, popoverCreated: Callable = None
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
     ):
         widget.popover: ElePyPopover = None
         sourceMousePressEvent = widget.mousePressEvent
@@ -61,9 +63,11 @@ class ElePyPopover(
             if event.buttons() == Qt.LeftButton:
                 if data['count'] % 2 == 0:
                     if widget.popover is None:
-                        widget.popover = PopoverClass(widget, properties)
+                        if createPopover is None:
+                            widget.popover = PopoverClass(widget, properties)
+                        else:
+                            widget.popover = createPopover(PopoverClass, widget, properties)
                         widget.popover.setWidget(popoverWidget)
-                        if popoverCreated is not None: popoverCreated(widget.popover)
                     widget.popover.show(widget)
                 else:
                     if widget.popover is not None:
@@ -77,7 +81,7 @@ class ElePyPopover(
     @staticmethod
     def setPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, popoverCreated: Callable = None
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
     ):
         if PopoverClass is None: PopoverClass = ElePyPopover
 
@@ -87,14 +91,14 @@ class ElePyPopover(
             'click': ElePyPopover.__setPopoverInClick,
         }.get(triggerMode, ElePyPopover.__setPopoverInHover)(
             widget, popoverWidget, properties
-            , PopoverClass, popoverCreated
+            , PopoverClass, createPopover
         )
 
     @staticmethod
     def setPopoverWithBackground(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , dealMainWidget: Callable = None, setting: dict = {}
-        , PopoverClass: ClassVar = None, popoverCreated: Callable = None
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
     ):
         GL = QGridLayout()
         mainWidget = QWidget()
@@ -123,7 +127,7 @@ class ElePyPopover(
         properties['withTriangle'] = True
         ElePyPopover.setPopover(
             widget, mainWidget, properties
-            , PopoverClass, popoverCreated
+            , PopoverClass, createPopover
         )
 
     def show(self, widget: QWidget) -> None:

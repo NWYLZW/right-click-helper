@@ -125,7 +125,7 @@ QLineEdit:focus {
          <x>0</x>
          <y>0</y>
          <width>1091</width>
-         <height>41</height>
+         <height>47</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="headHL">
@@ -274,38 +274,19 @@ QLineEdit:focus {
          <widget class="QLineEdit" name="searchInput"/>
         </item>
         <item>
-         <widget class="QComboBox" name="selKind">
+         <widget class="ElePySelect" name="selKind" native="true">
           <property name="minimumSize">
            <size>
             <width>100</width>
             <height>0</height>
            </size>
           </property>
-          <item>
-           <property name="text">
-            <string>文件</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>文件夹</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>目录</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>目录背景</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>桌面背景</string>
-           </property>
-          </item>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
          </widget>
         </item>
        </layout>
@@ -351,6 +332,14 @@ QLineEdit:focus {
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ElePySelect</class>
+   <extends>QWidget</extends>
+   <header>src/rightClickHelper/component/form/elePySelect.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../../resource/main.qrc"/>
  </resources>
