@@ -47,19 +47,21 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
 
         # self.test.setPixmap(SystemHelper.getIcon(r'%systemroot%\system32\themecpl.dll,-1'))
 
-    def mousePressEvent(self, event):
-        self.mDragPosition = event.globalPos() - self.pos()
-        if event.button() == Qt.LeftButton:
-            self.mDrag = True
-            event.accept()
-
-    def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.LeftButton and self.mDrag:
-            self.move(event.globalPos() - self.mDragPosition)
-            event.accept()
-
-    def mouseReleaseEvent(self, QMouseEvent):
-        self.mDrag = False
-
     def _initEvent(self):
-        pass
+        def mousePressEvent(event):
+            self.mDragPosition = event.globalPos() - self.pos()
+            if event.button() == Qt.LeftButton:
+                self.mDrag = True
+                event.accept()
+
+        def mouseMoveEvent(event):
+            if event.buttons() == Qt.LeftButton and self.mDrag:
+                self.move(event.globalPos() - self.mDragPosition)
+                event.accept()
+
+        def mouseReleaseEvent(QMouseEvent):
+            self.mDrag = False
+
+        self.headBar.mousePressEvent   = mousePressEvent
+        self.headBar.mouseMoveEvent    = mouseMoveEvent
+        self.headBar.mouseReleaseEvent = mouseReleaseEvent

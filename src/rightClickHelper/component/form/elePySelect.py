@@ -130,6 +130,9 @@ class ElePySelect(
             selfWidth = WidgetTool.getTextWidth(self.label) + self.rightIcon.width() + 40
         else:
             selfWidth = self.maximumWidth()
+        if selfWidth < self.minimumWidth():
+            selfWidth = self.minimumWidth()
+
         self.setFixedWidth(selfWidth)
         self.popoverContent.setFixedWidth(selfWidth - self.rightIcon.width())
 

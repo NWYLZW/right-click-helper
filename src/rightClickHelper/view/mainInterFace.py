@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 741))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.mainVL = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.mainVL.setContentsMargins(10, 0, 10, 10)
+        self.mainVL.setContentsMargins(10, 5, 10, 10)
         self.mainVL.setSpacing(0)
         self.mainVL.setObjectName("mainVL")
         self.headBar = QtWidgets.QWidget(self.verticalLayoutWidget)
