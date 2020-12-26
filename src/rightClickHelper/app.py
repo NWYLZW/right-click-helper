@@ -4,6 +4,7 @@ import sys, os, datetime
 
 from PyQt5.QtWidgets import QApplication
 
+from src.rightClickHelper import config
 from src.rightClickHelper.mainWindow import MainWindow
 
 if __name__ == '__main__':
@@ -28,13 +29,15 @@ if __name__ == '__main__':
         except: pass
     except Exception as e:
         import traceback
-        if not os.path.exists('./log'): os.mkdir('./log')
-
         now = datetime.datetime.now()
-        with open(
-            f'./log/{now.year}-{now.month}-{now.day}.log'
-            , mode='a+', encoding='utf-8'
-        ) as file:
-            file.write(
-                now.strftime('[%Y-%m-%d %H:%M:%S]\n') + repr(e) + '\n' + traceback.format_exc() + '\n'
-            )
+        errorStr = now.strftime('[%Y-%m-%d %H:%M:%S]\n') + repr(e) + '\n' + traceback.format_exc() + '\n'
+
+        if config.configData['appMode'] == '[development]':
+            print(errorStr)
+        else:
+            if not os.path.exists('./log'): os.mkdir('./log')
+            with open(
+                f'./log/{now.year}-{now.month}-{now.day}.log'
+                , mode='a+', encoding='utf-8'
+            ) as file:
+                file.write(errorStr)

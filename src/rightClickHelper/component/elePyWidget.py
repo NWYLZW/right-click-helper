@@ -1,32 +1,71 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+__all__ = ['ElePyWidget', 'watchProperty', 'LifeStage']
 import typing
-from abc import abstractmethod
+from enum import Enum
 from functools import wraps
 
 from PyQt5.QtWidgets import QWidget
 
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
+class LifeStage(Enum):
+    SET_PROPERTY_WATCH = 0X00000001
+    INIT_PROPERTIES = 0X00000002
+
+    INIT_UI_BEFORE = 0X00000003
+    INIT_UI = 0X00000004
+    INIT_UI_AFTER = 0X00000005
+
+    INIT_DATA_BEFORE = 0X00000006
+    INIT_DATA = 0X00000007
+    INIT_DATA_AFTER = 0X00000008
+
+    INIT_EVENT_BEFORE = 0X00000009
+    INIT_EVENT = 0X0000000a
+    INIT_EVENT_AFTER = 0X0000000b
+
+    INITED = 0Xffffffff
+
+def initLink(obj, lifeStages: list[LifeStage]):
+    def str2Hump(text):
+        res = ''.join(
+            [_str[0].upper() + _str[1:] for _str in text.lower().split('_')]
+        )
+        return res[0].lower() + res[1:]
+
+    for lifeStage in lifeStages:
+        methodName = f'_{str2Hump(lifeStage.name)}'
+        obj._lifeStage = methodName
+        if hasattr(obj, methodName):
+            getattr(obj, methodName)()
+
 class ElePyWidget(
     QWidget
 ):
     def __init__(self, parent=None, properties: dict = {}):
         super().__init__(parent)
+        self._lifeStage = LifeStage.SET_PROPERTY_WATCH
         self.__setPropertyWatch()
+        self._lifeStage = LifeStage.INIT_PROPERTIES
         WidgetTool.setProperties(properties)(self)
 
-        self._initUIBefore()
-        self._initUI()
-        self._initUIAfter()
-
-        self._initDataBefore()
-        self._initData()
-        self._initDataAfter()
-
-        self._initEventBefore()
-        self._initEvent()
-        self._initEventAfter()
+        initLink(self, [
+            LifeStage.INIT_UI_BEFORE,
+            LifeStage.INIT_UI,
+            LifeStage.INIT_UI_AFTER,
+        ])
+        initLink(self, [
+            LifeStage.INIT_DATA_BEFORE,
+            LifeStage.INIT_DATA,
+            LifeStage.INIT_DATA_AFTER,
+        ])
+        initLink(self, [
+            LifeStage.INIT_EVENT_BEFORE,
+            LifeStage.INIT_EVENT,
+            LifeStage.INIT_EVENT_AFTER,
+        ])
+        self._lifeStage = LifeStage.INITED
 
     def __setPropertyWatch(self):
         self.__watchProperties__ = {}
@@ -40,21 +79,17 @@ class ElePyWidget(
     def setProperties(self, properties: dict = {}):
         WidgetTool.setProperties(properties)(self)
 
-    def _initUIBefore(self): pass
-    def _initUIAfter(self): pass
+    def _initUiBefore(self): pass
+    def _initUi(self): pass
+    def _initUiAfter(self): pass
+
     def _initDataBefore(self): pass
-    def _initDataAfter(self): pass
-    def _initEventBefore(self): pass
-    def _initEventAfter(self): pass
-
-    @abstractmethod
-    def _initUI(self): pass
-
-    @abstractmethod
     def _initData(self): pass
+    def _initDataAfter(self): pass
 
-    @abstractmethod
+    def _initEventBefore(self): pass
     def _initEvent(self): pass
+    def _initEventAfter(self): pass
 
     def propertyChange(
         self, name: str, value: typing.Any

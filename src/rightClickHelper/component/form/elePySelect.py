@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, QLineF, pyqtSignal
 from PyQt5.QtGui import QPaintEvent, QPainter, QColor
 from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget
 
-from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
+from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty, LifeStage
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, MenuPopoverMode, PopoverMenuItem
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
@@ -63,7 +63,7 @@ class ElePySelect(
             QLineF(unit + offset1[0], unit + offset1[1], 2*unit + offset1[0], 0    + offset1[1])
         ])
 
-    def _initUI(self):
+    def _initUi(self):
         self.setCursor(Qt.PointingHandCursor)
         self.setLayout(QHBoxLayout())
         content = QWidget(self)
@@ -106,11 +106,11 @@ class ElePySelect(
         )(self)        # type: str
         menuItems   = WidgetTool.getProperty(
             'select-menu-items', []
-        )(self)  # type: [PopoverMenuItem]
+        )(self)  # type: list[PopoverMenuItem]
 
-        selItems = []   # type: [PopoverMenuItem]
+        selItems = []   # type: list[PopoverMenuItem]
         for index in self.selIndexList:
-            if index < 0 or index > len(menuItems): continue
+            if index < 0 or index >= len(menuItems): continue
             selItems.append(menuItems[index])
 
         if len(self.selIndexList) == 0 or len(selItems) == 0:
@@ -126,24 +126,24 @@ class ElePySelect(
             }''')
             self.label.setText(', '.join([selItem.title for selItem in selItems]))
 
-        self.popoverContent.setFixedWidth(
-            WidgetTool.getTextWidth(self.label) + 40
-        )
-        self.setFixedWidth(
-            WidgetTool.getTextWidth(self.label) + self.rightIcon.width() + 40
-        )
+        if self.maximumWidth() == 16777215:
+            selfWidth = WidgetTool.getTextWidth(self.label) + self.rightIcon.width() + 40
+        else:
+            selfWidth = self.maximumWidth()
+        self.setFixedWidth(selfWidth)
+        self.popoverContent.setFixedWidth(selfWidth - self.rightIcon.width())
 
         self.parent().repaint(); self.parent().update()
 
-    @watchProperty(['sel-index-list'])
-    def selIndexListChange(self):
-        print('none')
-
-    def _initData(self):
-        self.selIndexList = WidgetTool.getProperty('sel-index-list', [])(self)
-        self.updateLabel()
-
-    def _initEvent(self): pass
+    @watchProperty({
+        'sel-index-list': {'type': list}
+    })
+    def selIndexListChange(self, newVal, oldVal, propertyName):
+        self.selIndexList = newVal
+        if self._lifeStage in [
+            LifeStage.INIT_DATA_BEFORE,
+            LifeStage.INITED,
+        ]: self.updateLabel()
 
     def currentText(self):
         return self.label.text()

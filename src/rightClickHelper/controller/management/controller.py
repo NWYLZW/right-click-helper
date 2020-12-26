@@ -150,10 +150,10 @@ class ManagementController(
                 (RegEnv.HKEY_CLASSES_ROOT, r'DesktopBackground\Shell')
         }
         self.selKind.setProperties({
-            'sel-index-list': [0],
             'select-menu-items': [
                 PopoverMenuItem(key) for key in self.menuItemsRoots
-            ]
+            ],
+            'sel-index-list': [0],
         })
         self.refreshMenuItems(self.menuItemsRoots.get(
             self.selKind.currentText(), []

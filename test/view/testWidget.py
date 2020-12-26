@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import unittest
-from abc import abstractmethod
 
 from PyQt5.QtWidgets import QPushButton
 
@@ -15,13 +14,7 @@ class TestWidget(unittest.TestCase):
             def __init__(self, parent=None, properties: dict = {}):
                 super().__init__(parent, properties)
 
-            def _initUI(self): pass
-            def _initData(self): pass
-            def _initEvent(self): pass
-
-            @watchProperty({
-                'xxxx': {}
-            })
+            @watchProperty(['xxxx'])
             def xxxxWatch(self, newVal, oldVal, propertyName) -> bool:
                 print('这是不会被检测到的xxxx修改')
                 return True
@@ -30,6 +23,7 @@ class TestWidget(unittest.TestCase):
                 'test': {'type': int}
             })
             def testWatch(self, newVal, oldVal, propertyName) -> bool:
+                print(self._lifeStage)
                 print(newVal, oldVal, propertyName)
 
         def setMainWindowContent(app, window):
