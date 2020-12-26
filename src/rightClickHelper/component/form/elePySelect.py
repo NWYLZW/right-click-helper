@@ -175,9 +175,9 @@ class ElePySelect(
         properties['menu-popover-items'] = WidgetTool.getProperty(
             'select-menu-items', []
         )(self)
-        self._menuPopover = PopoverClass(widget, properties)
+        self._menuPopover = PopoverClass(widget, properties)    # type: ElePySelect
 
-        def itemClicked(menuItem, widget):
+        def itemClicked(menuItem, menuItemWidget):
             selectType = WidgetTool.getProperty('select-type', 'single')(self)
             index = self.indexOfMenuItem(menuItem)
             if index != -1:
@@ -193,5 +193,6 @@ class ElePySelect(
             self.updateLabel()
 
         self._menuPopover.itemClicked.connect(itemClicked)
+        self._menuPopover.hided.connect(lambda: self.setFocus())
 
         return self._menuPopover

@@ -23,7 +23,7 @@ class ElePyPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar = None, createPopover: Callable = None
     ):
-        widget.popover: ElePyPopover = None
+        widget.popover = None
         sourceEnterEvent = widget.enterEvent
         sourceLeaveEvent = widget.leaveEvent
 
@@ -54,26 +54,20 @@ class ElePyPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar = None, createPopover: Callable = None
     ):
-        widget.popover: ElePyPopover = None
+        widget.popover = None
         sourceMousePressEvent = widget.mousePressEvent
 
-        data = {'count': 0}
         def changePopoverStatus(event: QtGui.QMouseEvent):
             sourceMousePressEvent(event)
             if event.buttons() == Qt.LeftButton:
-                if data['count'] % 2 == 0:
-                    if widget.popover is None:
-                        if createPopover is None:
-                            widget.popover = PopoverClass(widget, properties)
-                        else:
-                            widget.popover = createPopover(PopoverClass, widget, properties)
-                        widget.popover.setWidget(popoverWidget)
-                    widget.popover.show(widget)
-                else:
-                    if widget.popover is not None:
-                        widget.popover.hide()
+                if widget.popover is None:
+                    if createPopover is None:
+                        widget.popover = PopoverClass(widget, properties)
+                    else:
+                        widget.popover = createPopover(PopoverClass, widget, properties)
+                    widget.popover.setWidget(popoverWidget)
+                widget.popover.invertVisible(widget)
 
-                data['count'] += 1
                 widget.repaint(); widget.update()
 
         widget.mousePressEvent = changePopoverStatus
@@ -129,6 +123,9 @@ class ElePyPopover(
             widget, mainWidget, properties
             , PopoverClass, createPopover
         )
+
+    def invertVisible(self, widget: QWidget):
+        self.hide() if self.isVisible() else self.show(widget)
 
     def show(self, widget: QWidget) -> None:
         super().show()
