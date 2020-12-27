@@ -69,7 +69,6 @@ class PopoverMenuItem:
 class ElePyMenuPopover(
     ElePyPopover
 ):
-    hided = pyqtSignal(name='hided')
     itemClicked = pyqtSignal(PopoverMenuItem, QWidget, name='itemClicked')
 
     def __init__(
@@ -81,10 +80,6 @@ class ElePyMenuPopover(
             lambda name, value, returnData:
                 self.refreshData(value) if name == 'menu-popover-items' else None
         )
-
-    def hide(self) -> None:
-        super(ElePyMenuPopover, self).hide()
-        self.hided.emit()
 
     def setWidget(self, widget: QWidget) -> None:
         super(ElePyMenuPopover, self).setWidget(widget)

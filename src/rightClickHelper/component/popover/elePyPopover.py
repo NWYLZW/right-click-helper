@@ -15,120 +15,15 @@ from src.rightClickHelper.tool.widgetTool import WidgetTool
 class ElePyPopover(
     BasePopover
 ):
+
     def __init__(self, parent=None, properties: dict = {}):
         super().__init__(parent, properties)
-
-    @staticmethod
-    def __setPopoverInHover(
-        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
-    ):
-        widget.popover = None
-        sourceEnterEvent = widget.enterEvent
-        sourceLeaveEvent = widget.leaveEvent
-
-        def showPopover(event):
-            sourceEnterEvent(event)
-            if widget.popover is None:
-                if createPopover is None:
-                    widget.popover = PopoverClass(widget, properties)
-                else:
-                    widget.popover = createPopover(PopoverClass, widget, properties)
-                widget.popover.setWidget(popoverWidget)
-            widget.popover.show(widget)
-
-            widget.repaint(); widget.update()
-
-        def hidePopover(event):
-            sourceLeaveEvent(event)
-            if widget.popover is not None:
-                widget.popover.hide()
-
-            widget.repaint(); widget.update()
-
-        widget.enterEvent = showPopover
-        widget.leaveEvent = hidePopover
-
-    @staticmethod
-    def __setPopoverInClick(
-        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
-    ):
-        widget.popover = None
-        sourceMousePressEvent = widget.mousePressEvent
-
-        def changePopoverStatus(event: QtGui.QMouseEvent):
-            sourceMousePressEvent(event)
-            if event.buttons() == Qt.LeftButton:
-                if widget.popover is None:
-                    if createPopover is None:
-                        widget.popover = PopoverClass(widget, properties)
-                    else:
-                        widget.popover = createPopover(PopoverClass, widget, properties)
-                    widget.popover.setWidget(popoverWidget)
-                widget.popover.invertVisible(widget)
-
-                widget.repaint(); widget.update()
-
-        widget.mousePressEvent = changePopoverStatus
-
-    @staticmethod
-    def setPopover(
-        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
-    ):
-        if PopoverClass is None: PopoverClass = ElePyPopover
-
-        triggerMode = properties.get('popover-trigger', 'hover')
-        {
-            'hover': ElePyPopover.__setPopoverInHover,
-            'click': ElePyPopover.__setPopoverInClick,
-        }.get(triggerMode, ElePyPopover.__setPopoverInHover)(
-            widget, popoverWidget, properties
-            , PopoverClass, createPopover
-        )
-
-    @staticmethod
-    def setPopoverWithBackground(
-        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , dealMainWidget: Callable = None, setting: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
-    ):
-        GL = QGridLayout()
-        mainWidget = QWidget()
-        mainWidget.setLayout(GL)
-        mainWidget.setFixedSize(
-            popoverWidget.size().width()  + properties.get('shadowRadius', 10) * 2 + 10,
-            popoverWidget.size().height() + properties.get('shadowRadius', 10) * 2
-        )
-        mainWidget.popoverContent = popoverWidget
-        GL.addWidget(popoverWidget)
-
-        if dealMainWidget is not None:
-            dealMainWidget(mainWidget)
-        else:
-            mainWidget.setObjectName('mainWidget-' + str(random.randint(0, 1000000)))
-            mainWidget.settingBackgroundColor = setting.get('background-color', [255, 255, 255, 255])
-            mainWidget.setStyleSheet(f'''\
-                #{mainWidget.objectName()} {{
-                    margin: 10px;
-                    border-radius: 4px;
-                    background-color: rgba({','.join(
-                        [str(color) for color in mainWidget.settingBackgroundColor]
-                    )});
-                }}''')
-
-        properties['withTriangle'] = True
-        ElePyPopover.setPopover(
-            widget, mainWidget, properties
-            , PopoverClass, createPopover
-        )
 
     def invertVisible(self, widget: QWidget):
         self.hide() if self.isVisible() else self.show(widget)
 
     def show(self, widget: QWidget) -> None:
-        super().show()
+        super(ElePyPopover, self).show()
         pos = widget.mapToGlobal(QPoint(0, 0))
         targetOffset = {
             'bottom': {
@@ -249,3 +144,109 @@ class ElePyPopover(
     @position.setter
     def position(self, val: str):
         self.setProperty('position', val)
+
+    @staticmethod
+    def __setPopoverInHover(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
+    ):
+        widget.popover = None
+        sourceEnterEvent = widget.enterEvent
+        sourceLeaveEvent = widget.leaveEvent
+
+        def showPopover(event):
+            sourceEnterEvent(event)
+            if widget.popover is None:
+                if createPopover is None:
+                    widget.popover = PopoverClass(widget, properties)
+                else:
+                    widget.popover = createPopover(PopoverClass, widget, properties)
+                widget.popover.setWidget(popoverWidget)
+            widget.popover.show(widget)
+
+            widget.repaint(); widget.update()
+
+        def hidePopover(event):
+            sourceLeaveEvent(event)
+            if widget.popover is not None:
+                widget.popover.hide()
+
+            widget.repaint(); widget.update()
+
+        widget.enterEvent = showPopover
+        widget.leaveEvent = hidePopover
+
+    @staticmethod
+    def __setPopoverInClick(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
+    ):
+        widget.popover = None
+        sourceMousePressEvent = widget.mousePressEvent
+
+        def changePopoverStatus(event: QtGui.QMouseEvent):
+            sourceMousePressEvent(event)
+            if event.buttons() == Qt.LeftButton:
+                if widget.popover is None:
+                    if createPopover is None:
+                        widget.popover = PopoverClass(widget, properties)
+                    else:
+                        widget.popover = createPopover(PopoverClass, widget, properties)
+                    widget.popover.setWidget(popoverWidget)
+                widget.popover.invertVisible(widget)
+
+                widget.repaint(); widget.update()
+
+        widget.mousePressEvent = changePopoverStatus
+
+    @staticmethod
+    def setPopover(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
+    ):
+        if PopoverClass is None: PopoverClass = ElePyPopover
+
+        triggerMode = properties.get('popover-trigger', 'hover')
+        {
+            'hover': ElePyPopover.__setPopoverInHover,
+            'click': ElePyPopover.__setPopoverInClick,
+        }.get(triggerMode, ElePyPopover.__setPopoverInHover)(
+            widget, popoverWidget, properties
+            , PopoverClass, createPopover
+        )
+
+    @staticmethod
+    def setPopoverWithBackground(
+        widget: QWidget, popoverWidget: QWidget, properties: dict = {}
+        , dealMainWidget: Callable = None, setting: dict = {}
+        , PopoverClass: ClassVar = None, createPopover: Callable = None
+    ):
+        GL = QGridLayout()
+        mainWidget = QWidget()
+        mainWidget.setLayout(GL)
+        mainWidget.setFixedSize(
+            popoverWidget.size().width()  + properties.get('shadowRadius', 10) * 2 + 10,
+            popoverWidget.size().height() + properties.get('shadowRadius', 10) * 2
+        )
+        mainWidget.popoverContent = popoverWidget
+        GL.addWidget(popoverWidget)
+
+        if dealMainWidget is not None:
+            dealMainWidget(mainWidget)
+        else:
+            mainWidget.setObjectName('mainWidget-' + str(random.randint(0, 1000000)))
+            mainWidget.settingBackgroundColor = setting.get('background-color', [255, 255, 255, 255])
+            mainWidget.setStyleSheet(f'''\
+                #{mainWidget.objectName()} {{
+                    margin: 10px;
+                    border-radius: 4px;
+                    background-color: rgba({','.join(
+                        [str(color) for color in mainWidget.settingBackgroundColor]
+                    )});
+                }}''')
+
+        properties['withTriangle'] = True
+        ElePyPopover.setPopover(
+            widget, mainWidget, properties
+            , PopoverClass, createPopover
+        )

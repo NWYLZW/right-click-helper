@@ -47,8 +47,12 @@ class ElePySelect(
     def __init__(
         self, parent=None, properties: dict = {}
     ):
-        super().__init__(parent, properties)
         self._menuPopover = None
+        self.__transformProperties = {}
+        super().__init__(parent, {
+            'disabled': False,
+            **properties
+        })
 
     def drawRightIcon(self, event: QPaintEvent):
         painter = QPainter(self.rightIcon)
@@ -64,7 +68,6 @@ class ElePySelect(
         ])
 
     def _initUi(self):
-        self.setCursor(Qt.PointingHandCursor)
         self.setLayout(QHBoxLayout())
         content = QWidget(self)
         content.setObjectName('ElePySelect-content')
@@ -91,11 +94,8 @@ class ElePySelect(
         self.rightIcon.paintEvent = self.drawRightIcon
 
         self.popoverContent = content
-        menuItems = WidgetTool.getProperty(
-            'select-menu-items', []
-        )(self)
         ElePyMenuPopover.setMenu(
-            self.popoverContent, menuItems, mode=WidgetTool.getProperty(
+            self.popoverContent, [], mode=WidgetTool.getProperty(
                 'select-mode', MenuPopoverMode.LIGHT
             )(self), createPopover=self.setMenuPopover
         )
@@ -113,18 +113,17 @@ class ElePySelect(
             if index < 0 or index >= len(menuItems): continue
             selItems.append(menuItems[index])
 
+        dim = False
         if len(self.selIndexList) == 0 or len(selItems) == 0:
-            self.label.setStyleSheet('''\
-            QLabel {
-                color: rgb(192, 196, 204);
-            }''')
             self.label.setText(placeholder)
         else:
-            self.label.setStyleSheet('''\
-            QLabel {
-                color: rgb(0, 0, 0);
-            }''')
             self.label.setText(', '.join([selItem.title for selItem in selItems]))
+
+        dim = dim or WidgetTool.getProperty('disabled', False)(self)
+        self.label.setStyleSheet(f'''\
+        QLabel {{
+            color: {'rgb(192, 196, 204)' if dim else 'rgb(0, 0, 0)'};
+        }}''')
 
         if self.maximumWidth() == 16777215:
             selfWidth = WidgetTool.getTextWidth(self.label) + self.rightIcon.width() + 40
@@ -137,6 +136,26 @@ class ElePySelect(
         self.popoverContent.setFixedWidth(selfWidth - self.rightIcon.width())
 
         self.parent().repaint(); self.parent().update()
+
+    @watchProperty({
+        'select-menu-items': {'type': list}
+    })
+    def selectMenuItemsChange(self, newVal, oldVal, propertyName):
+        self.__transformProperties['menu-popover-items'] = newVal
+
+    @watchProperty({
+        'disabled': {'type': bool}
+    })
+    def disableChange(self, newVal, oldVal, propertyName):
+        if newVal:
+            self.setCursor(Qt.ForbiddenCursor)
+        else:
+            self.setCursor(Qt.PointingHandCursor)
+
+        if self._menuPopover is None:
+            self.__transformProperties['forbiddenShow'] = newVal
+        else:
+            self._menuPopover.setProperty('forbiddenShow', newVal)
 
     @watchProperty({
         'sel-index-list': {'type': list}
@@ -171,10 +190,11 @@ class ElePySelect(
             return True
         return False
 
-    def setMenuPopover(self, PopoverClass: ElePyMenuPopover, widget, properties):
-        properties['menu-popover-items'] = WidgetTool.getProperty(
-            'select-menu-items', []
-        )(self)
+    def setMenuPopover(self, PopoverClass: ElePyMenuPopover, widget: QWidget, properties: dict):
+        properties = {
+            **properties,
+            **self.__transformProperties
+        }
         self._menuPopover = PopoverClass(widget, properties)    # type: ElePySelect
 
         def itemClicked(menuItem, menuItemWidget):
@@ -189,10 +209,9 @@ class ElePySelect(
                         'select-menu-items', []
                     )(self))
                 else:
-                    self.selIndexList.remove(index)
+                    if selectType == 'multiple':
+                        self.selIndexList.remove(index)
 
-            menuItemWidget.setProperty('sel', 'is')
-            menuItemWidget.update(); menuItemWidget.repaint()
             self.updateLabel()
 
         self._menuPopover.itemClicked.connect(itemClicked)
