@@ -14,32 +14,37 @@ class ElePySelect(
     """
     signal: {
         change: {
-            param: (PopoverMenuItem, [int], [PopoverMenuItem])
-            command : '所选项改变时触发，参数分别为(选择的菜单项，菜单已选index列表，所有菜单项列表)'
+            param: (PopoverMenuItem, [int], [PopoverMenuItem]),
+            command : '所选项改变时触发，参数分别为(选择的菜单项，菜单已选index列表，所有菜单项列表)',
         }
-    }
+    },
     properties: {
         placeholder: {
-            type    : str
-            default : '请选择'
-            command : '未选择事默认展示的文字'
-        }
+            type    : str,
+            default : '请选择',
+            command : '未选择事默认展示的文字',
+        },
+        disabled: {
+            type    : bool,
+            default : false,
+            command : '控制是否为禁用状态',
+        },
         select-type: {
-            type     : str
-            default  : '请选择'
-            candidate: ['single', 'multiple']
-            command  : '选择类型'
-        }
+            type     : str,
+            default  : '请选择',
+            candidate: ['single', 'multiple'],
+            command  : '选择类型',
+        },
         select-menu-items: {
-            type     : [PopoverMenuItem]
-            default  : []
-            command  : '待选菜单选项'
-        }
+            type     : [PopoverMenuItem],
+            default  : [],
+            command  : '待选菜单选项',
+        },
         sel-index-list: {
-            type     : [int]
-            default  : []
-            command  : '默认选择的菜单项列表, 当select-type属性为single时只会选择第一个'
-        }
+            type     : [int],
+            default  : [],
+            command  : '默认选择的菜单项列表, 当select-type属性为single时只会选择第一个',
+        },
     }
     """
     change = pyqtSignal(PopoverMenuItem, list, list)
