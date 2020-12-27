@@ -133,7 +133,10 @@
 #closeWindow:hover {
 	border-image: url(:/ico/image/common-icon/close-ed.png);
 }
-</string>
+
+QLabel {
+	color: white;
+}</string>
        </property>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
@@ -163,7 +166,7 @@
          <item>
           <layout class="QHBoxLayout" name="topRight" stretch="0,0,0,0">
            <property name="spacing">
-            <number>10</number>
+            <number>5</number>
            </property>
            <item>
             <widget class="QGraphicsView" name="appIcon">
@@ -184,6 +187,8 @@
               <font>
                <family>Microsoft YaHei UI</family>
                <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="text">
@@ -197,6 +202,8 @@
               <font>
                <family>Microsoft YaHei UI</family>
                <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="text">
@@ -210,6 +217,8 @@
               <font>
                <family>Microsoft YaHei UI</family>
                <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="text">

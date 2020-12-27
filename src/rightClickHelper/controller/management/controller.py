@@ -134,6 +134,7 @@ class ManagementController(
                     MenuItem(key, regDataTree[key])
                 )
         self.refreshShowMenuItems()
+        self.itemScrollArea.repaint(); self.itemScrollArea.update()
 
     def _initData(self):
         self.listHLWs = []  # type: [QWidget]

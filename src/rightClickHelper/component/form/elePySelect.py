@@ -190,6 +190,9 @@ class ElePySelect(
                     )(self))
                 else:
                     self.selIndexList.remove(index)
+
+            menuItemWidget.setProperty('sel', 'is')
+            menuItemWidget.update(); menuItemWidget.repaint()
             self.updateLabel()
 
         self._menuPopover.itemClicked.connect(itemClicked)

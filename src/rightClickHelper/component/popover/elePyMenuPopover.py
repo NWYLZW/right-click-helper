@@ -34,30 +34,21 @@ class PopoverMenuItem:
         menuItemVL.setContentsMargins(5, 5, 5, 5)
         menuItemVL.setSpacing(5)
 
-        if mode == MenuPopoverMode.LIGHT:
-            menuItemW.setStyleSheet(f'''\
-            #{menuItemW.objectName()} {{
-                border-radius: 4px;
-            }}
-            #{menuItemW.objectName()}:hover {{
-                background-color: rgba(240, 240, 240);
-            }}
-            #{menuItemW.objectName()} QLabel {{
-                padding: 5px;
-                color: black;
-            }}''')
-        elif mode == MenuPopoverMode.DARK:
-            menuItemW.setStyleSheet(f'''\
-            #{menuItemW.objectName()} {{
-                border-radius: 4px;
-            }}
-            #{menuItemW.objectName()}:hover {{
-                background-color: rgba(100, 100, 100);
-            }}
-            #{menuItemW.objectName()} QLabel {{
-                padding: 5px;
-                color: white;
-            }}''')
+        menuItemW.setStyleSheet(f'''\
+        #{menuItemW.objectName()} {{
+            border-radius: 4px;
+        }}
+        #{menuItemW.objectName()}:hover {{
+            background-color: {
+                'rgba(240, 240, 240)' if mode == MenuPopoverMode.LIGHT else 'rgba(100, 100, 100)'
+            };
+        }}
+        #{menuItemW.objectName()} QLabel {{
+            padding: 5px;
+            color: {
+                'black' if mode == MenuPopoverMode.LIGHT else 'white'
+            };
+        }}''')
 
         title = QLabel(menuItemW)
         title.setText(self.title)

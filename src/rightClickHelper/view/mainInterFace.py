@@ -76,7 +76,10 @@ class Ui_MainWindow(object):
 "#closeWindow:hover {\n"
 "    border-image: url(:/ico/image/common-icon/close-ed.png);\n"
 "}\n"
-"")
+"\n"
+"QLabel {\n"
+"    color: white;\n"
+"}")
         self.headBar.setObjectName("headBar")
         self.layoutWidget = QtWidgets.QWidget(self.headBar)
         self.layoutWidget.setGeometry(QtCore.QRect(0, 0, 1181, 51))
@@ -86,7 +89,7 @@ class Ui_MainWindow(object):
         self.headBar_w.setSpacing(0)
         self.headBar_w.setObjectName("headBar_w")
         self.topRight = QtWidgets.QHBoxLayout()
-        self.topRight.setSpacing(10)
+        self.topRight.setSpacing(5)
         self.topRight.setObjectName("topRight")
         self.appIcon = QtWidgets.QGraphicsView(self.layoutWidget)
         self.appIcon.setMaximumSize(QtCore.QSize(36, 36))
@@ -97,6 +100,8 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI")
         font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
         self.appTitle.setFont(font)
         self.appTitle.setObjectName("appTitle")
         self.topRight.addWidget(self.appTitle)
@@ -104,6 +109,8 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI")
         font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
         self.appVersion.setFont(font)
         self.appVersion.setObjectName("appVersion")
         self.topRight.addWidget(self.appVersion)
@@ -111,6 +118,8 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei UI")
         font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
         self.appMode.setFont(font)
         self.appMode.setObjectName("appMode")
         self.topRight.addWidget(self.appMode)
