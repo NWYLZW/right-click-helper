@@ -47,17 +47,28 @@ class ElePyPopover(
             pos.x() + targetOffset[self.position]['x'][0],
             pos.y() + targetOffset[self.position]['y'][0]
         )
-        originPoint = QPoint(
-            targetPoint.x() + targetOffset[self.position]['x'][1],
-            targetPoint.y() + targetOffset[self.position]['y'][1],
-        )
+        animationType = WidgetTool.getProperty('animationType', 'fadeInOut')(self)
+        print('show', animationType)
+        if   animationType == 'transform':
+            originPoint = QPoint(
+                targetPoint.x() + targetOffset[self.position]['x'][1],
+                targetPoint.y() + targetOffset[self.position]['y'][1],
+            )
 
-        AnimationTool.create({
-            'type': b'pos',
-            'startVal': originPoint,
-            'endVal': targetPoint,
-            'duration': 100
-        })(self).start()
+            AnimationTool.create({
+                'type': b'pos',
+                'startVal': originPoint,
+                'endVal':   targetPoint,
+                'duration': 100
+            })(self).start()
+        elif animationType == 'fadeInOut':
+            self.move(targetPoint)
+            AnimationTool.create({
+                'type': b'windowOpacity',
+                'startVal': 0,
+                'endVal':   1,
+                'duration': 200
+            })(self).start()
 
     def hide(self) -> None:
         targetOffset = {
@@ -74,19 +85,28 @@ class ElePyPopover(
                 'x': 100, 'y': 0,
             },
         }
-        animation = AnimationTool.create({
-            'type': b'pos',
-            'startVal': self.pos(),
-            'endVal': QPoint(
-                self.pos().x() + targetOffset[self.position]['x'],
-                self.pos().y() + targetOffset[self.position]['y'],
-            ),
-            'duration': 100
-        })(self)
-        animation.start()
-        animation.finished.connect(
-            lambda: super(ElePyPopover, self).hide()
-        )
+        animationType = WidgetTool.getProperty('animationType', 'fadeInOut')(self)
+        print('hide', animationType)
+        if   animationType == 'transform':
+            AnimationTool.create({
+                'type': b'pos',
+                'startVal': self.pos(),
+                'endVal': QPoint(
+                    self.pos().x() + targetOffset[self.position]['x'],
+                    self.pos().y() + targetOffset[self.position]['y'],
+                ),
+                'duration': 100,
+                'finished': lambda: super(ElePyPopover, self).hide()
+            })(self).start()
+        elif animationType == 'fadeInOut':
+            self.move(self.pos())
+            AnimationTool.create({
+                'type': b'windowOpacity',
+                'startVal': 1,
+                'endVal':   0,
+                'duration': 200,
+                'finished': lambda: super(ElePyPopover, self).hide()
+            })(self).start()
 
     def paintEvent(
         self, event: QtGui.QPaintEvent

@@ -19,5 +19,7 @@ class AnimationTool:
             else:
                 animation.setKeyValues(keyVals)
             animation.setDuration(data.get('duration'))
+            finishedFun = data.get('finished', None)
+            if finishedFun is not None: animation.finished.connect(finishedFun)
             return animation
         return _fun
