@@ -281,7 +281,7 @@ class MenuItem:
     def __init__(self, name: str, regData: dict):
         self.regData = regData
         self._name   = name
-        self.__name  = ''
+        self.__name  = name
 
         regDataVal = regData.get('__val__', {})
         commandVal = regData.get('command', {
@@ -319,6 +319,7 @@ class MenuItem:
 
     @name.setter
     def name(self, newName):
+        if newName == '': raise ValueError('MenuItem\'s name can\'t be set to \'\'.')
         self.__name = newName
 
     def saveToReg(self, mv: bool = True):
