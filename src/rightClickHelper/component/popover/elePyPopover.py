@@ -15,6 +15,27 @@ from src.rightClickHelper.tool.widgetTool import WidgetTool
 class ElePyPopover(
     BasePopover
 ):
+    """
+    properties: {
+        with-triangle: {
+            type     : bool,
+            default  : False,
+            command  : '是否带小三角指示位置',
+        },
+        position: {
+            type     : str,
+            default  : 'bottom',
+            candidate: ['top', 'bottom', 'left', 'right'],
+            command  : 'popover出现的位置',
+        },
+        animation-type: {
+            type     : str,
+            default  : 'transform',
+            candidate: ['transform', 'fadeInOut'],
+            command  : 'popover的展示动画 transform滑动移入移出，fadeInOut 淡入淡出',
+        },
+    }
+    """
 
     def __init__(self, parent=None, properties: dict = {}):
         super().__init__(parent, properties)
@@ -47,8 +68,7 @@ class ElePyPopover(
             pos.x() + targetOffset[self.position]['x'][0],
             pos.y() + targetOffset[self.position]['y'][0]
         )
-        animationType = WidgetTool.getProperty('animationType', 'fadeInOut')(self)
-        print('show', animationType)
+        animationType = WidgetTool.getProperty('animation-type', 'transform')(self)
         if   animationType == 'transform':
             originPoint = QPoint(
                 targetPoint.x() + targetOffset[self.position]['x'][1],
@@ -85,8 +105,7 @@ class ElePyPopover(
                 'x': 100, 'y': 0,
             },
         }
-        animationType = WidgetTool.getProperty('animationType', 'fadeInOut')(self)
-        print('hide', animationType)
+        animationType = WidgetTool.getProperty('animation-type', 'transform')(self)
         if   animationType == 'transform':
             AnimationTool.create({
                 'type': b'pos',
@@ -111,7 +130,7 @@ class ElePyPopover(
     def paintEvent(
         self, event: QtGui.QPaintEvent
     ) -> None:
-        if WidgetTool.getProperty('withTriangle', False)(self):
+        if WidgetTool.getProperty('with-triangle', False)(self):
             painter = QPainter(self)
 
             painter.setRenderHint(QPainter.Antialiasing, True)
@@ -265,7 +284,7 @@ class ElePyPopover(
                     )});
                 }}''')
 
-        properties['withTriangle'] = True
+        properties['with-triangle'] = True
         ElePyPopover.setPopover(
             widget, mainWidget, properties
             , PopoverClass, createPopover

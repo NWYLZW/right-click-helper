@@ -53,7 +53,9 @@ class ElePySelect(
         self, parent=None, properties: dict = {}
     ):
         self._menuPopover = None
-        self.__transformProperties = {}
+        self.__transformProperties = {
+            'animation-type': 'fadeInOut'
+        }
         super().__init__(parent, {
             'disabled': False,
             **properties
