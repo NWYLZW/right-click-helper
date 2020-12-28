@@ -206,7 +206,7 @@ class ElePyPopover(
                     timer.setSingleShot(True)
                     timer.timeout.connect(__showPopover)
 
-                    timer.start(1000)
+                    timer.start(300)
                     return
 
                 sourceEnterEvent(event)
@@ -233,7 +233,7 @@ class ElePyPopover(
                     timer.setSingleShot(True)
                     timer.timeout.connect(__hidePopover)
 
-                    timer.start(1000)
+                    timer.start(300)
                     return
 
                 sourceLeaveEvent(event)
