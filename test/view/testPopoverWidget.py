@@ -78,7 +78,12 @@ class TestPopoverWidget(unittest.TestCase):
 
             widget.setObjectName('w001')
             widget.setMaximumSize(360, 360)
-            widget.setStyleSheet('#w001 {background-color: red;}')
+            widget.setStyleSheet(f'''\
+            #{widget.objectName()} {{
+                margin: 10px;
+                background-color: rgba(200, 200, 200);
+            }}
+            ''')
 
             ElePyTooltip.setTooltip(
                 widget, '2345678911111测试中文111111testEnglish11111111198765432'

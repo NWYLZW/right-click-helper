@@ -25,6 +25,8 @@ class ElePyTooltip(
         tooltip = QLabel()
         tooltip.setAlignment(Qt.AlignCenter)
         tooltip.setText(text)
+        tooltip.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        tooltip.setCursor(Qt.IBeamCursor)
         WidgetTool.setFont(tooltip)
 
         width = tooltip.fontMetrics()\

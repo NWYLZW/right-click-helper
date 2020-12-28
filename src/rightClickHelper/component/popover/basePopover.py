@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import typing
 
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QEvent
 from PyQt5.QtWidgets import QDockWidget, QWidget
 
 from src.rightClickHelper.tool.effectTool import EffectTool
@@ -15,6 +15,7 @@ class BasePopover(
     propertyChange = pyqtSignal(str, object, dict)
 
     def __init__(self, parent=None, properties: dict = {}):
+        self._inWidget = False
         super().__init__(parent)
         WidgetTool.setProperties(properties)(self)
         self._initUI()
@@ -31,6 +32,14 @@ class BasePopover(
         EffectTool.setBlur(
             self, shadowRadius=shadowRadius, shadowColor=shadowColor
         )
+
+    def enterEvent(self, event: QEvent) -> None:
+        super(BasePopover, self).enterEvent(event)
+        self._inWidget = True
+
+    def leaveEvent(self, event: QEvent) -> None:
+        super(BasePopover, self).enterEvent(event)
+        self._inWidget = False
 
     def show(self) -> None:
         if WidgetTool.getProperty('forbiddenShow', False)(self): return

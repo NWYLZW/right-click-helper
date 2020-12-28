@@ -4,7 +4,7 @@ import random
 from typing import Callable, ClassVar
 
 from PyQt5 import QtGui
-from PyQt5.QtCore import QPoint, Qt
+from PyQt5.QtCore import QPoint, Qt, QTimer
 from PyQt5.QtGui import QPainter, QColor, QPolygon, QPainterPath, QPolygonF
 from PyQt5.QtWidgets import QWidget, QGridLayout
 
@@ -193,24 +193,57 @@ class ElePyPopover(
         sourceEnterEvent = widget.enterEvent
         sourceLeaveEvent = widget.leaveEvent
 
+        _is = {
+            'hide': True,
+            'inWidget': False
+        }
+
         def showPopover(event):
-            sourceEnterEvent(event)
-            if widget.popover is None:
-                if createPopover is None:
-                    widget.popover = PopoverClass(widget, properties)
-                else:
-                    widget.popover = createPopover(PopoverClass, widget, properties)
-                widget.popover.setWidget(popoverWidget)
-            widget.popover.show(widget)
+            def __showPopover():
+                if not _is['inWidget']: return
+                if not _is['hide']:
+                    timer = QTimer(widget)
+                    timer.setSingleShot(True)
+                    timer.timeout.connect(__showPopover)
 
-            widget.repaint(); widget.update()
+                    timer.start(1000)
+                    return
 
+                sourceEnterEvent(event)
+                if widget.popover is None:
+                    if createPopover is None:
+                        widget.popover = PopoverClass(widget, properties)
+                    else:
+                        widget.popover = createPopover(PopoverClass, widget, properties)
+                    widget.popover.setWidget(popoverWidget)
+                widget.popover.show(widget)
+
+                widget.repaint(); widget.update()
+                _is['hide'] = False
+            _is['inWidget'] = True
+            __showPopover()
+
+        # 当前位于popover上不隐藏
+        # 当前位于widget上不隐藏
         def hidePopover(event):
-            sourceLeaveEvent(event)
-            if widget.popover is not None:
-                widget.popover.hide()
+            def __hidePopover(must: bool = False):
+                if _is['inWidget']: return
+                if must or (widget.popover is not None and widget.popover._inWidget):
+                    timer = QTimer(widget)
+                    timer.setSingleShot(True)
+                    timer.timeout.connect(__hidePopover)
 
-            widget.repaint(); widget.update()
+                    timer.start(1000)
+                    return
+
+                sourceLeaveEvent(event)
+                if widget.popover is not None:
+                    widget.popover.hide()
+
+                widget.repaint(); widget.update()
+                _is['hide'] = True
+            _is['inWidget'] = False
+            __hidePopover(True)
 
         widget.enterEvent = showPopover
         widget.leaveEvent = hidePopover
