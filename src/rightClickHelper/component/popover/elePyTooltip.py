@@ -3,7 +3,6 @@
 from enum import Enum
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QLabel
 
 from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
@@ -51,5 +50,6 @@ class ElePyTooltip(
             setting['background-color'] = [48, 49, 51]
 
         ElePyPopover.setPopoverWithBackground(widget, tooltip, {
-            'position': position
+            'position': position,
+            'animation-type': 'fadeInOut'
         }, setting=setting, PopoverClass=ElePyTooltip)

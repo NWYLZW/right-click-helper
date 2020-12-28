@@ -6,6 +6,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
+from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
@@ -75,7 +76,9 @@ class MenuItemCard_itf:
     def setTitle(self, menuItem: MenuItem):
         try:
             self.title.setText(menuItem.name)
-            self.title.setToolTip(menuItem.name)
+            ElePyTooltip.setTooltip(
+                self.title, menuItem.name
+            )
         except Exception as e: raise e
 
     def setData(self, menuItem: MenuItem):
@@ -88,8 +91,8 @@ class MenuItemCard_itf:
     @staticmethod
     def setSwitchItem(menuItemCard, menuItem: MenuItem):
         menuItemCard.switchItem.setProperty('status', 'close' if menuItem.isHide else 'open')
-        menuItemCard.switchItem.setToolTip(
-            '隐藏该选项' if menuItem.isHide else '显示该选项'
+        ElePyTooltip.setTooltip(
+            menuItemCard.switchItem, '显示该选项' if menuItem.isHide else '隐藏该选项'
         )
         menuItemCard.style().polish(menuItemCard.switchItem)
 
