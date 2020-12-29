@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from PyQt5.QtCore import Qt, QLineF, pyqtSignal
-from PyQt5.QtGui import QPaintEvent, QPainter, QColor
+from math import sin, cos, sqrt, acos
+
+from PyQt5.QtCore import Qt, pyqtSignal, QTimer
+from PyQt5.QtGui import QPaintEvent, QPainter, QColor, QPainterPath
 from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget
 
 from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty, LifeStage
@@ -52,6 +54,7 @@ class ElePySelect(
     def __init__(
         self, parent=None, properties: dict = {}
     ):
+        self.__rightIconRotateAngle = 0
         self._menuPopover = None
         self.__transformProperties = {
             'animation-type': 'fadeInOut'
@@ -62,17 +65,29 @@ class ElePySelect(
         })
 
     def drawRightIcon(self, event: QPaintEvent):
+        width = self.rightIcon.width()
+        unit = 6; PI = 3.1415926535897932384626433832795
+        rotateAngle = -90 + self.__rightIconRotateAngle
+
+        theta = acos(-1/sqrt(5)) + self.__rightIconRotateAngle/180*PI
+        startP = (
+            int(width/2 + (unit/2)*sqrt(5)*cos(theta)),
+            int(width/2 + (unit/2)*sqrt(5)*sin(theta))
+        )
+
         painter = QPainter(self.rightIcon)
+        painter.translate(*startP)
+        painter.rotate(rotateAngle)
 
-        painter.setRenderHint(QPainter.Antialiasing, True)
-        painter.setBrush(QColor(202, 208, 212))
+        pen = painter.pen()
+        pen.setColor(QColor(202, 208, 212))
+        pen.setWidthF(2)
+        painter.setPen(pen)
 
-        unit = 6; offset0 = (2, 2); offset1 = (3, 3)
-
-        painter.drawLines([
-            QLineF(0    + offset0[0], 0    + offset0[1], unit   + offset0[0], unit + offset0[1]),
-            QLineF(unit + offset1[0], unit + offset1[1], 2*unit + offset1[0], 0    + offset1[1])
-        ])
+        path = QPainterPath()
+        path.lineTo(unit,   unit)
+        path.lineTo(unit*2, 0)
+        painter.drawPath(path)
 
     def _initUi(self):
         self.setLayout(QHBoxLayout())
@@ -97,7 +112,7 @@ class ElePySelect(
 
         self.rightIcon = QWidget(content)
         content.layout().addWidget(self.rightIcon)
-        self.rightIcon.setFixedSize(16, 12)
+        self.rightIcon.setFixedSize(20, 20)
         self.rightIcon.paintEvent = self.drawRightIcon
 
         self.popoverContent = content
@@ -143,6 +158,29 @@ class ElePySelect(
         self.popoverContent.setFixedWidth(selfWidth - self.rightIcon.width())
 
         self.parent().repaint(); self.parent().update()
+
+    @watchProperty({
+        'menu-popover-is-show': {'type': bool}
+    })
+    def menuPopoverVisibleChange(self, direction, oldVal, propertyName):
+        hasAttr = hasattr(self, 'rotateRightIconTimer')
+        if not hasAttr or (
+            hasAttr and self.rotateRightIconTimer is None
+        ):
+            self.rotateRightIconTimer = QTimer(self)
+
+        def rotate():
+            self.__rightIconRotateAngle += 9 if direction else -9
+            self.repaint()
+
+            if self.__rightIconRotateAngle >= 90 or self.__rightIconRotateAngle <= 0:
+                self.rotateRightIconTimer = None
+                return
+            self.rotateRightIconTimer.singleShot(
+                1, rotate
+            )
+
+        rotate()
 
     @watchProperty({
         'select-menu-items': {'type': list}
@@ -222,6 +260,11 @@ class ElePySelect(
             self.updateLabel()
 
         self._menuPopover.itemClicked.connect(itemClicked)
-        self._menuPopover.hided.connect(lambda: self.setFocus())
+        self._menuPopover.showed.connect(
+            lambda: self.setProperty('menu-popover-is-show', True)
+        )
+        self._menuPopover.hided.connect(
+            lambda: self.setProperty('menu-popover-is-show', False)
+        )
 
         return self._menuPopover

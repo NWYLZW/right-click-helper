@@ -122,7 +122,13 @@ def watchProperty(
     :param properties: 检测的property信息列表
     :return: 一个函数装饰器
     """
-    def __wrapper(func):
+    def __wrapper(func: typing.Callable[
+        [typing.Any, typing.Any, str], bool
+    ]):
+        """
+        :param func: 观测值变化的函数
+        :return: 返回一个被装饰后的观测函数
+        """
         @wraps(func)
         def __fun(*args, **kwargs):
             return func(*args, **kwargs)
