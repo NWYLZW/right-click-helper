@@ -176,9 +176,8 @@ class ElePySelect(
             if self.__rightIconRotateAngle >= 90 or self.__rightIconRotateAngle <= 0:
                 self.rotateRightIconTimer = None
                 return
-            self.rotateRightIconTimer.singleShot(
-                1, rotate
-            )
+            if self.rotateRightIconTimer is not None:
+                self.rotateRightIconTimer.singleShot(1, rotate)
 
         rotate()
 
