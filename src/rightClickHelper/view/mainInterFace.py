@@ -214,13 +214,13 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.main)
 
         self.retranslateUi(MainWindow)
-        self.minWindow.clicked.connect(MainWindow.hide)
+        self.minWindow.clicked.connect(MainWindow.showMinimized)
         self.closeWindow.clicked.connect(MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Right Click Helper"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "AL-IDE"))
         self.appTitle.setText(_translate("MainWindow", "Right Click Helper"))
         self.appVersion.setText(_translate("MainWindow", "1.0.0.0"))
         self.appMode.setText(_translate("MainWindow", "Mod"))

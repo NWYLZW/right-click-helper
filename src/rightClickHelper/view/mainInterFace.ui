@@ -475,7 +475,7 @@ QLabel {
    <sender>minWindow</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>hide()</slot>
+   <slot>showMinimized()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1113</x>
