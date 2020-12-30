@@ -187,7 +187,10 @@ class ElePyPopover(
     @staticmethod
     def __setPopoverInHover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
+        , PopoverClass: ClassVar['ElePyPopover'] = None
+        , createPopover: Callable[
+            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+        ] = None
     ):
         widget.popover = None
         sourceEnterEvent = widget.enterEvent
@@ -251,7 +254,10 @@ class ElePyPopover(
     @staticmethod
     def __setPopoverInClick(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
+        , PopoverClass: ClassVar['ElePyPopover'] = None
+        , createPopover: Callable[
+            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+        ] = None
     ):
         widget.popover = None
         sourceMousePressEvent = widget.mousePressEvent
@@ -274,7 +280,10 @@ class ElePyPopover(
     @staticmethod
     def setPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
+        , PopoverClass: ClassVar['ElePyPopover'] = None
+        , createPopover: Callable[
+            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+        ] = None
     ):
         if PopoverClass is None: PopoverClass = ElePyPopover
 
@@ -291,7 +300,10 @@ class ElePyPopover(
     def setPopoverWithBackground(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , dealMainWidget: Callable = None, setting: dict = {}
-        , PopoverClass: ClassVar = None, createPopover: Callable = None
+        , PopoverClass: ClassVar['ElePyPopover'] = None
+        , createPopover: Callable[
+            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+        ] = None
     ):
         GL = QGridLayout()
         mainWidget = QWidget()

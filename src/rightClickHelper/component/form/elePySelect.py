@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from math import sin, cos, sqrt, acos
+from typing import ClassVar
 
 from PyQt5.QtCore import Qt, pyqtSignal, QTimer
 from PyQt5.QtGui import QPaintEvent, QPainter, QColor, QPainterPath
@@ -234,12 +235,14 @@ class ElePySelect(
             return True
         return False
 
-    def setMenuPopover(self, PopoverClass: ElePyMenuPopover, widget: QWidget, properties: dict):
+    def setMenuPopover(
+        self, PopoverClass: ClassVar[ElePyMenuPopover], widget: QWidget, properties: dict
+    ):
         properties = {
             **properties,
             **self.__transformProperties
         }
-        self._menuPopover = PopoverClass(widget, properties)    # type: ElePySelect
+        self._menuPopover = PopoverClass(widget, properties)    # type: ElePyMenuPopover
 
         def itemClicked(menuItem, menuItemWidget):
             selectType = WidgetTool.getProperty('select-type', 'single')(self)
