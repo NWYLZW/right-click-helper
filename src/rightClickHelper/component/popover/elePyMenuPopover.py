@@ -130,9 +130,13 @@ class ElePyMenuPopover(
         widget: QWidget, items: [PopoverMenuItem], properties: dict = {},
         mode: MenuPopoverMode = MenuPopoverMode.LIGHT, createPopover: Callable = None
     ):
-        properties['popover-trigger'] = properties.get('popover-trigger', 'click')
-        properties['menu-popover-items'] = items
-        properties['menu-popover-mode'] = mode
+        properties = {
+            'popover-trigger':      'hover'
+            , 'animation-type':      'fadeInOut'
+            , 'menu-popover-items':  items
+            , 'menu-popover-mode':   mode
+            , **properties
+        }
 
         menuItems = QWidget()
         menuItemsHL = QVBoxLayout()
