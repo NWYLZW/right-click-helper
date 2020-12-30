@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from enum import Enum
-from typing import Callable, ClassVar
+from typing import Callable, Any
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
 from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
@@ -31,8 +32,8 @@ class PopoverMenuItem:
 
         menuItemVL = QHBoxLayout()
         menuItemW.setLayout(menuItemVL)
-        menuItemVL.setContentsMargins(5, 5, 5, 5)
-        menuItemVL.setSpacing(5)
+        menuItemVL.setContentsMargins(5, 0, 0, 5)
+        menuItemVL.setSpacing(8)
 
         menuItemW.setStyleSheet(f'''\
         #{menuItemW.objectName()} {{
@@ -44,16 +45,28 @@ class PopoverMenuItem:
             };
         }}
         #{menuItemW.objectName()} QLabel {{
-            padding: 5px;
             color: {
                 'black' if mode == MenuPopoverMode.LIGHT else 'white'
             };
         }}''')
 
+        width = 20
+        if self.icon != '':
+            icon = QLabel(menuItemW)
+            icon.setFixedSize(16, 25)
+            # icon.setStyleSheet('background-color: red;')
+            icon.setPixmap(
+                QPixmap(self.icon)
+                    .scaled(icon.width(), icon.width())
+            )
+            menuItemVL.addWidget(icon)
+            width += icon.width()
+
         title = QLabel(menuItemW)
         title.setText(self.title)
         WidgetTool.setFont(title)
-        menuItemVL.addChildWidget(title)
+        menuItemVL.addWidget(title)
+        width += WidgetTool.getTextWidth(title)
 
         def setSize(maxWidth):
             title\
@@ -63,7 +76,7 @@ class PopoverMenuItem:
         menuItemW.computedAllItemMaxWidth = setSize
 
         return (
-            menuItemW, QSize(WidgetTool.getTextWidth(title) + 20, 25)
+            menuItemW, QSize(width, 25)
         )
 
 class ElePyMenuPopover(
@@ -130,7 +143,7 @@ class ElePyMenuPopover(
         widget: QWidget, items: [PopoverMenuItem], properties: dict = {},
         mode: MenuPopoverMode = MenuPopoverMode.LIGHT
         , createPopover: Callable[
-            [ClassVar['ElePyMenuPopover'], QWidget, dict], 'ElePyMenuPopover'
+            [Any, QWidget, dict], 'ElePyMenuPopover'
         ] = None
     ):
         properties = {

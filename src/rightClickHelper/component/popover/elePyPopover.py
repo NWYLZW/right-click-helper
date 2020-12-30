@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import random
-from typing import Callable, ClassVar
+from typing import Callable, ClassVar, Any
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import QPoint, Qt, QTimer
@@ -189,7 +189,7 @@ class ElePyPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar['ElePyPopover'] = None
         , createPopover: Callable[
-            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+            [Any, QWidget, dict], 'ElePyPopover'
         ] = None
     ):
         widget.popover = None
@@ -256,7 +256,7 @@ class ElePyPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar['ElePyPopover'] = None
         , createPopover: Callable[
-            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+            [Any, QWidget, dict], 'ElePyPopover'
         ] = None
     ):
         widget.popover = None
@@ -282,7 +282,7 @@ class ElePyPopover(
         widget: QWidget, popoverWidget: QWidget, properties: dict = {}
         , PopoverClass: ClassVar['ElePyPopover'] = None
         , createPopover: Callable[
-            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+            [Any, QWidget, dict], 'ElePyPopover'
         ] = None
     ):
         if PopoverClass is None: PopoverClass = ElePyPopover
@@ -302,7 +302,7 @@ class ElePyPopover(
         , dealMainWidget: Callable = None, setting: dict = {}
         , PopoverClass: ClassVar['ElePyPopover'] = None
         , createPopover: Callable[
-            [ClassVar['ElePyPopover'], QWidget, dict], 'ElePyPopover'
+            [Any, QWidget, dict], 'ElePyPopover'
         ] = None
     ):
         GL = QGridLayout()

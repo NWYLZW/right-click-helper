@@ -59,35 +59,17 @@ class Ui_item(object):
         self.main = QtWidgets.QWidget(item)
         self.main.setGeometry(QtCore.QRect(0, 0, 120, 180))
         self.main.setMinimumSize(QtCore.QSize(120, 180))
+        self.main.setStyleSheet("#main {\n"
+"    margin: 10px;\n"
+"    margin-top: 40px;\n"
+"    margin-bottom: 40px;\n"
+"}")
         self.main.setObjectName("main")
         self.addBtn = QtWidgets.QPushButton(self.main)
-        self.addBtn.setGeometry(QtCore.QRect(20, 20, 81, 81))
+        self.addBtn.setGeometry(QtCore.QRect(20, 50, 81, 81))
         self.addBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.addBtn.setText("")
         self.addBtn.setObjectName("addBtn")
-        self.title = QtWidgets.QLabel(self.main)
-        self.title.setGeometry(QtCore.QRect(20, 110, 81, 21))
-        font = QtGui.QFont()
-        font.setFamily("Microsoft YaHei UI")
-        font.setPointSize(10)
-        self.title.setFont(font)
-        self.title.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.title.setObjectName("title")
-        self.edit = QtWidgets.QPushButton(self.main)
-        self.edit.setGeometry(QtCore.QRect(20, 140, 21, 21))
-        self.edit.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.edit.setText("")
-        self.edit.setObjectName("edit")
-        self.remove = QtWidgets.QPushButton(self.main)
-        self.remove.setGeometry(QtCore.QRect(50, 140, 21, 21))
-        self.remove.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.remove.setText("")
-        self.remove.setObjectName("remove")
-        self.more = QtWidgets.QPushButton(self.main)
-        self.more.setGeometry(QtCore.QRect(80, 140, 21, 21))
-        self.more.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.more.setText("")
-        self.more.setObjectName("more")
 
         self.retranslateUi(item)
         QtCore.QMetaObject.connectSlotsByName(item)
@@ -95,8 +77,4 @@ class Ui_item(object):
     def retranslateUi(self, item):
         _translate = QtCore.QCoreApplication.translate
         item.setWindowTitle(_translate("item", "Form"))
-        self.title.setText(_translate("item", "标题"))
-        self.edit.setToolTip(_translate("item", "编辑"))
-        self.remove.setToolTip(_translate("item", "删除"))
-        self.more.setToolTip(_translate("item", "更多"))
 from src.resource import main_rc

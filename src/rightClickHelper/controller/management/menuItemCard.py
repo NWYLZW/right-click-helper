@@ -6,6 +6,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
+from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
 from src.rightClickHelper.tool.pathTool import PathTool
@@ -17,6 +18,7 @@ from src.rightClickHelper.view.management import menuItemCard, menuItemCard_new,
 
 class MenuItemCard_itf:
     s_cardRemove = QtCore.pyqtSignal(MenuItem, name='cardRemove')
+
     def _initUI(self):
         try:
             self.setupUi(self)
@@ -150,6 +152,13 @@ class MenuItemCard(
     def customSetData(self, menuItem: MenuItem):
         MenuItemCard_itf.setSwitchItem(self, menuItem)
 
+        ElePyMenuPopover.setMenu(self.more, [
+            PopoverMenuItem('复制', PathTool.appPath() + r'\src\resource\image\common-icon\copy-ed.png'),
+            PopoverMenuItem('剪切', PathTool.appPath() + r'\src\resource\image\common-icon\cut-ed.png'),
+            PopoverMenuItem('分享', PathTool.appPath() + r'\src\resource\image\common-icon\share-ed.png'),
+            PopoverMenuItem('保存', PathTool.appPath() + r'\src\resource\image\common-icon\save-ed.png'),
+        ])
+
 class MenuItemCard_Package(
     QtWidgets.QWidget,
     menuItemCard_package.Ui_item,
@@ -221,6 +230,9 @@ class MenuItemCard_New(
     def _initUI(self):
         self.setupUi(self)
         EffectTool.setBlur(self)
+        ElePyTooltip.setTooltip(
+            self.addBtn, '新建菜单项'
+        )
 
     def _initEvent(self):
         def createEditDialog(checked):

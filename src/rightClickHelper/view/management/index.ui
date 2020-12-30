@@ -142,14 +142,14 @@ QLineEdit:focus {
          <widget class="QPushButton" name="home">
           <property name="minimumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="cursor">
@@ -167,14 +167,14 @@ QLineEdit:focus {
          <widget class="QPushButton" name="upPackage">
           <property name="minimumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="cursor">
@@ -192,14 +192,14 @@ QLineEdit:focus {
          <widget class="QPushButton" name="refresh">
           <property name="minimumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="cursor">
@@ -236,14 +236,14 @@ QLineEdit:focus {
          <widget class="QPushButton" name="more">
           <property name="minimumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>16</width>
+            <height>16</height>
            </size>
           </property>
           <property name="cursor">

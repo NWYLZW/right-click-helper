@@ -16,6 +16,14 @@
     <file>image/icon/warehouse.png</file>
   </qresource>
   <qresource prefix="ico">
+    <file>image/common-icon/share.png</file>
+    <file>image/common-icon/copy-ed.png</file>
+    <file>image/common-icon/cut-ed.png</file>
+    <file>image/common-icon/save-ed.png</file>
+    <file>image/common-icon/share-ed.png</file>
+    <file>image/common-icon/copy.png</file>
+    <file>image/common-icon/cut.png</file>
+    <file>image/common-icon/save.png</file>
     <file>image/common-icon/refresh-ed.png</file>
     <file>image/common-icon/refresh.png</file>
     <file>image/common-icon/setting-ed.png</file>
