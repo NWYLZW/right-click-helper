@@ -220,7 +220,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "AL-IDE"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Right Click Helper"))
         self.appTitle.setText(_translate("MainWindow", "Right Click Helper"))
         self.appVersion.setText(_translate("MainWindow", "1.0.0.0"))
         self.appMode.setText(_translate("MainWindow", "Mod"))
