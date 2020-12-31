@@ -50,7 +50,7 @@ class PopoverMenuItem:
             };
         }}''')
 
-        width = 20
+        width = 15
         if self.icon != '':
             icon = QLabel(menuItemW)
             icon.setFixedSize(16, 25)
@@ -60,7 +60,7 @@ class PopoverMenuItem:
                     .scaled(icon.width(), icon.width())
             )
             menuItemVL.addWidget(icon)
-            width += icon.width()
+            width += icon.width() + 10
 
         title = QLabel(menuItemW)
         title.setText(self.title)

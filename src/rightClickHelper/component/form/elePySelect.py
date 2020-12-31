@@ -58,6 +58,7 @@ class ElePySelect(
         self.__rightIconRotateAngle = 0
         self._menuPopover = None
         self.__transformProperties = {
+            'popover-trigger': 'click',
             'animation-type': 'fadeInOut'
         }
         super().__init__(parent, {
