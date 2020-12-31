@@ -58,8 +58,6 @@ class ElePySelect(
         self.__rightIconRotateAngle = 0
         self._menuPopover = None
         self.__transformProperties = {
-            'popover-trigger': 'click',
-            'animation-type': 'fadeInOut'
         }
         super().__init__(parent, {
             'disabled': False,
@@ -119,7 +117,9 @@ class ElePySelect(
 
         self.popoverContent = content
         ElePyMenuPopover.setMenu(
-            self.popoverContent, [], mode=WidgetTool.getProperty(
+            self.popoverContent, [], {
+                'popover-trigger': 'click'
+            }, mode=WidgetTool.getProperty(
                 'select-mode', MenuPopoverMode.LIGHT
             )(self), createPopover=self.setMenuPopover
         )

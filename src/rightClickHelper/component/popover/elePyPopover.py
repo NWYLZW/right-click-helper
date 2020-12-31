@@ -191,7 +191,18 @@ class ElePyPopover(
         , createPopover: Callable[
             [Any, QWidget, dict], 'ElePyPopover'
         ] = None
+        , createdPopover: Callable[['ElePyPopover'], Any] = None
     ):
+        """
+        挂载一个被鼠标移动在某个widget上方展示的popover
+        :param widget:          被挂载的widget实例
+        :param popoverWidget:   放在popoverDockWindow中的widget实例
+        :param properties:      传递给popover构造函数的properties字典
+        :param PopoverClass:    popover的构造函数
+        :param createPopover:   创建popover的函数，必须返回一个popover实例 具体参数调用，查看上方范型
+        :param createdPopover:  创建完popover触发该回调钩子，传入创建好的popover对象
+        :return: 无返回值
+        """
         widget.popover = None
         sourceEnterEvent = widget.enterEvent
         sourceLeaveEvent = widget.leaveEvent
@@ -219,6 +230,8 @@ class ElePyPopover(
                     else:
                         widget.popover = createPopover(PopoverClass, widget, properties)
                     widget.popover.setWidget(popoverWidget)
+                    if createdPopover is not None:
+                        createdPopover(widget.popover)
                 widget.popover.show(widget)
 
                 widget.repaint(); widget.update()
@@ -258,7 +271,18 @@ class ElePyPopover(
         , createPopover: Callable[
             [Any, QWidget, dict], 'ElePyPopover'
         ] = None
+        , createdPopover: Callable[['ElePyPopover'], Any] = None
     ):
+        """
+        挂载一个被鼠标点击在某个widget上方展示的popover
+        :param widget:          被挂载的widget实例
+        :param popoverWidget:   放在popoverDockWindow中的widget实例
+        :param properties:      传递给popover构造函数的properties字典
+        :param PopoverClass:    popover的构造函数
+        :param createPopover:   创建popover的函数，必须返回一个popover实例 具体参数调用，查看上方范型
+        :param createdPopover:  创建完popover触发该回调钩子，传入创建好的popover对象
+        :return: 无返回值
+        """
         widget.popover = None
         sourceMousePressEvent = widget.mousePressEvent
 
@@ -271,6 +295,8 @@ class ElePyPopover(
                     else:
                         widget.popover = createPopover(PopoverClass, widget, properties)
                     widget.popover.setWidget(popoverWidget)
+                    if createdPopover is not None:
+                        createdPopover(widget.popover)
                 widget.popover.invertVisible(widget)
 
                 widget.repaint(); widget.update()
@@ -287,13 +313,16 @@ class ElePyPopover(
     ):
         if PopoverClass is None: PopoverClass = ElePyPopover
 
-        triggerMode = properties.get('popover-trigger', 'hover')
+        def createdPopover(popover: 'ElePyPopover'):
+            pass
         {
             'hover': ElePyPopover.__setPopoverInHover,
             'click': ElePyPopover.__setPopoverInClick,
-        }.get(triggerMode, ElePyPopover.__setPopoverInHover)(
-            widget, popoverWidget, properties
-            , PopoverClass, createPopover
+        }.get(properties.get('popover-trigger', 'hover'), ElePyPopover.__setPopoverInHover)(
+            widget=widget, popoverWidget=popoverWidget, properties=properties
+            , PopoverClass=PopoverClass
+            , createPopover=createPopover
+            , createdPopover=createdPopover
         )
 
     @staticmethod
