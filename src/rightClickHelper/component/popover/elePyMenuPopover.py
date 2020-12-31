@@ -19,6 +19,7 @@ class PopoverMenuItem:
     def __init__(
         self, title: str, icon: str = '', clickedAutoHide: bool = True
     ):
+        self.widget = None                      # type: QWidget
         self.title = title
         self.icon = icon
         self.clickedAutoHide = clickedAutoHide
@@ -75,6 +76,7 @@ class PopoverMenuItem:
                 .setFixedSize(maxWidth, 25)
         menuItemW.computedAllItemMaxWidth = setSize
 
+        self.widget = menuItemW
         return (
             menuItemW, QSize(width, 25)
         )
@@ -82,7 +84,7 @@ class PopoverMenuItem:
 class ElePyMenuPopover(
     ElePyPopover
 ):
-    itemClicked = pyqtSignal(PopoverMenuItem, QWidget, name='itemClicked')
+    itemClicked = pyqtSignal(PopoverMenuItem, QWidget)
 
     def __init__(
         self, parent=None, properties: dict = {}

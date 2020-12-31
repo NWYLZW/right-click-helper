@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from abc import abstractmethod
+from typing import ClassVar
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
-from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem
+from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
 from src.rightClickHelper.tool.pathTool import PathTool
@@ -17,7 +18,18 @@ from src.rightClickHelper.tool.systemTool import SystemTool
 from src.rightClickHelper.view.management import menuItemCard, menuItemCard_new, menuItemCard_package
 
 class MenuItemCard_itf:
-    s_cardRemove = QtCore.pyqtSignal(MenuItem, name='cardRemove')
+    cardRemove = QtCore.pyqtSignal(MenuItem)
+    moreMenuSel = QtCore.pyqtSignal(str, MenuItem)
+    moreOptionMenu = {
+        'copy': PopoverMenuItem(
+            '复制', PathTool.appPath() + r'\src\resource\image\common-icon\copy-ed.png'),
+        'cut': PopoverMenuItem(
+            '剪切', PathTool.appPath() + r'\src\resource\image\common-icon\cut-ed.png'),
+        'share': PopoverMenuItem(
+            '分享', PathTool.appPath() + r'\src\resource\image\common-icon\share-ed.png'),
+        'save': PopoverMenuItem(
+            '保存', PathTool.appPath() + r'\src\resource\image\common-icon\save-ed.png'),
+    }
 
     def _initUI(self):
         try:
@@ -83,10 +95,27 @@ class MenuItemCard_itf:
             )
         except Exception as e: raise e
 
+    def createMenuPopover(
+        self
+        , PopoverClass: ClassVar[ElePyMenuPopover], widget, properties
+    ):
+        popover = PopoverClass(widget, properties)
+
+        def __itemClick(popoverMenuItem, popoverMenuItemWidget):
+            if popoverMenuItem is self.moreOptionMenu['copy']:
+                self.moreMenuSel.emit('copy', self.menuItem)
+        popover.itemClicked.connect(__itemClick)
+        return popover
+
     def setData(self, menuItem: MenuItem):
         self.menuItem = menuItem
         self.setIcon(menuItem)
         self.setTitle(menuItem)
+        ElePyMenuPopover.setMenu(
+            self.more, [
+                val for item, val in self.moreOptionMenu.items()
+            ], createPopover=self.createMenuPopover
+        )
         self.customSetData(menuItem)
         self.repaint()
 
@@ -151,13 +180,6 @@ class MenuItemCard(
 
     def customSetData(self, menuItem: MenuItem):
         MenuItemCard_itf.setSwitchItem(self, menuItem)
-
-        ElePyMenuPopover.setMenu(self.more, [
-            PopoverMenuItem('复制', PathTool.appPath() + r'\src\resource\image\common-icon\copy-ed.png'),
-            PopoverMenuItem('剪切', PathTool.appPath() + r'\src\resource\image\common-icon\cut-ed.png'),
-            PopoverMenuItem('分享', PathTool.appPath() + r'\src\resource\image\common-icon\share-ed.png'),
-            PopoverMenuItem('保存', PathTool.appPath() + r'\src\resource\image\common-icon\save-ed.png'),
-        ])
 
 class MenuItemCard_Package(
     QtWidgets.QWidget,

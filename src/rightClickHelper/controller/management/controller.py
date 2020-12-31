@@ -1,26 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import re
-from PyQt5 import QtWidgets, QtCore
+from typing import ClassVar
+
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
-from src.rightClickHelper.component.popover.elePyMenuPopover import PopoverMenuItem
+from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
+from src.rightClickHelper.component.popover.elePyMenuPopover import PopoverMenuItem, ElePyMenuPopover
 from src.rightClickHelper.controller.management.menuItemCard import MenuItemCard, MenuItemCard_Package, MenuItemCard_New
+from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.regTool import RegTool, RegEnv, MenuItem, RegType
 
 from src.rightClickHelper.view.management import index as management
 
 class ManagementController(
-    QtWidgets.QWidget,
+    ElePyWidget,
     management.Ui_management
 ):
-    def __init__(self, parent=None):
-        super(ManagementController, self).__init__(parent)
-        self._initUI()
-        self._initData()
-        self._initEvent()
+    moreOptionMenu = [
+        PopoverMenuItem('粘贴', PathTool.appPath() + r'\src\resource\image\common-icon\paste-ed.png'),
+        PopoverMenuItem('导入', PathTool.appPath() + r'\src\resource\image\common-icon\import-ed.png'),
+    ]
 
-    def _initUI(self):
+    def __init__(
+        self, parent=None, properties: dict = {}
+    ):
+        super().__init__(parent, {
+            'clipboard': {
+                'val': None, 'type': None
+            },
+            **properties
+        })
+
+    def _initUi(self):
         self.setupUi(self)
         self.itemScrollAreaWidgetVL = QVBoxLayout()
         self.itemScrollAreaWidgetVL.setContentsMargins(0, 0, 0, 0)
@@ -35,6 +48,21 @@ class ManagementController(
 
         self.listHLWs = []      # type: [QWidget]
         self.menuItemCards = [] # type: [MenuItemCard]
+
+    @watchProperty({
+        'clipboard': {'type': dict}
+    })
+    def clipboardChange(self, clipboardData, oldVal, propertyName):
+        if clipboardData['val'] is None:
+            print(clipboardData)
+        else:
+            pass
+
+    def dealWithMenuItemAction(self, actionName: str, menuItem: MenuItem):
+        self.setProperty('clipboard', {
+            'val': menuItem,
+            'type': actionName
+        })
 
     def loadShowMenuItem(self, showMenuItem: MenuItem, itemType: str, lineNum: int):
         lineWidth = 1100; lineHeight = 180
@@ -65,6 +93,9 @@ class ManagementController(
                         (RegEnv.find(menuItem.regData['__path__'][0]), menuItem.regData['__path__'][1] + '\\shell')
                     )
                 )
+            menuItemCard.moreMenuSel.connect(
+                self.dealWithMenuItemAction
+            )
             menuItemCard.cardRemove.connect(
                 lambda: self.refreshMenuItems(self.path)
             )
@@ -136,6 +167,17 @@ class ManagementController(
         self.refreshShowMenuItems()
         self.itemScrollArea.repaint(); self.itemScrollArea.update()
 
+    def createMenuPopover(
+        self
+        , PopoverClass: ClassVar[ElePyMenuPopover], widget, properties
+    ):
+        popover = PopoverClass(widget, properties)
+
+        def __itemClick(popoverMenuItem, popoverMenuItemWidget):
+            print(popoverMenuItem, popoverMenuItemWidget)
+        popover.itemClicked.connect(__itemClick)
+        return popover
+
     def _initData(self):
         self.listHLWs = []  # type: [QWidget]
         self.menuItemsRoots = {
@@ -159,6 +201,9 @@ class ManagementController(
         self.refreshMenuItems(self.menuItemsRoots.get(
             self.selKind.currentText(), []
         ))
+        ElePyMenuPopover.setMenu(
+            self.more, self.moreOptionMenu, createPopover=self.createMenuPopover
+        )
 
     def createListRefresh(self, mode):
         def searchEnd():
