@@ -135,7 +135,7 @@ class ElePySelect(
             'select-menu-items', []
         )(self)  # type: list[PopoverMenuItem]
 
-        selItems = []   # type: list[PopoverMenuItem]
+        selItems = []   # type: list[dict]
         for index in self.selIndexList:
             if index < 0 or index >= len(menuItems): continue
             selItems.append(menuItems[index])
@@ -144,7 +144,9 @@ class ElePySelect(
         if len(self.selIndexList) == 0 or len(selItems) == 0:
             self.label.setText(placeholder)
         else:
-            self.label.setText(', '.join([selItem.title for selItem in selItems]))
+            self.label.setText(', '.join([
+                selItem['label'] for selItem in selItems
+            ]))
 
         dim = dim or WidgetTool.getProperty('disabled', False)(self)
         self.label.setStyleSheet(f'''\
@@ -225,11 +227,8 @@ class ElePySelect(
     def indexOfMenuItem(
         self, menuItem: PopoverMenuItem
     ) -> int:
-        menuItems   = WidgetTool.getProperty(
-            'select-menu-items', []
-        )(self)  # type: [PopoverMenuItem]
-        for index in range(len(menuItems)):
-            if menuItem is menuItems[index]: return index
+        for index in range(len(self._menuPopover.menuItemWs)):
+            if menuItem is self._menuPopover.menuItemWs[index]: return index
         return -1
 
     def isSel(

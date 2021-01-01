@@ -149,7 +149,7 @@ class TestPopoverWidget(unittest.TestCase):
                 }]
             })
             select.change.connect(
-                lambda m, indexList, selItems: print(m.title, indexList, selItems)
+                lambda m, indexList, selItems: print(m.label.text(), indexList, selItems)
             )
 
             window.setCentralWidget(mainW)
