@@ -5,7 +5,7 @@ from typing import ClassVar
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QWidget
 
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
@@ -105,12 +105,12 @@ class MenuItemCard_itf:
 
     def createMenuPopover(
         self
-        , PopoverClass: ClassVar[ElePyMenuPopover], widget, properties
+        , PopoverClass: ClassVar[ElePyMenuPopover], widget: QWidget, properties: dict
     ):
-        popover = PopoverClass(widget, properties)
+        popover = PopoverClass(widget, properties)  # type: ElePyMenuPopover
 
         def __itemClick(popoverMenuItem):
-            if popoverMenuItem is self.moreOptionMenu['copy']:
+            if popoverMenuItem.property('label') == self.moreOptionMenu['copy']['label']:
                 self.moreMenuSel.emit('copy', self.menuItem)
         popover.itemClicked.connect(__itemClick)
         return popover

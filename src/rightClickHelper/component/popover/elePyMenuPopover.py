@@ -88,7 +88,7 @@ class ElePyMenuPopover(
         self, parent=None, properties: dict = {}
     ):
         super().__init__(parent, properties)
-        self.menuItemWs = []
+        self.menuItemWs = []        # type: list[PopoverMenuItem]
         self.propertyChange.connect(
             lambda name, value, returnData:
                 self.refreshData(value) if name == 'menu-popover-items' else None
@@ -145,11 +145,12 @@ class ElePyMenuPopover(
                 **item
             })
             size = menuItemW.initUiBeforeWidth
-            maxWidth = maxWidth if maxWidth > size.width() else size.width()
-            sumHeight += size.height()
             menuItemsHL.addWidget(menuItemW)
             menuItemW.clicked.connect(clicked)
             self.menuItemWs.append(menuItemW)
+
+            maxWidth = maxWidth if maxWidth > size.width() else size.width()
+            sumHeight += size.height()
 
         for menuItemW in self.menuItemWs: menuItemW.computedAllItemMaxWidth(maxWidth)
         menuItems.setFixedSize(maxWidth, sumHeight + 10)
@@ -157,6 +158,11 @@ class ElePyMenuPopover(
             menuItems.size().width()  + self.shadowRadius * 2 + 10,
             menuItems.size().height() + self.shadowRadius * 2
         )
+
+    def changeItemStatus(self, index: int, status: str = ''):
+        if index < 0 or index > len(self.menuItemWs):
+            raise ValueError('Index out of range.')
+        self.menuItemWs[index].setProperty('status', status)
 
     @staticmethod
     def setMenu(

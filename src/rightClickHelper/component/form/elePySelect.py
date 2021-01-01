@@ -56,12 +56,18 @@ class ElePySelect(
         self, parent=None, properties: dict = {}
     ):
         self.__rightIconRotateAngle = 0
-        self._menuPopover = None
+        self._menuPopover = None        # type: ElePyMenuPopover
         self.__transformProperties = {}
         super().__init__(parent, {
             'disabled': False,
             **properties
         })
+
+    def forbiddenItem(self, index: int):
+        self._menuPopover.changeItemStatus(index, 'forbidden')
+
+    def accessItem(self, index: int):
+        self._menuPopover.changeItemStatus(index, '')
 
     def drawRightIcon(self, event: QPaintEvent):
         width = self.rightIcon.width()

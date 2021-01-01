@@ -7,7 +7,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 
 from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
-from src.rightClickHelper.component.popover.elePyMenuPopover import PopoverMenuItem, ElePyMenuPopover
+from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem
 from src.rightClickHelper.controller.management.menuItemCard import MenuItemCard, MenuItemCard_Package, MenuItemCard_New
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.regTool import RegTool, RegEnv, MenuItem, RegType
@@ -20,6 +20,7 @@ class ManagementController(
 ):
     moreOptionMenu = [{
         'label': '粘贴',
+        'status': 'forbidden',
         'icon':  PathTool.appPath() + r'\src\resource\image\common-icon\paste-ed.png'
     }, {
         'label': '导入',
@@ -29,11 +30,12 @@ class ManagementController(
     def __init__(
         self, parent=None, properties: dict = {}
     ):
+        self.__tempList = []
+        self.moreOptionPopover = None   # type: ElePyMenuPopover
         super().__init__(parent, {
             'clipboard': {
                 'val': None, 'type': None
-            },
-            **properties
+            }, **properties
         })
 
     def _initUi(self):
@@ -56,17 +58,13 @@ class ManagementController(
         'clipboard': {'type': dict}
     })
     def clipboardChange(self, clipboardData, oldVal, propertyName):
-        print(clipboardData)
-        if clipboardData['val'] is None:
-            pass
+        status = 'forbidden' if clipboardData['val'] is None else ''
+        if self.moreOptionPopover is None:
+            self.__tempList.append({
+                'index': 0, 'status': status
+            })
         else:
-            pass
-
-    def dealWithMenuItemAction(self, actionName: str, menuItem: MenuItem):
-        self.setProperty('clipboard', {
-            'val': menuItem,
-            'type': actionName
-        })
+            self.moreOptionPopover.changeItemStatus(0, status)
 
     def loadShowMenuItem(self, showMenuItem: MenuItem, itemType: str, lineNum: int):
         lineWidth = 1100; lineHeight = 180
@@ -98,7 +96,10 @@ class ManagementController(
                     )
                 )
             menuItemCard.moreMenuSel.connect(
-                self.dealWithMenuItemAction
+                lambda actionName, menuItem: self.setProperty('clipboard', {
+                    'val': menuItem,
+                    'type': actionName
+                })
             )
             menuItemCard.cardRemove.connect(
                 lambda: self.refreshMenuItems(self.path)
@@ -171,15 +172,19 @@ class ManagementController(
         self.refreshShowMenuItems()
         self.itemScrollArea.repaint(); self.itemScrollArea.update()
 
-    def createMenuPopover(
-        self
-        , PopoverClass: ClassVar[ElePyMenuPopover], widget, properties
-    ):
-        popover = PopoverClass(widget, properties)
+    def moreOptionMenuClick(self, popoverMenuItem: PopoverMenuItem):
+        print(popoverMenuItem)
 
-        def __itemClick(popoverMenuItem):
-            print(popoverMenuItem)
-        popover.itemClicked.connect(__itemClick)
+    def createMoreMenuPopover(
+        self
+        , PopoverClass: ClassVar[ElePyMenuPopover], widget: QWidget, properties: dict
+    ):
+        for t in self.__tempList:
+            items = properties.get('menu-popover-items', [])
+            items[t['index']]['status'] = t['status']
+        popover = PopoverClass(widget, properties)
+        popover.itemClicked.connect(self.moreOptionMenuClick)
+        self.moreOptionPopover = popover
         return popover
 
     def _initData(self):
@@ -206,7 +211,7 @@ class ManagementController(
             self.selKind.currentText(), []
         ))
         ElePyMenuPopover.setMenu(
-            self.more, self.moreOptionMenu, createPopover=self.createMenuPopover
+            self.more, self.moreOptionMenu, createPopover=self.createMoreMenuPopover
         )
 
     def createListRefresh(self, mode):
