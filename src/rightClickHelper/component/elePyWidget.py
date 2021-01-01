@@ -110,9 +110,12 @@ class ElePyWidget(
     def setProperty(
         self, name: str, value: typing.Any
     ) -> bool:
+        returnBool = False
         if self.propertyChange(name, value):
-            return super().setProperty(name, value)
-        return False
+            returnBool = super().setProperty(name, value)
+        self.setStyleSheet(self.styleSheet())
+        self.repaint(); self.update()
+        return returnBool
 
 def watchProperty(
     properties: dict[str, object] or list[str]
