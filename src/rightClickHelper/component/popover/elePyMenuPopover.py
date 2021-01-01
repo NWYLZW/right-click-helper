@@ -8,6 +8,7 @@ from PyQt5.QtCore import pyqtSignal, Qt, QSize
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
+from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
 from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
@@ -15,76 +16,73 @@ class MenuPopoverMode(Enum):
     LIGHT   = 0X000000
     DARK    = 0X000001
 
-class PopoverMenuItem:
+class PopoverMenuItem(
+    ElePyWidget
+):
+    clicked = pyqtSignal(object)
+
     def __init__(
-        self, title: str, icon: str = '', clickedAutoHide: bool = True
+        self, parent=None, properties: dict = {}
     ):
-        self.widget = None                      # type: QWidget
-        self.title = title
-        self.icon = icon
-        self.clickedAutoHide = clickedAutoHide
+        super().__init__(parent, {
+            'status': '',
+            **properties
+        })
+        # 设置style对当前widget起作用
+        self.setAttribute(Qt.WA_StyledBackground)
 
-    def createWidget(
-        self, parent: QWidget, mode: MenuPopoverMode = MenuPopoverMode.LIGHT
-    ) -> (QWidget, QSize):
-        menuItemW = QWidget(parent)
-        menuItemW.setObjectName('menuItemW')
-        menuItemW.setCursor(Qt.PointingHandCursor)
-
+    def _initUi(self):
         menuItemVL = QHBoxLayout()
-        menuItemW.setLayout(menuItemVL)
-        menuItemVL.setContentsMargins(5, 0, 0, 5)
+        self.setLayout(menuItemVL)
+        menuItemVL.setContentsMargins(5, 0, 0, 0)
         menuItemVL.setSpacing(8)
 
-        menuItemW.setStyleSheet(f'''\
-        #{menuItemW.objectName()} {{
-            border-radius: 4px;
-        }}
-        #{menuItemW.objectName()}:hover {{
-            background-color: {
-                'rgba(240, 240, 240)' if mode == MenuPopoverMode.LIGHT else 'rgba(100, 100, 100)'
-            };
-        }}
-        #{menuItemW.objectName()} QLabel {{
-            color: {
-                'black' if mode == MenuPopoverMode.LIGHT else 'white'
-            };
-        }}''')
-
         width = 15
-        if self.icon != '':
-            icon = QLabel(menuItemW)
+        if WidgetTool.getProperty('isWithIconMenu', False)(self):
+            icon = QLabel(self)
             icon.setFixedSize(16, 25)
-            # icon.setStyleSheet('background-color: red;')
             icon.setPixmap(
-                QPixmap(self.icon)
-                    .scaled(icon.width(), icon.width())
+                QPixmap(
+                    WidgetTool.getProperty('icon', '')(self)
+                ).scaled(icon.width(), icon.width())
             )
             menuItemVL.addWidget(icon)
-            width += icon.width() + 10
+            width += icon.width() + 5
 
-        title = QLabel(menuItemW)
-        title.setText(self.title)
-        WidgetTool.setFont(title)
-        menuItemVL.addWidget(title)
-        width += WidgetTool.getTextWidth(title)
+        label = QLabel(self)
+        label.setText(
+            WidgetTool.getProperty('label', '')(self)
+        )
+        WidgetTool.setFont(label)
+        menuItemVL.addWidget(label)
+        width += WidgetTool.getTextWidth(label)
+        self.label = label
+
+        self.initUiBeforeWidth = QSize(width, 25)
 
         def setSize(maxWidth):
-            title\
-                .setFixedSize(maxWidth, 25)
-            menuItemW\
-                .setFixedSize(maxWidth, 25)
-        menuItemW.computedAllItemMaxWidth = setSize
+            self.setFixedSize(maxWidth, 25)
+        self.computedAllItemMaxWidth = setSize
 
-        self.widget = menuItemW
-        return (
-            menuItemW, QSize(width, 25)
-        )
+    def mousePressEvent(self, event: QtGui.QMouseEvent):
+        super(PopoverMenuItem, self).mousePressEvent(event)
+        if WidgetTool.getProperty('status', '')(self) == 'forbidden': return
+        if event.buttons() == Qt.LeftButton:
+            self.clicked.emit(self)
+
+    @watchProperty({
+        'status': {'type': str}
+    })
+    def statusChange(self, newVal, oldVal, name):
+        if newVal is None or newVal == '':
+            self.setCursor(Qt.PointingHandCursor)
+        elif newVal == 'forbidden':
+            self.setCursor(Qt.ForbiddenCursor)
 
 class ElePyMenuPopover(
     ElePyPopover
 ):
-    itemClicked = pyqtSignal(PopoverMenuItem, QWidget)
+    itemClicked = pyqtSignal(PopoverMenuItem)
 
     def __init__(
         self, parent=None, properties: dict = {}
@@ -100,37 +98,57 @@ class ElePyMenuPopover(
         super(ElePyMenuPopover, self).setWidget(widget)
         self.refreshData()
 
-    def refreshData(self, items: [PopoverMenuItem] = None):
+    def refreshData(self, items: [dict[str, str]] = None):
         if items is None: items = WidgetTool.getProperty('menu-popover-items', [])(self)
 
         menuItems = self.widget().popoverContent    # type: QWidget
         menuItemsHL = menuItems.layout()            # type: QVBoxLayout
+        mode = WidgetTool.getProperty(
+            'menu-popover-mode', MenuPopoverMode.LIGHT
+        )(self)
+        menuItems.setStyleSheet(f'''\
+        .PopoverMenuItem[status='']:hover {{
+            border-radius: 4px;
+            background-color: rgba(200, 200, 200, 100);
+        }}
+        .PopoverMenuItem[status=''] QLabel {{
+            color: {
+                'black' if mode == MenuPopoverMode.LIGHT else 'white'
+            };
+        }}
+        .PopoverMenuItem[status='forbidden'] QLabel {{
+            color: rgb(200, 200, 200);
+        }}
+        .PopoverMenuItem[status=''] QLabel:hover {{
+            color: rgba(50, 150, 220);
+        }}''')
 
         menuItemsHL.setContentsMargins(0, 5, 0, 5)
         menuItemsHL.setSpacing(0)
 
-        def createForwardClicked(menuItem: PopoverMenuItem, widget: QWidget):
-            def forwardClicked(event: QtGui.QMouseEvent):
-                if event.buttons() == Qt.LeftButton:
-                    self.itemClicked.emit(menuItem, widget)
-                    if menuItem.clickedAutoHide:
-                        self.hide()
-
-            return forwardClicked
+        def clicked(menuItem: PopoverMenuItem):
+            self.itemClicked.emit(menuItem)
+            if WidgetTool.getProperty(
+                'clickedAutoHide', True
+            )(menuItem): self.hide()
 
         maxWidth = 0; sumHeight = 0
-        for menuItem in items:  # type: PopoverMenuItem
-            (menuItemW, size) = menuItem.createWidget(
-                menuItems, mode=WidgetTool.getProperty(
-                    'menu-popover-mode', MenuPopoverMode.LIGHT
-                )(self)
-            )
+        withIcon = False
+        for item in items:  # type: dict
+            icon = item.get('icon', None)
+            if icon is not None and icon != '':
+                withIcon = True; break
+
+        for item in items:
+            menuItemW = PopoverMenuItem(menuItems, {
+                'isWithIconMenu': withIcon,
+                **item
+            })
+            size = menuItemW.initUiBeforeWidth
             maxWidth = maxWidth if maxWidth > size.width() else size.width()
             sumHeight += size.height()
-
             menuItemsHL.addWidget(menuItemW)
-            menuItemW.mousePressEvent = createForwardClicked(menuItem, menuItemW)
-
+            menuItemW.clicked.connect(clicked)
             self.menuItemWs.append(menuItemW)
 
         for menuItemW in self.menuItemWs: menuItemW.computedAllItemMaxWidth(maxWidth)
@@ -142,8 +160,8 @@ class ElePyMenuPopover(
 
     @staticmethod
     def setMenu(
-        widget: QWidget, items: [PopoverMenuItem], properties: dict = {},
-        mode: MenuPopoverMode = MenuPopoverMode.LIGHT
+        widget: QWidget, items: [dict[str, str]], properties: dict = {}
+        , mode: MenuPopoverMode = MenuPopoverMode.LIGHT
         , createPopover: Callable[
             [Any, QWidget, dict], 'ElePyMenuPopover'
         ] = None

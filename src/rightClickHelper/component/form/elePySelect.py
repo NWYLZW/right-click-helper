@@ -57,8 +57,7 @@ class ElePySelect(
     ):
         self.__rightIconRotateAngle = 0
         self._menuPopover = None
-        self.__transformProperties = {
-        }
+        self.__transformProperties = {}
         super().__init__(parent, {
             'disabled': False,
             **properties
@@ -123,6 +122,10 @@ class ElePySelect(
                 'select-mode', MenuPopoverMode.LIGHT
             )(self), createPopover=self.setMenuPopover
         )
+
+    def _initUiAfter(self):
+        if self.property('sel-index-list') is None:
+            self.setProperty('sel-index-list', [])
 
     def updateLabel(self):
         placeholder = WidgetTool.getProperty(
@@ -209,7 +212,7 @@ class ElePySelect(
     def selIndexListChange(self, newVal, oldVal, propertyName):
         self.selIndexList = newVal
         if self._lifeStage in [
-            LifeStage.INIT_DATA_BEFORE,
+            LifeStage.INIT_UI_AFTER,
             LifeStage.INITED,
         ]: self.updateLabel()
 
@@ -245,7 +248,7 @@ class ElePySelect(
         }
         self._menuPopover = PopoverClass(widget, properties)    # type: ElePyMenuPopover
 
-        def itemClicked(menuItem, menuItemWidget):
+        def itemClicked(menuItem):
             selectType = WidgetTool.getProperty('select-type', 'single')(self)
             index = self.indexOfMenuItem(menuItem)
             if index != -1:

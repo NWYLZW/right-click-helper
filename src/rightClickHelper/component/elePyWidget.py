@@ -36,7 +36,7 @@ def initLink(obj, lifeStages: list[LifeStage]):
 
     for lifeStage in lifeStages:
         methodName = f'_{str2Hump(lifeStage.name)}'
-        obj._lifeStage = methodName
+        obj._lifeStage = lifeStage
         if hasattr(obj, methodName):
             getattr(obj, methodName)()
 
@@ -73,8 +73,10 @@ class ElePyWidget(
             attr = getattr(self, key)
             if hasattr(attr, '__watchProperties__'):
                 for watchPropertyName, _watchProperty in getattr(attr, '__watchProperties__').items():
-                    _watchProperty['handler'] = attr
-                    self.__watchProperties__[watchPropertyName] = _watchProperty
+                    self.__watchProperties__[watchPropertyName] = {
+                        'handler': attr,
+                        **_watchProperty
+                    }
 
     def setProperties(self, properties: dict = {}):
         WidgetTool.setProperties(properties)(self)
@@ -136,8 +138,7 @@ def watchProperty(
         def __fun(*args, **kwargs):
             return func(*args, **kwargs)
 
-        __fun.__watchProperties__ = \
-            (lambda: func.__watchProperties__ if hasattr(func, '__watchProperties__') else {})()
+        __fun.__watchProperties__ = func.__watchProperties__ if hasattr(func, '__watchProperties__') else {}
         if isinstance(properties, dict):
             for _propertyName, _property in properties.items():
                 __fun.__watchProperties__[_propertyName] = \

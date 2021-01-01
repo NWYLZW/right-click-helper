@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import unittest
+from typing import ClassVar
 
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
 
@@ -8,6 +9,7 @@ from src.rightClickHelper.component.form.elePySelect import ElePySelect
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
 from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
+from src.rightClickHelper.tool.pathTool import PathTool
 from test.tool.testTool import TestTool
 
 class TestPopoverWidget(unittest.TestCase):
@@ -106,20 +108,25 @@ class TestPopoverWidget(unittest.TestCase):
                 background-color: rgb(250, 250, 250);
             }''')
 
-            def createPopover(PopoverClass: ElePyMenuPopover, widget, properties):
+            def createPopover(PopoverClass: ClassVar, widget, properties):
                 popover = PopoverClass(widget, properties)
 
-                def __itemClick(popoverMenuItem, widget):
-                    print(popoverMenuItem)
-                    print(widget)
+                def __itemClick(popoverMenuItem):
+                    popoverMenuItem.setProperty('status', 'forbidden')
                 popover.itemClicked.connect(__itemClick)
                 return popover
 
             ElePyMenuPopover.setMenu(
-                label, [
-                    PopoverMenuItem('测试选项148941516'),
-                    PopoverMenuItem('测试选项2'),
-                ], mode=MenuPopoverMode.DARK
+                label, [{
+                    'label': '测试选项148941516',
+                    'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste.png'
+                }, {
+                    'label': '测试选项2',
+                    'status': 'forbidden'
+                }, {
+                    'label':  '测试选项3',
+                    'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste-ed.png'
+                }], mode=MenuPopoverMode.DARK
                 , createPopover=createPopover
             )
 
@@ -130,10 +137,16 @@ class TestPopoverWidget(unittest.TestCase):
             mainW = QWidget()
 
             select = ElePySelect(mainW, properties={
-                'select-menu-items': [
-                    PopoverMenuItem('测试下拉选择1'),
-                    PopoverMenuItem('测试下拉选择2'),
-                ]
+                'select-menu-items': [{
+                    'label': '测试下拉选择1',
+                    'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste.png'
+                }, {
+                    'label': '测试下拉选择2',
+                    'status': 'forbidden'
+                }, {
+                    'label':  '测试下拉选择3',
+                    'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste-ed.png'
+                }]
             })
             select.change.connect(
                 lambda m, indexList, selItems: print(m.title, indexList, selItems)
