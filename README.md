@@ -25,6 +25,7 @@
 
 ## 再开发指导
 * 创建虚拟环境[ps: **python == 3.9**]
+
   ```shell script
   # 如果全局没有安装过virtualenv，执行下面这条指令
   pip install virtualenv
@@ -35,3 +36,5 @@
   # 安装项目依赖
   pip install -r requirements.txt -i http://mirrors.aliyun.com/pypi/simple/
   ```
+
+* 切换本地默认提交分支 `git branch --set-upstream-to=origin/dev master`
