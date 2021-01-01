@@ -28,8 +28,6 @@ class PopoverMenuItem(
             'status': '',
             **properties
         })
-        # 设置style对当前widget起作用
-        self.setAttribute(Qt.WA_StyledBackground)
 
     def _initUi(self):
         menuItemVL = QHBoxLayout()
@@ -129,7 +127,7 @@ class ElePyMenuPopover(
         def clicked(menuItem: PopoverMenuItem):
             self.itemClicked.emit(menuItem)
             if WidgetTool.getProperty(
-                'clickedAutoHide', True
+                'clicked-auto-hide', True
             )(menuItem): self.hide()
 
         maxWidth = 0; sumHeight = 0

@@ -119,6 +119,7 @@ class TestPopoverWidget(unittest.TestCase):
             ElePyMenuPopover.setMenu(
                 label, [{
                     'label': '测试选项148941516',
+                    'clicked-auto-hide': False,
                     'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste.png'
                 }, {
                     'label': '测试选项2',
