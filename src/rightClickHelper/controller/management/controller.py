@@ -18,10 +18,13 @@ class ManagementController(
     ElePyWidget,
     management.Ui_management
 ):
-    moreOptionMenu = [
-        PopoverMenuItem('粘贴', PathTool.appPath() + r'\src\resource\image\common-icon\paste-ed.png'),
-        PopoverMenuItem('导入', PathTool.appPath() + r'\src\resource\image\common-icon\import-ed.png'),
-    ]
+    moreOptionMenu = [{
+        'label': '粘贴',
+        'icon':  PathTool.appPath() + r'\src\resource\image\common-icon\paste-ed.png'
+    }, {
+        'label': '导入',
+        'icon':  PathTool.appPath() + r'\src\resource\image\common-icon\import-ed.png'
+    }]
 
     def __init__(
         self, parent=None, properties: dict = {}
@@ -53,8 +56,9 @@ class ManagementController(
         'clipboard': {'type': dict}
     })
     def clipboardChange(self, clipboardData, oldVal, propertyName):
+        print(clipboardData)
         if clipboardData['val'] is None:
-            print(clipboardData)
+            pass
         else:
             pass
 
@@ -173,8 +177,8 @@ class ManagementController(
     ):
         popover = PopoverClass(widget, properties)
 
-        def __itemClick(popoverMenuItem, popoverMenuItemWidget):
-            print(popoverMenuItem, popoverMenuItemWidget)
+        def __itemClick(popoverMenuItem):
+            print(popoverMenuItem)
         popover.itemClicked.connect(__itemClick)
         return popover
 
@@ -194,7 +198,7 @@ class ManagementController(
         }
         self.selKind.setProperties({
             'select-menu-items': [
-                PopoverMenuItem(key) for key in self.menuItemsRoots
+                {'label': key} for key in self.menuItemsRoots
             ],
             'sel-index-list': [0],
         })
@@ -222,7 +226,7 @@ class ManagementController(
             )
         self.selKind.change.connect(
             lambda menuItem, selList, allSelList: self.refreshMenuItems(self.menuItemsRoots.get(
-                menuItem.title, []
+                menuItem.label.text(), []
             ))
         )
 

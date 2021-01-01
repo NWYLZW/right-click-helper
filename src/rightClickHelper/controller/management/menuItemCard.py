@@ -21,14 +21,22 @@ class MenuItemCard_itf:
     cardRemove = QtCore.pyqtSignal(MenuItem)
     moreMenuSel = QtCore.pyqtSignal(str, MenuItem)
     moreOptionMenu = {
-        'copy': PopoverMenuItem(
-            '复制', PathTool.appPath() + r'\src\resource\image\common-icon\copy-ed.png'),
-        'cut': PopoverMenuItem(
-            '剪切', PathTool.appPath() + r'\src\resource\image\common-icon\cut-ed.png'),
-        'share': PopoverMenuItem(
-            '分享', PathTool.appPath() + r'\src\resource\image\common-icon\share-ed.png'),
-        'save': PopoverMenuItem(
-            '保存', PathTool.appPath() + r'\src\resource\image\common-icon\save-ed.png'),
+        'copy': {
+            'label': '复制',
+            'icon': PathTool.appPath() + r'\src\resource\image\common-icon\copy-ed.png'
+        },
+        'cut': {
+            'label': '剪切',
+            'icon': PathTool.appPath() + r'\src\resource\image\common-icon\cut-ed.png'
+        },
+        'share': {
+            'label': '分享',
+            'icon': PathTool.appPath() + r'\src\resource\image\common-icon\share-ed.png'
+        },
+        'save': {
+            'label': '保存',
+            'icon': PathTool.appPath() + r'\src\resource\image\common-icon\save-ed.png'
+        }
     }
 
     def _initUI(self):
@@ -101,7 +109,7 @@ class MenuItemCard_itf:
     ):
         popover = PopoverClass(widget, properties)
 
-        def __itemClick(popoverMenuItem, popoverMenuItemWidget):
+        def __itemClick(popoverMenuItem):
             if popoverMenuItem is self.moreOptionMenu['copy']:
                 self.moreMenuSel.emit('copy', self.menuItem)
         popover.itemClicked.connect(__itemClick)
