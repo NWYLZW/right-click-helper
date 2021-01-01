@@ -6,7 +6,7 @@
         alt="Right Click Helper Logo">
   </a>
 </p>
-
+爱我
 ## 介绍
 由python pyqt模块开发的一款windows环境下卡片化右键菜单选项管理工具
 
