@@ -31,6 +31,12 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
         )
         self.setWindowIcon(icon)
 
+        self.setCursor(
+            QtGui.QCursor(
+                QtGui.QPixmap(PathTool.appPath() + r'\src\resource\image\icon\normal.cur'),0,0
+            )
+        )
+
         import ctypes
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("com.yijie.rightClickHelper")
 
