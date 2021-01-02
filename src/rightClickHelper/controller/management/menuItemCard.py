@@ -60,7 +60,11 @@ class MenuItemCard_itf:
                 self.setData(self.menuItem)
         return changeStatus
 
-    def doCardRemove(self): pass
+    def doCardRemove(self):
+        path = self.menuItem.regData['__path__']
+        RegTool.delKey(
+            RegEnv.find(path[0]), path[1]
+        )
 
     def _initEvent(self):
         try:
@@ -112,6 +116,8 @@ class MenuItemCard_itf:
         def __itemClick(popoverMenuItem):
             if popoverMenuItem.property('label') == self.moreOptionMenu['copy']['label']:
                 self.moreMenuSel.emit('copy', self.menuItem)
+            elif popoverMenuItem.property('label') == self.moreOptionMenu['cut']['label']:
+                self.moreMenuSel.emit('cut', self.menuItem)
         popover.itemClicked.connect(__itemClick)
         return popover
 
@@ -159,12 +165,6 @@ class MenuItemCard(
             dialog.exec()
 
         self.edit.clicked.connect(createEditDialog)
-
-    def doCardRemove(self):
-        path = self.menuItem.regData['__path__']
-        RegTool.delKey(
-            RegEnv.find(path[0]), path[1]
-        )
 
     def setIcon(self, menuItem: MenuItem):
         if menuItem.icon != '':

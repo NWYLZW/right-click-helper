@@ -243,7 +243,7 @@ class RegTool:
                 raise FileNotFoundError('Reg val not found.')
 
     @staticmethod
-    def mvKey(
+    def cpKey(
         source: (RegEnv, str),
         target: (RegEnv, str)
     ):
@@ -260,6 +260,14 @@ class RegTool:
             replacePath(sourceRegData)
             RegTool.writeKey(sourceRegData)
         except Exception as e: raise e
+
+    @staticmethod
+    def mvKey(
+        source: (RegEnv, str),
+        target: (RegEnv, str)
+    ):
+        RegTool.cpKey(source, target)
+        print(source)
         RegTool.delKey(*source)
 
 CURRENT_USER_USER_SHELL_FOLDERS = (
