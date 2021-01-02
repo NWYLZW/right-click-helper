@@ -5,6 +5,7 @@ import typing
 from enum import Enum
 from functools import wraps
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 
 from src.rightClickHelper.tool.widgetTool import WidgetTool
@@ -45,6 +46,9 @@ class ElePyWidget(
 ):
     def __init__(self, parent=None, properties: dict = {}):
         super().__init__(parent)
+        # 设置style对当前widget起作用
+        self.setAttribute(Qt.WA_StyledBackground)
+
         self._lifeStage = LifeStage.SET_PROPERTY_WATCH
         self.__setPropertyWatch()
         self._lifeStage = LifeStage.INIT_PROPERTIES

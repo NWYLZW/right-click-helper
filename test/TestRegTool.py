@@ -130,6 +130,61 @@ class TestRegTool(unittest.TestCase):
             , 'Data delete failed'
         )
 
+    def test_cpRegData(self):
+        writeData = {
+            '__path__': (RegEnv.HKEY_CLASSES_ROOT.value, r'*\shell\testRegData'),
+            '__val__': {
+                '': ('test reg data write', RegType.REG_SZ.value)
+            }
+            , 'child-0': {
+                '__path__': (RegEnv.HKEY_CLASSES_ROOT.value, r'*\shell\testRegData\child-0'),
+                '__val__': {
+                    '': ('test reg data child-0 write', RegType.REG_SZ.value)
+                }
+                , 'child-0-0': {
+                    '__path__': (RegEnv.HKEY_CLASSES_ROOT.value, r'*\shell\testRegData\child-0\child-0-0'),
+                    '__val__': {
+                        '': ('test reg data child-0-0 write', RegType.REG_SZ.value)
+                    }
+                }
+            }
+            , 'child-1': {
+                '__path__': (RegEnv.HKEY_CLASSES_ROOT.value, r'*\shell\testRegData\child-1'),
+                '__val__': {
+                    '': ('test reg data child-1 write', RegType.REG_SZ.value)
+                }
+            }
+        }
+
+        RegTool.writeKey(writeData)
+        self.assertEqual(
+            RegTool.recursion(
+                *(RegEnv.HKEY_CLASSES_ROOT, r'*\shell')
+            )['testRegData'] == writeData, True
+            , 'Data write failed'
+        )
+        source = (RegEnv.HKEY_CLASSES_ROOT, r'*\shell\testRegData')
+        target = (RegEnv.HKEY_CLASSES_ROOT, r'*\shell\testRegData-mv-new')
+        RegTool.cpKey(source, target)
+
+        def replacePath(regData: {}):
+            regData['__path__'] = (
+                target[0].value,
+                regData['__path__'][1].replace(source[1], target[1])
+            )
+            for key, regDataChild in regData.items():
+                if key[:2] != '__':
+                    replacePath(regDataChild)
+            return regData
+        self.assertEqual(
+            RegTool.recursion(
+                *(RegEnv.HKEY_CLASSES_ROOT, r'*\shell')
+            )['testRegData-mv-new'] == replacePath(writeData), True
+            , 'Data write failed'
+        )
+        RegTool.delKey(*source)
+        RegTool.delKey(*target)
+
     def test_mvRegData(self):
         writeData = {
             '__path__': (RegEnv.HKEY_CLASSES_ROOT.value, r'*\shell\testRegData'),
@@ -182,3 +237,4 @@ class TestRegTool(unittest.TestCase):
             )['testRegData-mv-new'] == replacePath(writeData), True
             , 'Data write failed'
         )
+        RegTool.delKey(*target)

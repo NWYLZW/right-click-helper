@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import json
 import re
 from typing import ClassVar
 
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
 
 from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem
@@ -18,14 +19,17 @@ class ManagementController(
     ElePyWidget,
     management.Ui_management
 ):
-    moreOptionMenu = [{
-        'label': '粘贴',
-        'status': 'forbidden',
-        'icon':  PathTool.appPath() + r'\src\resource\image\common-icon\paste-ed.png'
-    }, {
-        'label': '导入',
-        'icon':  PathTool.appPath() + r'\src\resource\image\common-icon\import-ed.png'
-    }]
+    moreOptionMenu = {
+        'paste': {
+            'label': '粘贴',
+            'status': 'forbidden',
+            'icon': PathTool.appPath() + r'\src\resource\image\common-icon\paste-ed.png'
+        }
+        ,'import': {
+            'label': '导入',
+            'icon': PathTool.appPath() + r'\src\resource\image\common-icon\import-ed.png'
+        }
+    }
 
     def __init__(
         self, parent=None, properties: dict = {}
@@ -173,7 +177,56 @@ class ManagementController(
         self.itemScrollArea.repaint(); self.itemScrollArea.update()
 
     def moreOptionMenuClick(self, popoverMenuItem: PopoverMenuItem):
-        print(popoverMenuItem)
+        if popoverMenuItem.property('label') == self.moreOptionMenu['import']['label']:
+            try:
+                clipboardData = json.loads(QApplication.clipboard().text())
+                source = (
+                    RegEnv.find(clipboardData['__path__'][0]),
+                    clipboardData['__path__'][1]
+                )
+                split = source[1].split('\\')
+                name = split[len(split) - 1]
+                target = (
+                    self.path[0], '\\'.join([
+                        *self.path[1].split('\\')[:-1],
+                        'shell', name
+                    ])
+                )
+                RegTool.replacePath(
+                    clipboardData, source, target
+                )
+                RegTool.writeKey(clipboardData)
+                self.refreshMenuItems(self.path)
+            except Exception as e: raise e
+        elif popoverMenuItem.property('label') == self.moreOptionMenu['paste']['label']:
+            clipboard: dict = self.property('clipboard')
+
+            index = -1
+            for i in range(len(self.menuItems)):
+                if self.menuItems[i].name == clipboard['val'].name:
+                    index = i; break
+
+            if index == -1:
+                menuItem: MenuItem = clipboard['val']
+
+                source = (
+                    RegEnv.find(
+                        menuItem.regData['__path__'][0]
+                    ), menuItem.regData['__path__'][1]
+                )
+                target = (
+                    self.path[0], '\\'.join([
+                        *self.path[1].split('\\')[:-1],
+                        'shell', menuItem.name
+                    ])
+                )
+                if clipboard['type'] == 'copy':
+                    RegTool.cpKey(source, target)
+                elif clipboard['type'] == 'cut':
+                    RegTool.mvKey(source, target)
+                self.refreshMenuItems(self.path)
+            else:
+                pass
 
     def createMoreMenuPopover(
         self
@@ -211,7 +264,9 @@ class ManagementController(
             self.selKind.currentText(), []
         ))
         ElePyMenuPopover.setMenu(
-            self.more, self.moreOptionMenu, createPopover=self.createMoreMenuPopover
+            self.more, [
+                item for name, item in self.moreOptionMenu.items()
+            ], createPopover=self.createMoreMenuPopover
         )
 
     def createListRefresh(self, mode):

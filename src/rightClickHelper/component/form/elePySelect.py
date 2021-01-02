@@ -167,7 +167,7 @@ class ElePySelect(
         if selfWidth < self.minimumWidth():
             selfWidth = self.minimumWidth()
 
-        self.setFixedWidth(selfWidth)
+        self.setMinimumWidth(selfWidth)
         self.popoverContent.setFixedWidth(selfWidth - self.rightIcon.width())
 
         self.parent().repaint(); self.parent().update()

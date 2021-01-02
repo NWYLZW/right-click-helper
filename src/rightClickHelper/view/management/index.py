@@ -141,6 +141,8 @@ class Ui_management(object):
         self.more.setMinimumSize(QtCore.QSize(16, 16))
         self.more.setMaximumSize(QtCore.QSize(16, 16))
         self.more.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.more.setAcceptDrops(False)
+        self.more.setToolTip("")
         self.more.setText("")
         self.more.setObjectName("more")
         self.headHL.addWidget(self.more)
@@ -191,7 +193,6 @@ class Ui_management(object):
         self.upPackage.setToolTip(_translate("management", "上一级"))
         self.refresh.setToolTip(_translate("management", "刷新"))
         self.currentRegPath.setText(_translate("management", "文件夹/"))
-        self.more.setToolTip(_translate("management", "更多"))
         self.searchLabel.setText(_translate("management", "搜索"))
 from src.rightClickHelper.component.form.elePySelect import ElePySelect
 from src.resource import main_rc

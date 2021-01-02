@@ -243,23 +243,39 @@ class RegTool:
                 raise FileNotFoundError('Reg val not found.')
 
     @staticmethod
+    def replacePath(
+        regData: dict,
+        source: (RegEnv, str), target: (RegEnv, str)
+    ):
+        regData['__path__'] = (
+            target[0].value,
+            regData['__path__'][1].replace(source[1], target[1])
+        )
+        for key, regDataChild in regData.items():
+            if key[:2] != '__':
+                RegTool.replacePath(
+                    regDataChild, source, target
+                )
+
+    @staticmethod
+    def cpKey(
+        source: (RegEnv, str),
+        target: (RegEnv, str)
+    ):
+        try:
+            sourceRegData = RegTool.recursion(*source)
+            RegTool.replacePath(
+                sourceRegData, source, target
+            )
+            RegTool.writeKey(sourceRegData)
+        except Exception as e: raise e
+
+    @staticmethod
     def mvKey(
         source: (RegEnv, str),
         target: (RegEnv, str)
     ):
-        def replacePath(regData: {}):
-            regData['__path__'] = (
-                target[0].value,
-                regData['__path__'][1].replace(source[1], target[1])
-            )
-            for key, regDataChild in regData.items():
-                if key[:2] != '__':
-                    replacePath(regDataChild)
-        try:
-            sourceRegData = RegTool.recursion(*source)
-            replacePath(sourceRegData)
-            RegTool.writeKey(sourceRegData)
-        except Exception as e: raise e
+        RegTool.cpKey(source, target)
         RegTool.delKey(*source)
 
 CURRENT_USER_USER_SHELL_FOLDERS = (
@@ -326,7 +342,10 @@ class MenuItem:
         if self.regData.get('__val__', {}) == {}:
             self.regData['__val__'] = {}
         valRegData = self.regData['__val__']
-        valRegData[''] = (self.title, RegType.REG_SZ.value)
+        if self.isPackage:
+            valRegData[''] = ('', RegType.REG_SZ.value)
+        else:
+            valRegData[''] = (self.title, RegType.REG_SZ.value)
         valRegData['MUIVerb'] = (self.title, RegType.REG_SZ.value)
         valRegData['Icon'] = (self.icon, RegType.REG_SZ.value)
         self.regData['__path__'] = (

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import json
 from abc import abstractmethod
 from typing import ClassVar
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMessageBox, QWidget
+from PyQt5.QtWidgets import QMessageBox, QWidget, QApplication
 
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
@@ -60,7 +61,11 @@ class MenuItemCard_itf:
                 self.setData(self.menuItem)
         return changeStatus
 
-    def doCardRemove(self): pass
+    def doCardRemove(self):
+        path = self.menuItem.regData['__path__']
+        RegTool.delKey(
+            RegEnv.find(path[0]), path[1]
+        )
 
     def _initEvent(self):
         try:
@@ -112,6 +117,16 @@ class MenuItemCard_itf:
         def __itemClick(popoverMenuItem):
             if popoverMenuItem.property('label') == self.moreOptionMenu['copy']['label']:
                 self.moreMenuSel.emit('copy', self.menuItem)
+            elif popoverMenuItem.property('label') == self.moreOptionMenu['cut']['label']:
+                self.moreMenuSel.emit('cut', self.menuItem)
+            elif popoverMenuItem.property('label') == self.moreOptionMenu['share']['label']:
+                QApplication.clipboard().setText(
+                    json.dumps(
+                        RegTool.recursion(
+                            RegEnv.find(self.menuItem.regData['__path__'][0]), self.menuItem.regData['__path__'][1]
+                        )
+                    )
+                )
         popover.itemClicked.connect(__itemClick)
         return popover
 
@@ -159,12 +174,6 @@ class MenuItemCard(
             dialog.exec()
 
         self.edit.clicked.connect(createEditDialog)
-
-    def doCardRemove(self):
-        path = self.menuItem.regData['__path__']
-        RegTool.delKey(
-            RegEnv.find(path[0]), path[1]
-        )
 
     def setIcon(self, menuItem: MenuItem):
         if menuItem.icon != '':

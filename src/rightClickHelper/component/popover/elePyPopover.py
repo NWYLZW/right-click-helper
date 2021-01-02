@@ -213,9 +213,9 @@ class ElePyPopover(
         }
 
         def showPopover(event):
-            def __showPopover():
+            def __showPopover(must: bool = False):
                 if not _is['inWidget']: return
-                if not _is['hide']:
+                if must or not _is['hide']:
                     timer = QTimer(widget)
                     timer.setSingleShot(True)
                     timer.timeout.connect(__showPopover)
@@ -237,7 +237,7 @@ class ElePyPopover(
                 widget.repaint(); widget.update()
                 _is['hide'] = False
             _is['inWidget'] = True
-            __showPopover()
+            __showPopover(True)
 
         # 当前位于popover上不隐藏
         # 当前位于widget上不隐藏
