@@ -276,7 +276,6 @@ class RegTool:
         target: (RegEnv, str)
     ):
         RegTool.cpKey(source, target)
-        print(source)
         RegTool.delKey(*source)
 
 CURRENT_USER_USER_SHELL_FOLDERS = (
@@ -343,7 +342,10 @@ class MenuItem:
         if self.regData.get('__val__', {}) == {}:
             self.regData['__val__'] = {}
         valRegData = self.regData['__val__']
-        valRegData[''] = (self.title, RegType.REG_SZ.value)
+        if self.isPackage:
+            valRegData[''] = ('', RegType.REG_SZ.value)
+        else:
+            valRegData[''] = (self.title, RegType.REG_SZ.value)
         valRegData['MUIVerb'] = (self.title, RegType.REG_SZ.value)
         valRegData['Icon'] = (self.icon, RegType.REG_SZ.value)
         self.regData['__path__'] = (

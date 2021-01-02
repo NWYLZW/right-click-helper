@@ -249,8 +249,11 @@ QLineEdit:focus {
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
           <property name="toolTip">
-           <string>更多</string>
+           <string/>
           </property>
           <property name="text">
            <string/>
