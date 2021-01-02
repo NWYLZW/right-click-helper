@@ -7,7 +7,8 @@ from PyQt5.QtCore import Qt, pyqtSignal, QTimer
 from PyQt5.QtGui import QPaintEvent, QPainter, QColor, QPainterPath
 from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget
 
-from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty, LifeStage
+from src.rightClickHelper.component.core import LifeStage
+from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, MenuPopoverMode, PopoverMenuItem
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
