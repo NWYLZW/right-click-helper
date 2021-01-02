@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import json
 from abc import abstractmethod
 from typing import ClassVar
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMessageBox, QWidget
+from PyQt5.QtWidgets import QMessageBox, QWidget, QApplication
 
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
@@ -118,6 +119,14 @@ class MenuItemCard_itf:
                 self.moreMenuSel.emit('copy', self.menuItem)
             elif popoverMenuItem.property('label') == self.moreOptionMenu['cut']['label']:
                 self.moreMenuSel.emit('cut', self.menuItem)
+            elif popoverMenuItem.property('label') == self.moreOptionMenu['share']['label']:
+                QApplication.clipboard().setText(
+                    json.dumps(
+                        RegTool.recursion(
+                            RegEnv.find(self.menuItem.regData['__path__'][0]), self.menuItem.regData['__path__'][1]
+                        )
+                    )
+                )
         popover.itemClicked.connect(__itemClick)
         return popover
 

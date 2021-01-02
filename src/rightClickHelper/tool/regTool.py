@@ -243,21 +243,30 @@ class RegTool:
                 raise FileNotFoundError('Reg val not found.')
 
     @staticmethod
+    def replacePath(
+        regData: dict,
+        source: (RegEnv, str), target: (RegEnv, str)
+    ):
+        regData['__path__'] = (
+            target[0].value,
+            regData['__path__'][1].replace(source[1], target[1])
+        )
+        for key, regDataChild in regData.items():
+            if key[:2] != '__':
+                RegTool.replacePath(
+                    regDataChild, source, target
+                )
+
+    @staticmethod
     def cpKey(
         source: (RegEnv, str),
         target: (RegEnv, str)
     ):
-        def replacePath(regData: {}):
-            regData['__path__'] = (
-                target[0].value,
-                regData['__path__'][1].replace(source[1], target[1])
-            )
-            for key, regDataChild in regData.items():
-                if key[:2] != '__':
-                    replacePath(regDataChild)
         try:
             sourceRegData = RegTool.recursion(*source)
-            replacePath(sourceRegData)
+            RegTool.replacePath(
+                sourceRegData, source, target
+            )
             RegTool.writeKey(sourceRegData)
         except Exception as e: raise e
 
