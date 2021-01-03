@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton, QWidget, QApplication, QMainWindow
 
 from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
@@ -18,16 +17,21 @@ class TestNotice(unittest.TestCase):
             count = {'val': 0}
             list0 = [{
                 'type': ElePyMessageType.SUCCESS,
-                'message': '测试成功'
+                'message': '测试成功',
+                'showClose': True
             }, {
                 'type': ElePyMessageType.INFO,
-                'message': '测试消息'
+                'message': '测试消息',
+                'showClose': True,
+                'onClose': lambda: print(123)
             }, {
                 'type': ElePyMessageType.WARN,
-                'message': '测试警告'
+                'message': '测试警告',
+                'offset':  100
             }, {
                 'type': ElePyMessageType.ERROR,
-                'message': '测试错误'
+                'message': '测试错误',
+                'duration': 1000
             }]
 
             def btnA(c):

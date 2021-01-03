@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from enum import Enum
+from typing import Callable
 
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget, QApplication
 
+from src.rightClickHelper.component.core import LifeStage
 from src.rightClickHelper.component.elePyWidget import watchProperty
 from src.rightClickHelper.component.label.elePyIcon import ElePyIcon
 from src.rightClickHelper.component.notice.elePyDockWidget import ElePyDockWidget
@@ -20,15 +22,14 @@ class ElePyMessageType(Enum):
 class ElePyMessage(
     ElePyDockWidget
 ):
-    def __init__(
-        self, parent=None, properties: dict = None
-    ):
-        if properties is None: properties = {}
-        super().__init__(parent, {
+    def __init__(self, parent=None):
+        self.defaultProperties = {
             'status': 'info',
-            'deleteAble': True,
-            **properties
-        })
+            'offset': 0,
+            'duration': 3000,
+            'showClose': False
+        }
+        super().__init__(parent, self.defaultProperties)
 
     def _initUi(self):
         super(ElePyMessage, self)._initUi()
@@ -61,16 +62,22 @@ class ElePyMessage(
         self.mainWidget.layout().addWidget(delete)
         self.delete = delete
         self.delete.mousePressEvent = self.deleteBtnClick
-        self.delete.setVisible(self.property('deleteAble'))
+        self.delete.setVisible(self.property('showClose'))
 
     def _initUiAfter(self):
         super(ElePyMessage, self)._initUiAfter()
-        size = QApplication.primaryScreen().size()
-        self.move(int((size.width() - self.width()) / 2), 0)
+        self.setProperty('offset', WidgetTool.getProperty(
+            'offset', 0
+        )(self))
 
     def deleteBtnClick(self, event: QMouseEvent):
         if event.buttons() == Qt.LeftButton:
-            self.createMoveAnimation({'val': 0}, False)()
+            onClose = WidgetTool.getProperty(
+                'onClose', lambda: True
+            )(self)
+            if isinstance(onClose, Callable):
+                val = onClose()
+                if val or val is None: self.createMoveAnimation({'val': 0}, False)()
 
     @watchProperty({
         'shadowRadius': {'type': int},
@@ -115,10 +122,17 @@ class ElePyMessage(
             color: rgb(50, 50, 50);
         }}''')
 
-    @watchProperty({
-        'deleteAble': {'type': bool}
-    })
-    def deleteAbleChange(self, newVal, oldVal, name):
+    @watchProperty({'offset': {'type': int}})
+    def offsetChange(self, newVal, *args):
+        if self._lifeStage in [
+            LifeStage.INIT_UI_AFTER,
+            LifeStage.INITED
+        ]:
+            size = QApplication.primaryScreen().size()
+            self.move(int((size.width() - self.width()) / 2), newVal)
+
+    @watchProperty({'showClose': {'type': bool}})
+    def showCloseChange(self, newVal, *args):
         if hasattr(self, 'delete'):
             self.delete.setVisible(newVal)
 
@@ -128,15 +142,19 @@ class ElePyMessage(
     })
     def messageChange(self, newVal, oldVal, name):
         if name == 'message':
+            if not hasattr(self, 'message'): return
             self.message.setText(newVal)
         elif name == 'type':
+            if not hasattr(self, 'icon'): return
             leftIcons = {
                 ElePyMessageType.SUCCESS: '&#xe6f2;',
                 ElePyMessageType.INFO:    '&#xe6a8;',
                 ElePyMessageType.WARN:    '&#xe710;',
                 ElePyMessageType.ERROR:   '&#xe687;',
             }
-            self.icon.setText(leftIcons[newVal])
+            self.icon.setText(WidgetTool.getProperty(
+                'iconUnicode', leftIcons[newVal]
+            )(self))
             self.setProperty('status', newVal.name.lower())
 
     def createMoveAnimation(self, height: dict, direction: bool = True):
@@ -147,8 +165,10 @@ class ElePyMessage(
             self.repaint()
             if direction:
                 if height['val'] >= 0:
-                    if not WidgetTool.getProperty('deleteAble', False):
-                        QTimer.singleShot(3000, self.createMoveAnimation(height, False))
+                    if not WidgetTool.getProperty('showClose', False)(self):
+                        QTimer.singleShot(WidgetTool.getProperty(
+                            'duration', 3000
+                        )(self), self.createMoveAnimation(height, False))
                     return
             else:
                 if height['val'] <= -100:
@@ -156,6 +176,15 @@ class ElePyMessage(
                     return
             QTimer.singleShot(2, move)
         return move
+
+    def hide(self) -> None:
+        super(ElePyMessage, self).hide()
+        self.setProperty('offset', 0)
+        self.setProperty('message', '')
+        self.setProperty('type', ElePyMessageType.INFO)
+        self.setProperty('showClose', False)
+        self.setProperty('onClose', lambda: True)
+        self.setProperties(self.defaultProperties)
 
     def show(self) -> None:
         super(ElePyMessage, self).show()
