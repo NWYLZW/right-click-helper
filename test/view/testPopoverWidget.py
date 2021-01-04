@@ -3,7 +3,7 @@
 import unittest
 from typing import ClassVar
 
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout
 
 from src.rightClickHelper.component.form.elePySelect import ElePySelect
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
@@ -136,8 +136,27 @@ class TestPopoverWidget(unittest.TestCase):
     def test_Select(self):
         def setMainWindowContent(app, window):
             mainW = QWidget()
+            mainW.setLayout(QHBoxLayout())
 
-            select = ElePySelect(mainW, properties={
+            select = ElePySelect(mainW)
+            select.setMaximumHeight(50)
+            mainW.layout().addWidget(select)
+
+            select.setProperties({
+                'select-menu-items': [{
+                    'label': '测试下拉选择1',
+                    'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste.png'
+                }, {
+                    'label': '测试下拉选择2',
+                    'status': 'forbidden'
+                }, {
+                    'label':  '测试下拉选择3',
+                    'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste-ed.png'
+                }],
+                'sel-index-list': [0],
+            })
+
+            select1 = ElePySelect(mainW, properties={
                 'select-menu-items': [{
                     'label': '测试下拉选择1',
                     'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste.png'
@@ -149,10 +168,13 @@ class TestPopoverWidget(unittest.TestCase):
                     'icon':  PathTool.appPath(isTest=True) + r'\src\resource\image\common-icon\paste-ed.png'
                 }]
             })
+            select1.setMaximumHeight(50)
+            mainW.layout().addWidget(select1)
+
             select.change.connect(
                 lambda m, indexList, selItems: print(m.label.text(), indexList, selItems)
             )
 
             window.setCentralWidget(mainW)
 
-        TestTool.createTestBlurWindow(setMainWindowContent, (400, 400))
+        TestTool.createTestWindow(setMainWindowContent, (400, 400))

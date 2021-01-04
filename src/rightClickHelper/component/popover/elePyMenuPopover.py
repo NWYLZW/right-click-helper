@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Callable, Any
 
 from PyQt5 import QtGui
-from PyQt5.QtCore import pyqtSignal, Qt, QSize, QEvent
+from PyQt5.QtCore import pyqtSignal, Qt, QSize, QEvent, QTimer
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
@@ -96,20 +96,20 @@ class ElePyMenuPopover(
     def _initUi(self):
         super(ElePyMenuPopover, self)._initUi()
         self.setStyleSheet(f'''\
-        .PopoverMenuItem[status='']:hover {{
+        .ElePyMenuPopover[__is-show='1'] .PopoverMenuItem[status='']:hover {{
             border-radius: 4px;
             background-color: rgba(200, 200, 200, 100);
         }}
-        .ElePyMenuPopover[mode='light'] .PopoverMenuItem[status=''] QLabel {{
+        .ElePyMenuPopover[__is-show='1'][mode='light'] .PopoverMenuItem[status=''] QLabel {{
             color: black;
         }}
-        .ElePyMenuPopover[mode='dark'] .PopoverMenuItem[status=''] QLabel {{
+        .ElePyMenuPopover[__is-show='1'][mode='dark'] .PopoverMenuItem[status=''] QLabel {{
             color: white;
         }}
-        .ElePyMenuPopover .PopoverMenuItem[status=''] QLabel:hover {{
+        .ElePyMenuPopover[__is-show='1'] .PopoverMenuItem[status=''] QLabel:hover {{
             color: rgba(50, 150, 220);
         }}
-        .ElePyMenuPopover .PopoverMenuItem[status='forbidden'] QLabel {{
+        .ElePyMenuPopover[__is-show='1'] .PopoverMenuItem[status='forbidden'] QLabel {{
             color: rgb(200, 200, 200);
         }}''')
 

@@ -43,6 +43,7 @@ class ElePyPopover(
         self.hide() if self.isVisible() else self.show(widget, event)
 
     def show(self, widget: QWidget = None, event: QMouseEvent = None) -> None:
+        self.setProperty('__is-show', '1')
         super(ElePyPopover, self).show()
         pos = widget.mapToGlobal(QPoint(0, 0))
         targetOffset = {
@@ -99,6 +100,7 @@ class ElePyPopover(
             })(self).start()
 
     def hide(self) -> None:
+        self.setProperty('__is-show', '0')
         targetOffset = {
             'bottom': {
                 'x': 0, 'y': 100,
