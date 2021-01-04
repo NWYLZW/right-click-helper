@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget, QApplication
 from src.rightClickHelper.component.core import LifeStage
 from src.rightClickHelper.component.elePyWidget import watchProperty
 from src.rightClickHelper.component.label.elePyIcon import ElePyIcon
-from src.rightClickHelper.component.notice.elePyDockWidget import ElePyDockWidget
+from src.rightClickHelper.component.elePyDockWidget import ElePyDockWidget
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
 class ElePyMessageType(Enum):
