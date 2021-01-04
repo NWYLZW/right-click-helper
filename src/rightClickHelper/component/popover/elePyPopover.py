@@ -342,6 +342,7 @@ class ElePyPopover(
             popoverWidget.size().height() + properties.get('shadowRadius', 10) * 2
         )
         mainWidget.popoverContent = popoverWidget
+        popoverWidget.setParent(mainWidget)
         GL.addWidget(popoverWidget)
 
         if dealMainWidget is not None:

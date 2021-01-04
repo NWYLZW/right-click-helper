@@ -1,37 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import typing
+from PyQt5.QtCore import pyqtSignal, QEvent
 
-from PyQt5.QtCore import Qt, pyqtSignal, QEvent
-from PyQt5.QtWidgets import QDockWidget, QWidget
-
-from src.rightClickHelper.tool.effectTool import EffectTool
+from src.rightClickHelper.component.elePyDockWidget import ElePyDockWidget
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
 class BasePopover(
-    QDockWidget
+    ElePyDockWidget
 ):
     hided = pyqtSignal(); showed = pyqtSignal()
-    propertyChange = pyqtSignal(str, object, dict)
 
-    def __init__(self, parent=None, properties: dict = {}):
+    def __init__(
+        self, parent=None, properties: dict = None
+    ):
+        if properties is None: properties = {}
         self._inWidget = False
-        super().__init__(parent)
-        WidgetTool.setProperties(properties)(self)
-        self._initUI()
+        super().__init__(parent, properties)
 
-    def _initUI(self):
+    def _initUi(self):
+        super(BasePopover, self)._initUi()
         self.hide()
-        temp = QWidget(); self.setTitleBarWidget(temp); del temp
-        self.refreshUIByProperties()
-        self.setFloating(True)
-
-    def refreshUIByProperties(self):
-        shadowRadius = WidgetTool.getProperty('shadowRadius', 10)(self)
-        shadowColor = WidgetTool.getProperty('shadowColor', Qt.gray)(self)
-        EffectTool.setBlur(
-            self, shadowRadius=shadowRadius, shadowColor=shadowColor
-        )
 
     def enterEvent(self, event: QEvent) -> None:
         super(BasePopover, self).enterEvent(event)
@@ -50,13 +38,6 @@ class BasePopover(
     def hide(self) -> None:
         super(BasePopover, self).hide()
         self.hided.emit()
-
-    def setProperty(self, name: str, value: typing.Any) -> bool:
-        returnData = {}
-        self.propertyChange.emit(name, value, returnData)
-        if returnData.get('value', True):
-            return super().setProperty(name, value)
-        return False
 
     @property
     def shadowRadius(self):
