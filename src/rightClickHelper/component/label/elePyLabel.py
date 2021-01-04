@@ -17,8 +17,11 @@ class ElePyLabel(
         if not ElePyLabel.INIT_ICON_FONT:
             ElePyLabel.INIT_ICON_FONT = True
 
-            QFontDatabase.addApplicationFont(
+            fontId = QFontDatabase.addApplicationFont(
                 os.path.abspath(os.path.join(__file__, '../elePy.ttf'))
             )
-            ElePyLabel.ICON_FONT = QFont('elePy')
+            fontFamilies = QFontDatabase.applicationFontFamilies(fontId)
+            if len(fontFamilies) > 0:
+                fontFamily = fontFamilies[0]
+                ElePyLabel.ICON_FONT = QFont(fontFamily)
         super().__init__(parent, properties)

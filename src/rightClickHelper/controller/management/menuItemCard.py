@@ -8,7 +8,8 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox, QWidget, QApplication
 
-from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem, MenuPopoverMode
+from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
+from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
 from src.rightClickHelper.tool.pathTool import PathTool
@@ -127,6 +128,10 @@ class MenuItemCard_itf:
                         )
                     )
                 )
+                ElePyMessage.instance().show({
+                    'type': ElePyMessageType.SUCCESS,
+                    'message': '内容已复制到剪切板'
+                })
         popover.itemClicked.connect(__itemClick)
         return popover
 

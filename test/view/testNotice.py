@@ -13,7 +13,7 @@ class TestNotice(unittest.TestCase):
             mainW = QWidget(None)
             window.setCentralWidget(mainW)
 
-            temp = ElePyMessage()
+            temp = ElePyMessage.instance()
             count = {'val': 0}
             list0 = [{
                 'type': ElePyMessageType.SUCCESS,

@@ -22,6 +22,14 @@ class ElePyMessageType(Enum):
 class ElePyMessage(
     ElePyDockWidget
 ):
+    __instance__ = None
+
+    @staticmethod
+    def instance() -> 'ElePyMessage':
+        if hasattr(ElePyMessage, '__instance__'):
+            setattr(ElePyMessage, '__instance__', ElePyMessage())
+        return ElePyMessage.__instance__
+
     def __init__(self, parent=None):
         self.defaultProperties = {
             'status': 'info',
@@ -186,8 +194,11 @@ class ElePyMessage(
         self.setProperty('onClose', lambda: True)
         self.setProperties(self.defaultProperties)
 
-    def show(self) -> None:
+    def show(self, message: dict = None) -> None:
+        if message is None: message = {}
+        self.setProperties(message)
         super(ElePyMessage, self).show()
+
         self.activateWindow()
         self.setWindowOpacity(0)
         self.createMoveAnimation({'val': -100})()

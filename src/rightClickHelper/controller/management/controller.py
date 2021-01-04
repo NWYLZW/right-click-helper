@@ -8,6 +8,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
 
 from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
+from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover, PopoverMenuItem
 from src.rightClickHelper.controller.management.menuItemCard import MenuItemCard, MenuItemCard_Package, MenuItemCard_New
 from src.rightClickHelper.tool.pathTool import PathTool
@@ -61,8 +62,18 @@ class ManagementController(
     @watchProperty({
         'clipboard': {'type': dict}
     })
-    def clipboardChange(self, clipboardData, oldVal, propertyName):
+    def clipboardChange(self, clipboardData, *args):
         status = 'forbidden' if clipboardData['val'] is None else ''
+        messages = {
+            'copy': '复制成功',
+            'cut': '剪切成功',
+        }
+        message = messages.get(clipboardData['type'], None)
+        if message is not None:
+            ElePyMessage.instance().show({
+                'type': ElePyMessageType.SUCCESS,
+                'message': message
+            })
         if self.moreOptionPopover is None:
             self.__tempList.append({
                 'index': 0, 'status': status
@@ -176,6 +187,12 @@ class ManagementController(
         self.refreshShowMenuItems()
         self.itemScrollArea.repaint(); self.itemScrollArea.update()
 
+    def indexOfMenuItems(self, name: str) -> int:
+        for i in range(len(self.menuItems)):
+            if self.menuItems[i].name == name:
+                return i
+        return -1
+
     def moreOptionMenuClick(self, popoverMenuItem: PopoverMenuItem):
         if popoverMenuItem.property('label') == self.moreOptionMenu['import']['label']:
             try:
@@ -192,21 +209,29 @@ class ManagementController(
                         'shell', name
                     ])
                 )
-                RegTool.replacePath(
-                    clipboardData, source, target
-                )
-                RegTool.writeKey(clipboardData)
-                self.refreshMenuItems(self.path)
-            except Exception as e: raise e
+                if self.indexOfMenuItems(name) == -1:
+                    RegTool.replacePath(
+                        clipboardData, source, target
+                    )
+                    RegTool.writeKey(clipboardData)
+                    self.refreshMenuItems(self.path)
+                    ElePyMessage.instance().show({
+                        'type': ElePyMessageType.SUCCESS,
+                        'message': '从剪切板导入数据成功'
+                    })
+                else:
+                    ElePyMessage.instance().show({
+                        'type': ElePyMessageType.WARN,
+                        'message': '当前目录存在同名菜单项'
+                    })
+            except: ElePyMessage.instance().show({
+                'type': ElePyMessageType.WARN,
+                'message': '从剪切板数据解析失败'
+            })
         elif popoverMenuItem.property('label') == self.moreOptionMenu['paste']['label']:
             clipboard: dict = self.property('clipboard')
 
-            index = -1
-            for i in range(len(self.menuItems)):
-                if self.menuItems[i].name == clipboard['val'].name:
-                    index = i; break
-
-            if index == -1:
+            if self.indexOfMenuItems(clipboard['val'].name) == -1:
                 menuItem: MenuItem = clipboard['val']
 
                 source = (
@@ -225,8 +250,15 @@ class ManagementController(
                 elif clipboard['type'] == 'cut':
                     RegTool.mvKey(source, target)
                 self.refreshMenuItems(self.path)
+                ElePyMessage.instance().show({
+                    'type': ElePyMessageType.SUCCESS,
+                    'message': '粘贴成功'
+                })
             else:
-                pass
+                ElePyMessage.instance().show({
+                    'type': ElePyMessageType.WARN,
+                    'message': '当前目录存在同名菜单项'
+                })
 
     def createMoreMenuPopover(
         self
