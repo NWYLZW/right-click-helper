@@ -273,7 +273,7 @@ class ManagementController(
 
         def hideIts():
             for moreOptionPopover in self.moreOptionPopovers:
-                moreOptionPopover.hide()
+                if moreOptionPopover is not popover: moreOptionPopover.hide()
         popover.showed.connect(hideIts)
         self.moreOptionPopovers.append(popover)
         return popover
