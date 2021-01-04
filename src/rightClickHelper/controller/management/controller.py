@@ -5,6 +5,7 @@ import re
 from typing import ClassVar
 
 from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
 
 from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
@@ -36,7 +37,7 @@ class ManagementController(
         self, parent=None, properties: dict = {}
     ):
         self.__tempList = []
-        self.moreOptionPopover = None   # type: ElePyMenuPopover
+        self.moreOptionPopovers = []   # type: list[ElePyMenuPopover]
         super().__init__(parent, {
             'clipboard': {
                 'val': None, 'type': None
@@ -74,12 +75,12 @@ class ManagementController(
                 'type': ElePyMessageType.SUCCESS,
                 'message': message
             })
-        if self.moreOptionPopover is None:
+        if len(self.moreOptionPopovers) <= 1:
             self.__tempList.append({
                 'index': 0, 'status': status
             })
-        else:
-            self.moreOptionPopover.changeItemStatus(0, status)
+        for moreOptionPopover in self.moreOptionPopovers:
+            moreOptionPopover.changeItemStatus(0, status)
 
     def loadShowMenuItem(self, showMenuItem: MenuItem, itemType: str, lineNum: int):
         lineWidth = 1100; lineHeight = 180
@@ -267,9 +268,14 @@ class ManagementController(
         for t in self.__tempList:
             items = properties.get('menu-popover-items', [])
             items[t['index']]['status'] = t['status']
-        popover = PopoverClass(widget, properties)
+        popover = PopoverClass(widget, properties)              # type: ElePyMenuPopover
         popover.itemClicked.connect(self.moreOptionMenuClick)
-        self.moreOptionPopover = popover
+
+        def hideIts():
+            for moreOptionPopover in self.moreOptionPopovers:
+                moreOptionPopover.hide()
+        popover.showed.connect(hideIts)
+        self.moreOptionPopovers.append(popover)
         return popover
 
     def _initData(self):
@@ -299,6 +305,19 @@ class ManagementController(
             self.more, [
                 item for name, item in self.moreOptionMenu.items()
             ], createPopover=self.createMoreMenuPopover
+        )
+        self.itemScrollAreaWidget.setProperty(
+            'popover-show-pos', 'withMouseClickPos'
+        )
+        self.itemScrollAreaWidget.setProperty(
+            'trigger-click-btns', 'right'
+        )
+        ElePyMenuPopover.setMenu(
+            self.itemScrollAreaWidget, [
+                item for name, item in self.moreOptionMenu.items()
+            ], properties={
+                'popover-trigger': 'click'
+            }, createPopover=self.createMoreMenuPopover
         )
 
     def createListRefresh(self, mode):

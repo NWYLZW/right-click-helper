@@ -3,9 +3,8 @@
 import random
 from typing import Callable, ClassVar, Any
 
-from PyQt5 import QtGui
 from PyQt5.QtCore import QPoint, Qt, QTimer
-from PyQt5.QtGui import QPainter, QColor, QPolygon, QPainterPath, QPolygonF
+from PyQt5.QtGui import QPainter, QColor, QPolygon, QPainterPath, QPolygonF, QPaintEvent, QMouseEvent
 from PyQt5.QtWidgets import QWidget, QGridLayout
 
 from src.rightClickHelper.component.popover.basePopover import BasePopover
@@ -40,10 +39,10 @@ class ElePyPopover(
     def __init__(self, parent=None, properties: dict = {}):
         super().__init__(parent, properties)
 
-    def invertVisible(self, widget: QWidget):
-        self.hide() if self.isVisible() else self.show(widget)
+    def invertVisible(self, widget: QWidget, event: QMouseEvent = None):
+        self.hide() if self.isVisible() else self.show(widget, event)
 
-    def show(self, widget: QWidget) -> None:
+    def show(self, widget: QWidget = None, event: QMouseEvent = None) -> None:
         super(ElePyPopover, self).show()
         pos = widget.mapToGlobal(QPoint(0, 0))
         targetOffset = {
@@ -64,11 +63,20 @@ class ElePyPopover(
                 'y': [int((widget.height() - self.height())/2), 0],
             },
         }
-        targetPoint = QPoint(
-            pos.x() + targetOffset[self.position]['x'][0],
-            pos.y() + targetOffset[self.position]['y'][0]
-        )
-        animationType = WidgetTool.getProperty('animation-type', 'transform')(self)
+        if WidgetTool.getProperty(
+            'popover-show-pos', ''
+        )(widget) != 'withMouseClickPos':
+            targetPoint = QPoint(
+                pos.x() + targetOffset[self.position]['x'][0],
+                pos.y() + targetOffset[self.position]['y'][0]
+            )
+        else:
+            targetPoint = QPoint(
+                pos.x() + event.x() - self.width()/2, pos.y() + event.y()
+            )
+        animationType = WidgetTool.getProperty(
+            'animation-type', 'transform'
+        )(self)
         if   animationType == 'transform':
             originPoint = QPoint(
                 targetPoint.x() + targetOffset[self.position]['x'][1],
@@ -105,7 +113,9 @@ class ElePyPopover(
                 'x': 100, 'y': 0,
             },
         }
-        animationType = WidgetTool.getProperty('animation-type', 'transform')(self)
+        animationType = WidgetTool.getProperty(
+            'animation-type', 'transform'
+        )(self)
         if   animationType == 'transform':
             AnimationTool.create({
                 'type': b'pos',
@@ -128,7 +138,7 @@ class ElePyPopover(
             })(self).start()
 
     def paintEvent(
-        self, event: QtGui.QPaintEvent
+        self, event: QPaintEvent
     ) -> None:
         if WidgetTool.getProperty('with-triangle', False)(self):
             painter = QPainter(self)
@@ -286,9 +296,20 @@ class ElePyPopover(
         widget.popover = None
         sourceMousePressEvent = widget.mousePressEvent
 
-        def changePopoverStatus(event: QtGui.QMouseEvent):
+        def changePopoverStatus(event: QMouseEvent):
             sourceMousePressEvent(event)
-            if event.buttons() == Qt.LeftButton:
+            btns = {
+                'left': [Qt.LeftButton],
+                'right': [Qt.RightButton],
+            }
+            triggerClickBtns = btns.get(WidgetTool.getProperty(
+                'trigger-click-btns', 'left'
+            )(widget), btns['left'])
+            trigger = False
+            for triggerClickBtn in triggerClickBtns:
+                if event.buttons() == triggerClickBtn:
+                    trigger = True
+            if trigger:
                 if widget.popover is None:
                     if createPopover is None:
                         widget.popover = PopoverClass(widget, properties)
@@ -297,9 +318,14 @@ class ElePyPopover(
                     widget.popover.setWidget(popoverWidget)
                     if createdPopover is not None:
                         createdPopover(widget.popover)
-                widget.popover.invertVisible(widget)
+                widget.popover.invertVisible(
+                    widget, event
+                )
+            else:
+                if widget.popover is not None and widget.popover.isVisible():
+                    widget.popover.hide()
 
-                widget.repaint(); widget.update()
+            widget.repaint(); widget.update()
 
         widget.mousePressEvent = changePopoverStatus
 
