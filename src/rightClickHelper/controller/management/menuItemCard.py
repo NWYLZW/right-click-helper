@@ -12,6 +12,7 @@ from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, Ele
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
+from src.rightClickHelper.tool.animationTool import AnimationTool
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.tool.regTool import MenuItem, RegTool, RegEnv
@@ -73,11 +74,8 @@ class MenuItemCard_itf:
             self.icon.enterEvent = lambda e: \
                 self.maskCard.show()
 
-            maskHide = lambda e: \
+            self.maskCard.leaveEvent = lambda e: \
                 self.maskCard.hide()
-            self.leaveEvent = maskHide
-            self.title.enterEvent = maskHide
-            self.maskCard.leaveEvent = maskHide
 
             self.switchItem.mousePressEvent = \
                 self.createChangeStatus()

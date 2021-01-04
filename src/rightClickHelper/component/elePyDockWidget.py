@@ -27,9 +27,11 @@ class ElePyDockWidget(
 
         # 修复WA_TranslucentBackground导致的子控件界面不刷新bug
         def repaint():
-            for child in self.children():       # type: QWidget
-                if isinstance(child, QWidget):
-                    child.update()
+            try:
+                for child in self.children():       # type: QWidget
+                    if isinstance(child, QWidget):
+                        child.update()
+            except: pass
         QTimer.singleShot(10, repaint)
 
     @watchProperty({

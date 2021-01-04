@@ -26,7 +26,7 @@ class Ui_item(object):
 "}\n"
 "#maskCard {\n"
 "    border-radius: 10px;\n"
-"    background-color: rgba(100, 100, 100, .2);\n"
+"    background-color: rgba(0, 0, 0, 50);\n"
 "}\n"
 "\n"
 "#edit {\n"
@@ -68,7 +68,7 @@ class Ui_item(object):
         self.title.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.title.setObjectName("title")
         self.icon = QtWidgets.QWidget(self.main)
-        self.icon.setGeometry(QtCore.QRect(20, 20, 81, 80))
+        self.icon.setGeometry(QtCore.QRect(20, 20, 80, 80))
         self.icon.setObjectName("icon")
         self.gridLayoutWidget = QtWidgets.QWidget(self.icon)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 0, 81, 81))
@@ -98,7 +98,7 @@ class Ui_item(object):
         self.icon_4.setObjectName("icon_4")
         self.showMain.addWidget(self.icon_4, 1, 1, 1, 1)
         self.maskCard = QtWidgets.QWidget(self.main)
-        self.maskCard.setGeometry(QtCore.QRect(20, 20, 81, 81))
+        self.maskCard.setGeometry(QtCore.QRect(20, 20, 80, 80))
         self.maskCard.setStyleSheet("#switchItem {\n"
 "    border: none;\n"
 "}\n"

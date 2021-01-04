@@ -26,7 +26,7 @@ class Ui_item(object):
 "}\n"
 "#maskCard {\n"
 "    border-radius: 10px;\n"
-"    background-color: rgba(100, 100, 100, .2);\n"
+"    background-color: rgba(0, 0, 0, 50);\n"
 "}\n"
 "\n"
 "#edit {\n"
@@ -60,7 +60,7 @@ class Ui_item(object):
 "}")
         self.main.setObjectName("main")
         self.icon = QtWidgets.QLabel(self.main)
-        self.icon.setGeometry(QtCore.QRect(20, 20, 81, 81))
+        self.icon.setGeometry(QtCore.QRect(20, 20, 80, 80))
         font = QtGui.QFont()
         font.setFamily("Microsoft JhengHei")
         font.setPointSize(10)
@@ -98,14 +98,6 @@ class Ui_item(object):
         self.switchItem.setToolTip("")
         self.switchItem.setStyleSheet("")
         self.switchItem.setObjectName("switchItem")
-        self.status = QtWidgets.QLabel(self.main)
-        self.status.setGeometry(QtCore.QRect(80, 10, 31, 31))
-        font = QtGui.QFont()
-        font.setFamily("Microsoft YaHei UI")
-        font.setPointSize(10)
-        self.status.setFont(font)
-        self.status.setAlignment(QtCore.Qt.AlignCenter)
-        self.status.setObjectName("status")
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.main)
         self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(10, 140, 101, 21))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
@@ -134,6 +126,14 @@ class Ui_item(object):
         self.more.setText("")
         self.more.setObjectName("more")
         self.horizontalLayout.addWidget(self.more)
+        self.status = QtWidgets.QLabel(self.main)
+        self.status.setGeometry(QtCore.QRect(80, 10, 31, 31))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(10)
+        self.status.setFont(font)
+        self.status.setAlignment(QtCore.Qt.AlignCenter)
+        self.status.setObjectName("status")
 
         self.retranslateUi(item)
         QtCore.QMetaObject.connectSlotsByName(item)
@@ -143,7 +143,7 @@ class Ui_item(object):
         item.setWindowTitle(_translate("item", "Form"))
         self.icon.setText(_translate("item", "应用无图标"))
         self.title.setText(_translate("item", "标题"))
-        self.status.setText(_translate("item", "S"))
         self.edit.setToolTip(_translate("item", "编辑"))
         self.remove.setToolTip(_translate("item", "删除"))
+        self.status.setText(_translate("item", "S"))
 from src.resource import main_rc
