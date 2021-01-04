@@ -37,12 +37,14 @@ class Ui_item(object):
 "    border-image: url(:/ico/image/common-icon/edit-ed.png);\n"
 "}\n"
 "\n"
-"#remove {\n"
+"#switchItem {\n"
 "    border: none;\n"
-"    border-image: url(:/ico/image/common-icon/delete.png);\n"
 "}\n"
-"#remove:hover {\n"
-"    border-image: url(:/ico/image/common-icon/delete-ed.png);\n"
+"#switchItem[status=\'open\'] {\n"
+"    border-image: url(:/ico/image/switch-open.png);\n"
+"}\n"
+"#switchItem[status=\'close\'] {\n"
+"    border-image: url(:/ico/image/switch-close.png);\n"
 "}\n"
 "\n"
 "#more {\n"
@@ -77,33 +79,20 @@ class Ui_item(object):
         self.title.setFont(font)
         self.title.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.title.setObjectName("title")
-        self.maskCard = QtWidgets.QWidget(self.main)
-        self.maskCard.setGeometry(QtCore.QRect(20, 20, 80, 80))
-        self.maskCard.setMinimumSize(QtCore.QSize(80, 80))
-        self.maskCard.setMaximumSize(QtCore.QSize(80, 80))
-        self.maskCard.setStyleSheet("#switchItem {\n"
-"    border: none;\n"
-"}\n"
-"#switchItem[status=\'open\'] {\n"
-"    border-image: url(:/ico/image/switch-open.png);\n"
-"}\n"
-"#switchItem[status=\'close\'] {\n"
-"    border-image: url(:/ico/image/switch-close.png);\n"
-"}")
-        self.maskCard.setObjectName("maskCard")
-        self.switchItem = QtWidgets.QGraphicsView(self.maskCard)
-        self.switchItem.setGeometry(QtCore.QRect(20, 30, 41, 21))
-        self.switchItem.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.switchItem.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.switchItem.setToolTip("")
-        self.switchItem.setStyleSheet("")
-        self.switchItem.setObjectName("switchItem")
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.main)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(10, 140, 101, 21))
+        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(10, 140, 101, 22))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
+        self.switchItem = QtWidgets.QGraphicsView(self.horizontalLayoutWidget_2)
+        self.switchItem.setMinimumSize(QtCore.QSize(30, 15))
+        self.switchItem.setMaximumSize(QtCore.QSize(30, 15))
+        self.switchItem.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.switchItem.setToolTip("")
+        self.switchItem.setStyleSheet("")
+        self.switchItem.setObjectName("switchItem")
+        self.horizontalLayout.addWidget(self.switchItem)
         self.edit = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.edit.setMinimumSize(QtCore.QSize(16, 16))
         self.edit.setMaximumSize(QtCore.QSize(16, 16))
@@ -111,13 +100,6 @@ class Ui_item(object):
         self.edit.setText("")
         self.edit.setObjectName("edit")
         self.horizontalLayout.addWidget(self.edit)
-        self.remove = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
-        self.remove.setMinimumSize(QtCore.QSize(16, 16))
-        self.remove.setMaximumSize(QtCore.QSize(16, 16))
-        self.remove.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.remove.setText("")
-        self.remove.setObjectName("remove")
-        self.horizontalLayout.addWidget(self.remove)
         self.more = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.more.setMinimumSize(QtCore.QSize(16, 16))
         self.more.setMaximumSize(QtCore.QSize(16, 16))
@@ -144,6 +126,5 @@ class Ui_item(object):
         self.icon.setText(_translate("item", "应用无图标"))
         self.title.setText(_translate("item", "标题"))
         self.edit.setToolTip(_translate("item", "编辑"))
-        self.remove.setToolTip(_translate("item", "删除"))
         self.status.setText(_translate("item", "S"))
 from src.resource import main_rc

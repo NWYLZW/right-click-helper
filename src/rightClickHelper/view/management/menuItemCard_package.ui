@@ -46,12 +46,14 @@
 	border-image: url(:/ico/image/common-icon/edit-ed.png);
 }
 
-#remove {
+#switchItem {
 	border: none;
-	border-image: url(:/ico/image/common-icon/delete.png);
 }
-#remove:hover {
-	border-image: url(:/ico/image/common-icon/delete-ed.png);
+#switchItem[status='open'] {
+    border-image: url(:/ico/image/switch-open.png);
+}
+#switchItem[status='close'] {
+    border-image: url(:/ico/image/switch-close.png);
 }
 
 #more {
@@ -124,16 +126,16 @@
      </property>
      <layout class="QGridLayout" name="showMain">
       <property name="leftMargin">
-       <number>4</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>4</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>4</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>4</number>
+       <number>0</number>
       </property>
       <property name="spacing">
        <number>4</number>
@@ -181,52 +183,6 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="maskCard" native="true">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>80</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#switchItem {
-	border: none;
-}
-#switchItem[status='open'] {
-    border-image: url(:/ico/image/switch-open.png);
-}
-#switchItem[status='close'] {
-    border-image: url(:/ico/image/switch-close.png);
-}</string>
-    </property>
-    <widget class="QGraphicsView" name="switchItem">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="cursor" stdset="0">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-    </widget>
-   </widget>
    <widget class="QLabel" name="showIcon">
     <property name="geometry">
      <rect>
@@ -260,6 +216,31 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QGraphicsView" name="switchItem">
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor" stdset="0">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="edit">
        <property name="minimumSize">
         <size>
@@ -278,31 +259,6 @@
        </property>
        <property name="toolTip">
         <string>编辑</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="remove">
-       <property name="minimumSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="toolTip">
-        <string>删除</string>
        </property>
        <property name="text">
         <string/>

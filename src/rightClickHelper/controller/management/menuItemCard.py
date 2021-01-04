@@ -12,7 +12,6 @@ from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, Ele
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
-from src.rightClickHelper.tool.animationTool import AnimationTool
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
 from src.rightClickHelper.tool.regTool import MenuItem, RegTool, RegEnv
@@ -36,6 +35,10 @@ class MenuItemCard_itf:
             'label': '分享',
             'icon': PathTool.appPath() + r'\src\resource\image\common-icon\share-ed.png'
         },
+        'delete': {
+            'label': '删除',
+            'icon': PathTool.appPath() + r'\src\resource\image\common-icon\delete-ed.png'
+        },
         'save': {
             'label': '保存',
             'icon': PathTool.appPath() + r'\src\resource\image\common-icon\save-ed.png'
@@ -46,9 +49,7 @@ class MenuItemCard_itf:
         try:
             self.setupUi(self)
             EffectTool.setBlur(self)
-
-            self.maskCard.hide()
-        except Exception as e: raise e
+        except Exception as e: pass
 
     def createChangeStatus(self):
         def changeStatus(event):
@@ -64,32 +65,22 @@ class MenuItemCard_itf:
         return changeStatus
 
     def doCardRemove(self):
-        path = self.menuItem.regData['__path__']
-        RegTool.delKey(
-            RegEnv.find(path[0]), path[1]
+        result = QMessageBox.question(
+            self, '提示', '是否删除该右键菜单',
+                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+            QMessageBox.Cancel
         )
+        if result == QMessageBox.Yes:
+            path = self.menuItem.regData['__path__']
+            RegTool.delKey(
+                RegEnv.find(path[0]), path[1]
+            )
+            self.cardRemove.emit(self.menuItem)
 
     def _initEvent(self):
         try:
-            self.icon.enterEvent = lambda e: \
-                self.maskCard.show()
-
-            self.maskCard.leaveEvent = lambda e: \
-                self.maskCard.hide()
-
             self.switchItem.mousePressEvent = \
                 self.createChangeStatus()
-
-            def cardRemove(c):
-                result = QMessageBox.question(
-                    self, '提示', '是否删除该右键菜单',
-                                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
-                    QMessageBox.Cancel
-                )
-                if result == QMessageBox.Yes:
-                    self.doCardRemove()
-                    self.cardRemove.emit(self.menuItem)
-            self.remove.clicked.connect(cardRemove)
         except Exception as e: raise e
 
     @abstractmethod
@@ -130,6 +121,8 @@ class MenuItemCard_itf:
                     'type': ElePyMessageType.SUCCESS,
                     'message': '内容已复制到剪切板'
                 })
+            elif popoverMenuItem.property('label') == self.moreOptionMenu['delete']['label']:
+                self.doCardRemove()
         popover.itemClicked.connect(__itemClick)
         return popover
 
@@ -216,7 +209,7 @@ class MenuItemCard_Package(
         self._initSelfEvent()
 
     def _initSelfUI(self):
-        self.title.setCursor(
+        self.icon.setCursor(
             QtCore.Qt.PointingHandCursor
         )
 
@@ -228,7 +221,7 @@ class MenuItemCard_Package(
             )
             dialog.exec()
         self.edit.clicked.connect(createEditDialog)
-        self.title.mousePressEvent = lambda e: \
+        self.icon.mousePressEvent = lambda e: \
             self.clickTitle.emit(self.menuItem) if e.buttons() == QtCore.Qt.LeftButton else None
 
     def setIcon(self, menuItem: MenuItem):
