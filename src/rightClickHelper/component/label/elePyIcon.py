@@ -5,6 +5,7 @@ import re
 from PyQt5.QtCore import Qt
 
 from src.rightClickHelper.component.label.elePyLabel import ElePyLabel
+from src.rightClickHelper.tool.widgetTool import WidgetTool
 
 class ElePyIcon(
     ElePyLabel
@@ -15,7 +16,9 @@ class ElePyIcon(
     def _initUi(self):
         super(ElePyIcon, self)._initUi()
         self.setAlignment(Qt.AlignCenter)
-        self.setFont(ElePyLabel.ICON_FONT)
+        self.setFont(WidgetTool.getProperty(
+            'icon-font', ElePyLabel.ICON_FONT
+        )(self))
         self.setFontPixel()
 
     def setText(self, text: str) -> None:

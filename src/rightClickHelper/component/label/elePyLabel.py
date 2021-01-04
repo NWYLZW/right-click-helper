@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
-
 from PyQt5.QtGui import QFontDatabase, QFont
 from PyQt5.QtWidgets import QLabel
 
 from src.rightClickHelper.component.elePyWidget import ElePyWidget
+from src.rightClickHelper.tool.pathTool import PathTool
 
 class ElePyLabel(
     QLabel, ElePyWidget
 ):
-    INIT_ICON_FONT: bool = False
     ICON_FONT: QFont     = None
 
     def __init__(self, parent=None, properties: dict = None):
-        if not ElePyLabel.INIT_ICON_FONT:
-            ElePyLabel.INIT_ICON_FONT = True
-
+        if ElePyLabel.ICON_FONT is None:
             fontId = QFontDatabase.addApplicationFont(
-                os.path.abspath(os.path.join(__file__, '../elePy.ttf'))
+                PathTool.appPath() + r'\src\resource\font\elePy.ttf'
             )
             fontFamilies = QFontDatabase.applicationFontFamilies(fontId)
             if len(fontFamilies) > 0:
