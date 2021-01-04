@@ -306,14 +306,14 @@ class ManagementController(
                 item for name, item in self.moreOptionMenu.items()
             ], createPopover=self.createMoreMenuPopover
         )
-        self.itemScrollAreaWidget.setProperty(
+        self.itemScrollArea.setProperty(
             'popover-show-pos', 'withMouseClickPos'
         )
-        self.itemScrollAreaWidget.setProperty(
+        self.itemScrollArea.setProperty(
             'trigger-click-btns', 'right'
         )
         ElePyMenuPopover.setMenu(
-            self.itemScrollAreaWidget, [
+            self.itemScrollArea, [
                 item for name, item in self.moreOptionMenu.items()
             ], properties={
                 'popover-trigger': 'click'
