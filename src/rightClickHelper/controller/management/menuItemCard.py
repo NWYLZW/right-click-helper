@@ -67,7 +67,7 @@ class MenuItemCard_itf:
     def doCardRemove(self):
         result = QMessageBox.question(
             self, '提示', '是否删除该右键菜单',
-                        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
             QMessageBox.Cancel
         )
         if result == QMessageBox.Yes:

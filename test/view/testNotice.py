@@ -5,7 +5,11 @@ import unittest
 from PyQt5.QtWidgets import QPushButton, QWidget, QApplication, QMainWindow
 
 from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
+from src.rightClickHelper.component.notice.elePyMessageBox import ElePyMessageBox
+from src.rightClickHelper.config import configData
 from test.tool.testTool import TestTool
+
+configData['environment'] = 'test'
 
 class TestNotice(unittest.TestCase):
     def test_message(self):
@@ -42,4 +46,17 @@ class TestNotice(unittest.TestCase):
             showMessage.setText('show message')
             showMessage.clicked.connect(btnA)
 
+        TestTool.createTestWindow(setMainWindowContent, (400, 400))
+
+    def test_messageBox(self):
+        def setMainWindowContent(app: QApplication, window: QMainWindow):
+            mainW = QWidget(None)
+            window.setCentralWidget(mainW)
+
+            def btnA(c):
+                dialog = ElePyMessageBox()
+                dialog.show()
+            showMessage = QPushButton(mainW)
+            showMessage.setText('show message')
+            showMessage.clicked.connect(btnA)
         TestTool.createTestWindow(setMainWindowContent, (400, 400))

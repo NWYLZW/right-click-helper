@@ -2,6 +2,8 @@
 # -*- encoding: utf-8 -*-
 import sys, os
 
+from src.rightClickHelper.config import configData
+
 class PathTool:
     @staticmethod
     def appPath(isTest: bool = False):
@@ -14,7 +16,7 @@ class PathTool:
             path = os.path.dirname(sys.executable)
         else:
             path = os.getcwd()
-        if isTest:
+        if isTest or configData['environment'] == 'test':
             path = os.path.join(path, '../../')
         return path
 

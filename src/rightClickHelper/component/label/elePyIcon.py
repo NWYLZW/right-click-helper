@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 import re
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QMouseEvent
 
 from src.rightClickHelper.component.label.elePyLabel import ElePyLabel
 from src.rightClickHelper.tool.widgetTool import WidgetTool
@@ -10,6 +11,8 @@ from src.rightClickHelper.tool.widgetTool import WidgetTool
 class ElePyIcon(
     ElePyLabel
 ):
+    clicked = pyqtSignal()
+
     def __init__(self, parent=None, properties: dict = None):
         super().__init__(parent, properties)
 
@@ -20,6 +23,11 @@ class ElePyIcon(
             'icon-font', ElePyLabel.ICON_FONT
         )(self))
         self.setFontPixel()
+
+    def mousePressEvent(self, ev: QMouseEvent) -> None:
+        super(ElePyIcon, self).mousePressEvent(ev)
+        if ev.buttons() == Qt.LeftButton:
+            self.clicked.emit()
 
     def setText(self, text: str) -> None:
         result = re.findall(r'\&\#(.*);', text)
