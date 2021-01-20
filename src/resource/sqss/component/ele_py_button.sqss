@@ -1,0 +1,106 @@
+.ElePyButton
+  margin: 0
+  padding: 10px 15px
+  border-radius: 4px
+  outline: none
+  background-color: #fff
+  border: 1px solid #dcdfe6
+
+  &[round=true]
+    border-radius: 20px
+
+  &[hover=true][disabled=false]
+      background-color: #ecf5ff
+      border: 1px solid #409eff
+      QLabel
+        color: #409eff
+      &[plain=true]
+        background-color: #fff
+
+  &[type='primary']
+    background-color: #409eff
+    border: 1px solid #409eff
+    QLabel
+      color: #fff
+
+    &[plain=true]
+      background-color: #ecf5ff
+      QLabel
+        color: #409eff
+
+    &[hover=true][disabled=false]
+      background-color: #66b1ff
+      border: 1px solid #66b1ff
+      QLabel
+        color: #fff
+
+      &[plain=true]
+        background-color: #409eff
+
+  &[type='success']
+    background-color: #67c23a
+    border: 1px solid #67c23a
+    QLabel
+      color: #fff
+
+    &[plain=true]
+      background-color: #f0f9eb
+      QLabel
+        color: #67c23a
+
+    &[hover=true][disabled=false]
+      background-color: #85ce61
+      border: 1px solid #85ce61
+      QLabel
+        color: #fff
+
+  &[type='info']
+    background-color: #909399
+    border: 1px solid #909399
+    QLabel
+      color: #fff
+
+    &[plain=true]
+      background-color: #f4f4f5
+      QLabel
+        color: #909399
+
+    &[hover=true][disabled=false]
+      background-color: #a6a9ad
+      border: 1px solid #a6a9ad
+      QLabel
+        color: #fff
+
+  &[type='warning']
+    background-color: #e6a23c
+    border: 1px solid #e6a23c
+    QLabel
+      color: #fff
+
+    &[plain=true]
+      background-color: #fdf6ec
+      QLabel
+        color: #e6a23c
+
+    &[hover=true][disabled=false]
+      background-color: #ebb563
+      border: 1px solid #ebb563
+      QLabel
+        color: #fff
+
+  &[type='danger']
+    background-color: #f56c6c
+    border: 1px solid #f56c6c
+    QLabel
+      color: #fff
+
+    &[plain=true]
+      background-color: #fef0f0
+      QLabel
+        color: #f56c6c
+
+    &[hover=true][disabled=false]
+      background-color: #f78989
+      border: 1px solid #f78989
+      QLabel
+        color: #fff

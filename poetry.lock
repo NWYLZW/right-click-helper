@@ -146,6 +146,30 @@ url = "http://mirrors.aliyun.com/pypi/simple"
   reference = "aliyun"
 
 [[package]]
+name = "sqss"
+version = "0.1.1"
+description = "pyqt's simple qss."
+category = "main"
+optional = false
+python-versions = ">=3.9,<4.0"
+
+[package.dependencies]
+toml = ">=0.10.2,<0.11.0"
+
+[[package]]
+name = "toml"
+version = "0.10.2"
+description = "Python Library for Tom's Obvious, Minimal Language"
+category = "main"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[package.source]
+type = "legacy"
+url = "http://mirrors.aliyun.com/pypi/simple"
+  reference = "aliyun"
+
+[[package]]
 name = "tqdm"
 version = "4.56.0"
 description = "Fast, Extensible Progress Meter"
@@ -165,7 +189,7 @@ url = "http://mirrors.aliyun.com/pypi/simple"
 [metadata]
 lock-version = "1.1"
   python-versions = "^3.9"
-content-hash = "8925991cc075aca3d65d6fc60fc0e2feb5ed8a85dea32f4250f0bbc4541d6ad5"
+content-hash = "778e70b61ce580e53d1d6af656ecd388eafa8d02ea08db262a9dc5224096f3f4"
 
 [metadata.files]
 altgraph = [
@@ -234,6 +258,14 @@ pywin32 = [
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.0.tar.gz", hash = "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942"},
     {file = "pywin32_ctypes-0.2.0-py2.py3-none-any.whl", hash = "sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98"},
+]
+sqss = [
+    {file = "sqss-0.1.0-py3-none-any.whl", hash = "sha256:62cacab6d26c07fda4a03e23944ec3d7f0a95f86f8947e9f57295aa8602ec3c1"},
+    {file = "sqss-0.1.0.tar.gz", hash = "sha256:022b3296c947f0ad7f77838bf15025ada056e9b13a6ed7d2dc18cf2f93c7de2f"},
+]
+toml = [
+    {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
+    {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 tqdm = [
     {file = "tqdm-4.56.0-py2.py3-none-any.whl", hash = "sha256:4621f6823bab46a9cc33d48105753ccbea671b68bab2c50a9f0be23d4065cb5a"},

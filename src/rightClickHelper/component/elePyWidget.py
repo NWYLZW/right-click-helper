@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 __all__ = ['ElePyWidget', 'watchProperty']
+
+import os
 import typing
+from sqss import Compiler
 from functools import wraps
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 
 from src.rightClickHelper.component.core import AbsWidget, LifeStage
+from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
 class ElePyWidget(
@@ -65,6 +69,16 @@ class ElePyWidget(
         self.setStyleSheet(self.styleSheet())
         self.repaint(); self.update()
         return returnBool
+
+    def setSQSS(self, sqss: str) -> None:
+        self.setStyleSheet(str(Compiler.deal_str(sqss)))
+
+    @staticmethod
+    def getResource(path):
+        with open(os.path.join(
+            PathTool.appPath(), 'src/resource', path
+        ), 'r') as f:
+            return f.read()
 
 def watchProperty(
     properties: dict[str, object] or list[str]

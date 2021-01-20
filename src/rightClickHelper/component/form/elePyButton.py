@@ -13,138 +13,6 @@ from src.rightClickHelper.component.label.elePyIcon import ElePyIcon
 from src.rightClickHelper.component.label.elePyLabel import ElePyLabel
 from src.rightClickHelper.tool.widgetTool import WidgetTool
 
-elePyButtonQSS = """\
-.ElePyButton {
-    margin: 0;
-    padding: 10px 15px;
-    border-radius: 4px;
-    outline: none;
-}
-.ElePyButton[round=true] {
-    border-radius: 20px;
-}
-
-.ElePyButton {
-    background-color: #fff;
-    border: 1px solid #dcdfe6;
-}
-.ElePyButton QLabel {
-    color: #606266;
-}
-.ElePyButton[hover=true][disabled=false] {
-    background-color: #ecf5ff;
-    border: 1px solid #409eff;
-}
-.ElePyButton[plain=true][hover=true][disabled=false] {
-    background-color: #fff;
-}
-.ElePyButton[hover=true][disabled=false] QLabel {
-    color: #409eff;
-}
-
-.ElePyButton[type='primary'] {
-    background-color: #409eff;
-    border: 1px solid #409eff;
-}
-.ElePyButton[plain=true][type='primary'] {
-    background-color: #ecf5ff;
-}
-.ElePyButton[type='primary'] QLabel {
-    color: #fff;
-}
-.ElePyButton[plain=true][type='primary'] QLabel {
-    color: #409eff;
-}
-.ElePyButton[type='primary'][hover=true][disabled=false] {
-    background-color: #66b1ff;
-}
-.ElePyButton[plain=true][type='primary'][hover=true][disabled=false] {
-    background-color: #409eff;
-}
-.ElePyButton[type='primary'][hover=true][disabled=false] QLabel {
-    color: #fff;
-}
-
-.ElePyButton[type='success'] {
-    background-color: #67c23a;
-    border: 1px solid #67c23a;
-}
-.ElePyButton[plain=true][type='success'] {
-    background-color: #f0f9eb;
-}
-.ElePyButton[type='success'] QLabel {
-    color: #fff;
-}
-.ElePyButton[plain=true][type='success'] QLabel {
-    color: #67c23a;
-}
-.ElePyButton[type='success'][hover=true][disabled=false] {
-    background-color: #85ce61;
-}
-.ElePyButton[type='success'][hover=true][disabled=false] QLabel {
-    color: #fff;
-}
-
-.ElePyButton[type='info'] {
-    background-color: #909399;
-    border: 1px solid #909399;
-}
-.ElePyButton[plain=true][type='info'] {
-    background-color: #f4f4f5;
-}
-.ElePyButton[type='info'] QLabel {
-    color: #fff;
-}
-.ElePyButton[plain=true][type='info'] QLabel {
-    color: #909399;
-}
-.ElePyButton[type='info'][hover=true][disabled=false] {
-    background-color: #a6a9ad;
-}
-.ElePyButton[type='info'][hover=true][disabled=false] QLabel {
-    color: #fff;
-}
-
-.ElePyButton[type='warning'] {
-    background-color: #e6a23c;
-    border: 1px solid #e6a23c;
-}
-.ElePyButton[plain=true][type='warning'] {
-    background-color: #fdf6ec;
-}
-.ElePyButton[type='warning'] QLabel {
-    color: #fff;
-}
-.ElePyButton[plain=true][type='warning'] QLabel {
-    color: #e6a23c;
-}
-.ElePyButton[type='warning'][hover=true][disabled=false] {
-    background-color: #ebb563;
-}
-.ElePyButton[type='warning'][hover=true][disabled=false] QLabel {
-    color: #fff;
-}
-
-.ElePyButton[type='danger'] {
-    background-color: #f56c6c;
-    border: 1px solid #f56c6c;
-}
-.ElePyButton[plain=true][type='danger'] {
-    background-color: #fef0f0;
-}
-.ElePyButton[type='danger'] QLabel {
-    color: #fff;
-}
-.ElePyButton[type='danger'][hover=true][disabled=false] {
-    background-color: #f78989;
-}
-.ElePyButton[plain=true][type='danger'] QLabel {
-    color: #f56c6c;
-}
-.ElePyButton[type='danger'][hover=true][disabled=false] QLabel {
-    color: #fff;
-}"""
-
 class ElePyButton(
     ElePyWidget
 ):
@@ -180,7 +48,10 @@ class ElePyButton(
 
     def _initUi(self):
         super(ElePyButton, self)._initUi()
-        self.setStyleSheet(elePyButtonQSS)
+        self.setSQSS(
+            self.__class__.getResource('sqss/component/ele_py_button.sqss')
+        )
+        # self.setStyleSheet(elePyButtonQSS)
         self.setLayout(QHBoxLayout())
 
         icon = ElePyIcon(self)
