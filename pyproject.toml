@@ -20,7 +20,7 @@ authors = ["yijie4188 <yijie4188@gmail.com>"]
   pywin32                   = "^300"
   pywin32-ctypes            = "^0.2.0"
   tqdm                      = "^4.54.1"
-  sqss                      = "^0.1.1"
+  sqss                      = "^0.1.2"
 
   [tool.poetry.dev-dependencies]
 

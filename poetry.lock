@@ -147,7 +147,7 @@ url = "http://mirrors.aliyun.com/pypi/simple"
 
 [[package]]
 name = "sqss"
-version = "0.1.1"
+version = "0.1.2"
 description = "pyqt's simple qss."
 category = "main"
 optional = false
@@ -189,7 +189,7 @@ url = "http://mirrors.aliyun.com/pypi/simple"
 [metadata]
 lock-version = "1.1"
   python-versions = "^3.9"
-content-hash = "778e70b61ce580e53d1d6af656ecd388eafa8d02ea08db262a9dc5224096f3f4"
+content-hash = "66f1be9c86f84cce0878dab45e7cffe8cc3b2f436abc74edddac947b99811bf8"
 
 [metadata.files]
 altgraph = [
@@ -260,8 +260,8 @@ pywin32-ctypes = [
     {file = "pywin32_ctypes-0.2.0-py2.py3-none-any.whl", hash = "sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98"},
 ]
 sqss = [
-    {file = "sqss-0.1.0-py3-none-any.whl", hash = "sha256:62cacab6d26c07fda4a03e23944ec3d7f0a95f86f8947e9f57295aa8602ec3c1"},
-    {file = "sqss-0.1.0.tar.gz", hash = "sha256:022b3296c947f0ad7f77838bf15025ada056e9b13a6ed7d2dc18cf2f93c7de2f"},
+    {file = "sqss-0.1.2-py3-none-any.whl", hash = "sha256:17def419f4dc47257225de1411dddd1ac72a5d74430d4977b40683469a01b2ff"},
+    {file = "sqss-0.1.2.tar.gz", hash = "sha256:32de65e5dce385e9c42aaf4fe599e17fbd723d6a8549d9b68f303a9bb9520063"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
