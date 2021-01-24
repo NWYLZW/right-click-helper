@@ -1,23 +1,30 @@
-@mixin type-button($type, $bg-color, $plain-bg-color, $plain-bg-color-hover)
+@mixin type-button($type, $bg-color, $plain-bg-color, $bg-color-hover, $disable-bg-color, $disable-plain-bg-color)
   &[type=#{$type}]
-    background-color: #{$bg-color}
-    border: 1px solid #{$bg-color}
     QLabel
       color: #fff
 
-    &[plain=true]
-      background-color: #{$plain-bg-color}
-      QLabel
-        color: #{$bg-color}
-
-    &[hover=true][disabled=false]
-      background-color: #{$plain-bg-color-hover}
-      border: 1px solid #{$plain-bg-color-hover}
+    &[disabled=true]
+      background-color: #{$disable-bg-color}
+      border: 1px solid #{$disable-bg-color}
       QLabel
         color: #fff
-
       &[plain=true]
-        background-color: #{$bg-color}
+        background-color: #{$disable-plain-bg-color}
+        QLabel
+          color: #{$disable-bg-color}
+
+    &[disabled=false]
+      background-color: #{$bg-color}
+      border: 1px solid #{$bg-color}
+      &[plain=true]
+        background-color: #{$plain-bg-color}
+        QLabel
+          color: #{$bg-color}
+      &[hover=true]
+        background-color: #{$bg-color-hover}
+        border: 1px solid #{$bg-color-hover}
+        QLabel
+          color: #fff
 
 .ElePyButton
   margin: 0
@@ -30,16 +37,21 @@
   &[round=true]
     border-radius: 20px
 
-  &[hover=true][disabled=false]
+  &[disabled=true]
+    QLabel
+      color: #c0c9db
+
+  &[disabled=false]
+    &[hover=true]
       background-color: #ecf5ff
       border: 1px solid #409eff
-      QLabel
-        color: #409eff
       &[plain=true]
         background-color: #fff
+      QLabel
+        color: #409eff
 
-  @include type-button('primary', #409eff, #ecf5ff, #66b1ff)
-  @include type-button('success', #67c23a, #f0f9eb, #85ce61)
-  @include type-button('info',    #909399, #f4f4f5, #a6a9ad)
-  @include type-button('warning', #e6a23c, #fdf6ec, #ebb563)
-  @include type-button('danger',  #f56c6c, #fef0f0, #f78989)
+  @include type-button('primary', #409eff, #ecf5ff, #66b1ff, #a0cfff, #ecf5ff)
+  @include type-button('success', #67c23a, #f0f9eb, #85ce61, #b3e19d, #f0f9eb)
+  @include type-button('info',    #909399, #f4f4f5, #a6a9ad, #c8c9cc, #f4f4f5)
+  @include type-button('warning', #e6a23c, #fdf6ec, #ebb563, #f3d19e, #fdf6ec)
+  @include type-button('danger',  #f56c6c, #fef0f0, #f78989, #fab6b6, #fef0f0)
