@@ -27,15 +27,22 @@
           color: #fff
 
 .ElePyButton
-  margin: 0
-  padding: 10px 15px
+  margin:        0
+  padding:       50px
   border-radius: 4px
   outline: none
   background-color: #fff
   border: 1px solid #dcdfe6
 
   &[round=true]
-    border-radius: 20px
+    &[el-size='40']
+      border-radius: 20px
+    &[el-size='36']
+      border-radius: 18px
+    &[el-size='32']
+      border-radius: 16px
+    &[el-size='28']
+      border-radius: 14px
 
   &[disabled=true]
     QLabel

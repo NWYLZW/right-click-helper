@@ -74,6 +74,32 @@ class TestNotice(unittest.TestCase):
                 'icon': '&#xe6df;',
                 'type': ElePyButton.Type.DANGER
             }])
+            createBtns({
+                "round": True
+            }, [{
+                'text': '仓库',
+                'icon': '&#xe6da;'
+            }, {
+                'text': '电话',
+                'icon': '&#xe6db;',
+                'type': ElePyButton.Type.PRIMARY
+            }, {
+                'text': '图片',
+                'icon': '&#xe6dc;',
+                'type': ElePyButton.Type.SUCCESS
+            }, {
+                'text': '刷新',
+                'icon': '&#xe6dd;',
+                'type': ElePyButton.Type.INFO
+            }, {
+                'text': '图片',
+                'icon': '&#xe6de;',
+                'type': ElePyButton.Type.WARNING
+            }, {
+                'text': '计时',
+                'icon': '&#xe6df;',
+                'type': ElePyButton.Type.DANGER
+            }])
         TestTool.createTestWindow(setMainWindowContent, (400, 400))
 
     def test_disabledButton(self):
@@ -193,3 +219,75 @@ class TestNotice(unittest.TestCase):
             })
 
         TestTool.createTestWindow(setMainWindowContent, (400, 400))
+
+    def test_btnsSize(self):
+        def setMainWindowContent(app: QApplication, window: QMainWindow):
+            mainW = QWidget(None)
+            window.setCentralWidget(mainW)
+            mainW.setLayout(QVBoxLayout())
+
+            iconBtns = [{
+                'icon': '&#xe6da;'
+            }, {
+                'icon': '&#xe6db;',
+                'type': ElePyButton.Type.PRIMARY
+            }, {
+                'icon': '&#xe6dc;',
+                'type': ElePyButton.Type.SUCCESS
+            }, {
+                'icon': '&#xe6dd;',
+                'type': ElePyButton.Type.INFO
+            }, {
+                'icon': '&#xe6de;',
+                'type': ElePyButton.Type.WARNING
+            }, {
+                'icon': '&#xe6df;',
+                'type': ElePyButton.Type.DANGER
+            }]
+            def createBtns(attachProperties: dict = {}, btnsData: list = None):
+                btns = QWidget()
+                mainW.layout().addWidget(btns)
+                btns.setLayout(QHBoxLayout())
+                if btnsData is None:
+                    btnsData = [{
+                        'text': '默认按钮'
+                    }, {
+                        'text': '主要按钮',
+                        'type': ElePyButton.Type.PRIMARY
+                    }, {
+                        'text': '成功按钮',
+                        'type': ElePyButton.Type.SUCCESS
+                    }, {
+                        'text': '信息按钮',
+                        'type': ElePyButton.Type.INFO
+                    }, {
+                        'text': '警告按钮',
+                        'type': ElePyButton.Type.WARNING
+                    }, {
+                        'text': '危险按钮',
+                        'type': ElePyButton.Type.DANGER
+                    }]
+                for btnData in btnsData:
+                    btns.layout().addWidget(
+                        ElePyButton(mainW, {
+                            **btnData,
+                            **attachProperties
+                        })
+                    )
+            sizes = [
+                {'el-size': ElePyButton.Size.COMMON.value},
+                {'el-size': ElePyButton.Size.MEDIUM.value},
+                {'el-size': ElePyButton.Size.SMALL.value},
+                {'el-size': ElePyButton.Size.MINI.value},
+            ]
+            for size in sizes:
+                createBtns({
+                    **size
+                })
+            for size in sizes:
+                createBtns({
+                    'round': True,
+                    **size
+                }, iconBtns)
+
+        TestTool.createTestWindow(setMainWindowContent, (400, 600))

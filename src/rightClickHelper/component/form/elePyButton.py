@@ -3,7 +3,7 @@
 from enum import Enum
 from typing import Union
 
-from PyQt5.QtCore import Qt, QEvent, pyqtSignal
+from PyQt5.QtCore import Qt, QEvent, pyqtSignal, QSize
 from PyQt5.QtGui import QPixmap, QMouseEvent
 from PyQt5.QtWidgets import QHBoxLayout, QWidget
 
@@ -17,9 +17,10 @@ class ElePyButton(
     ElePyWidget
 ):
     class Size(Enum):
-        MEDIUM = 0X000
-        SMALL  = 0X001
-        MINI   = 0X002
+        COMMON = '40'
+        MEDIUM = '36'
+        SMALL  = '32'
+        MINI   = '28'
 
     class Type(Enum):
         NONE    = 0x000
@@ -41,8 +42,9 @@ class ElePyButton(
         if properties is None: properties = {}
         self.__initData__ = {}
         super().__init__(parent, {
-            'text': '',
+            'text':     '',
             'disabled': False,
+            'el-size':  ElePyButton.Size.COMMON.value,
             **properties
         })
 
@@ -51,7 +53,6 @@ class ElePyButton(
         self.setSQSS(
             self.__class__.getResource('sqss/component/ele_py_button.sqss')
         )
-        # self.setStyleSheet(elePyButtonQSS)
         self.setLayout(QHBoxLayout())
 
         icon = ElePyIcon(self)
@@ -74,13 +75,18 @@ class ElePyButton(
 
     def setText(self, text: str) -> 'ElePyButton':
         self.__label.setText(text)
+        size = QSize()
+        elSize = int(self.property('el-size'))
         if text == '':
             self.__label.setVisible(False)
-            self.setFixedSize(40, 40)
+            size.setWidth(elSize)
         else:
             self.__label.setVisible(True)
-            width = WidgetTool.getTextWidth(self.__label) + 50
-            self.setFixedSize(width, 40)
+            size.setWidth(WidgetTool.getTextWidth(self.__label) + 50)
+        size.setHeight(elSize)
+        WidgetTool.setFont(self.__label, int(elSize/4))
+        self.__icon.setFontPixel(int(elSize/2.8))
+        self.setFixedSize(size)
         return self
 
     def text(self) -> str:
