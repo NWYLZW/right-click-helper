@@ -54,6 +54,8 @@ class ElePyMessageBox(
         top.setProperty('class', 'top')
         top.setFixedSize(mainWidget.width() - 20, 40)
         top.setLayout(QHBoxLayout())
+        top.setCursor(Qt.SizeAllCursor)
+        self.top = top
 
         icon = ElePyIcon(top)
         icon.setFontPixel(20)
@@ -99,6 +101,28 @@ class ElePyMessageBox(
         self.bottom = bottom
 
         mainWidget.layout().addWidget(bottom)
+
+    def _initData(self):
+        self.mDrag = False
+
+    def _initEvent(self):
+        def mousePressEvent(event):
+            self.mDragPosition = event.globalPos() - self.pos()
+            if event.button() == Qt.LeftButton:
+                self.mDrag = True
+                event.accept()
+
+        def mouseMoveEvent(event):
+            if event.buttons() == Qt.LeftButton and self.mDrag:
+                self.move(event.globalPos() - self.mDragPosition)
+                event.accept()
+
+        def mouseReleaseEvent(QMouseEvent):
+            self.mDrag = False
+
+        self.top.mousePressEvent   = mousePressEvent
+        self.top.mouseMoveEvent    = mouseMoveEvent
+        self.top.mouseReleaseEvent = mouseReleaseEvent
 
     def show(self) -> None:
         super(ElePyMessageBox, self).show()
