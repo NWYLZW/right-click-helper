@@ -3,10 +3,11 @@
 from enum import Enum
 from typing import Union, Callable, Any
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QVBoxLayout, QPushButton, QTextBrowser
 
 from src.rightClickHelper.component.elePyDialog import ElePyDialog
+from src.rightClickHelper.component.form.elePyButton import ElePyButton
 from src.rightClickHelper.component.label.elePyIcon import ElePyIcon
 from src.rightClickHelper.component.label.elePyLabel import ElePyLabel
 from src.rightClickHelper.tool.animationTool import AnimationTool
@@ -35,25 +36,9 @@ class ElePyMessageBox(
         self.setLayout(QHBoxLayout())
         self.layout().setContentsMargins(0, 0, 0, 0)
 
-        self.setStyleSheet('''\
-        .ElePyMessageBox >QWidget {
-            margin: 10px;
-            border-radius: 4px;
-            background-color: white;
-        }
-        .ElePyMessageBox >QWidget .top #delete:!hover {
-            color: rgb(150, 150, 150);
-        }
-        .ElePyMessageBox >QWidget .top #delete:hover {
-            color: rgb(0, 0, 0);
-        }
-        .ElePyMessageBox >QWidget .content QTextBrowser {
-            border-width: 0;
-            border-style: outset;
-            background-color: rgba(0, 0, 0, 0);
-        }
-        .ElePyMessageBox >QWidget .bottom {
-        }''')
+        self.setSQSS(
+            self.__class__.getResource('sqss/component/ele_py_message_box.sqss')
+        )
 
         self.setFixedSize(360, 180)
         mainWidget = QWidget(self)
@@ -70,13 +55,21 @@ class ElePyMessageBox(
         top.setFixedSize(mainWidget.width() - 20, 40)
         top.setLayout(QHBoxLayout())
 
-        icon = ElePyIcon(top, {'text': '&#xe6da;'})
+        icon = ElePyIcon(top)
         icon.setFontPixel(20)
         top.layout().addWidget(icon)
+        self.leftIcon = icon
 
-        title = ElePyLabel(top, {'text': '测试'})
+        title = ElePyLabel(top)
         WidgetTool.setFont(title, size=12)
+        title.setTextInteractionFlags(
+            Qt.TextSelectableByMouse
+        )
+        title.setCursor(
+            Qt.IBeamCursor
+        )
         top.layout().addWidget(title)
+        self.title = title
 
         deleteIcon = ElePyIcon(top, {'text': '&#xe65e;'})
         deleteIcon.setObjectName('delete')
@@ -92,17 +85,18 @@ class ElePyMessageBox(
         content.setLayout(QHBoxLayout())
         contentText = QTextBrowser(content)
         WidgetTool.setFont(contentText)
-        contentText.setHtml('测试')
+        contentText.viewport().setCursor(
+            Qt.IBeamCursor
+        )
         content.layout().addWidget(contentText)
+        self.contentText = contentText
 
         mainWidget.layout().addWidget(content)
 
         bottom = QWidget()
         bottom.setProperty('class', 'bottom')
-        bottom.setFixedSize(mainWidget.width() - 20, 40)
-        bottom.setLayout(QHBoxLayout())
-        bottom.layout().addWidget(QPushButton())
-        bottom.layout().addWidget(QPushButton())
+        bottom.setFixedSize(mainWidget.width() - 20, 60)
+        self.bottom = bottom
 
         mainWidget.layout().addWidget(bottom)
 
@@ -120,9 +114,29 @@ class ElePyMessageBox(
 
     def alert(
         self
-        , content: str, title: str
-        , icon: Union[ElePyIcon, str] = None
+        , content: str, title: str = 'Please confirm'
+        , leftIcon: str = '&#xe6a8;'
         , confirmBtnText: str = 'confirm'
         , callback: Callable[[AlertAction], Any] = None
     ):
-        pass
+        self.contentText.setHtml(content)
+        self.title.setText(title)
+        self.leftIcon.setText(leftIcon)
+
+        self.bottom.setLayout(QHBoxLayout())
+        self.bottom.layout().setAlignment(
+            Qt.AlignRight
+        )
+        confirmBtn = ElePyButton(self.bottom, {
+            'text': confirmBtnText,
+            'type': ElePyButton.Type.PRIMARY,
+            'el-size': ElePyButton.Size.SMALL.value
+        })
+        self.bottom.layout().addWidget(confirmBtn)
+
+        def clicked():
+            if callback: callback(AlertAction.CONFIRM)
+            self.close()
+        confirmBtn.clicked.connect(clicked)
+
+        self.show()

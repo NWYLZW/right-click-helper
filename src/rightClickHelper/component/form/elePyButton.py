@@ -54,6 +54,7 @@ class ElePyButton(
             self.__class__.getResource('sqss/component/ele_py_button.sqss')
         )
         self.setLayout(QHBoxLayout())
+        self.layout().setSpacing(0)
 
         icon = ElePyIcon(self)
         icon.hide()
@@ -78,14 +79,22 @@ class ElePyButton(
         size = QSize()
         elSize = int(self.property('el-size'))
         if text == '':
+            self.layout().setContentsMargins(5, 5, 5, 5)
             self.__label.setVisible(False)
             size.setWidth(elSize)
         else:
+            self.layout().setContentsMargins(20, 5, 20, 5)
             self.__label.setVisible(True)
-            size.setWidth(WidgetTool.getTextWidth(self.__label) + 50)
+            width = int(
+                (WidgetTool.getTextWidth(self.__label) + 60)
+                * (elSize/int(ElePyButton.Size.COMMON.value))
+            )
+            if self.property('icon') or self.property('icon-path'):
+                width += int(int(elSize/2.5))
+            size.setWidth(width)
         size.setHeight(elSize)
         WidgetTool.setFont(self.__label, int(elSize/4))
-        self.__icon.setFontPixel(int(elSize/2.8))
+        self.__icon.setFontPixel(int(elSize/2.5))
         self.setFixedSize(size)
         return self
 
@@ -126,7 +135,7 @@ class ElePyButton(
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         super(ElePyButton, self).mousePressEvent(event)
-        if WidgetTool.getProperty(
+        if not WidgetTool.getProperty(
             'disabled', False
         )(self):
             if event.buttons() == Qt.LeftButton:

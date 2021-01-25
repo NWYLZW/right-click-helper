@@ -55,7 +55,10 @@ class TestNotice(unittest.TestCase):
 
             def btnA(c):
                 dialog = ElePyMessageBox()
-                dialog.show()
+                dialog.alert(
+                    '是否删除该文件?', '请确认'
+                    , confirmBtnText='确定'
+                )
             showMessage = QPushButton(mainW)
             showMessage.setText('show message')
             showMessage.clicked.connect(btnA)

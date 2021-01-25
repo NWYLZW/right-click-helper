@@ -28,9 +28,7 @@
 
 .ElePyButton
   margin:        0
-  padding:       50px
   border-radius: 4px
-  outline: none
   background-color: #fff
   border: 1px solid #dcdfe6
 
