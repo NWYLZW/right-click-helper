@@ -9,6 +9,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox, QWidget, QApplication
 
 from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
+from src.rightClickHelper.component.notice.elePyMessageBox import ElePyMessageBox
 from src.rightClickHelper.component.popover.elePyMenuPopover import ElePyMenuPopover
 from src.rightClickHelper.component.popover.elePyTooltip import ElePyTooltip
 from src.rightClickHelper.controller.management.dialog.editMenuItemDialog import EditMenuItemDialog
@@ -65,17 +66,18 @@ class MenuItemCard_itf:
         return changeStatus
 
     def doCardRemove(self):
-        result = QMessageBox.question(
-            self, '提示', '是否删除该右键菜单',
-            QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
-            QMessageBox.Cancel
-        )
-        if result == QMessageBox.Yes:
+        def remove():
             path = self.menuItem.regData['__path__']
             RegTool.delKey(
                 RegEnv.find(path[0]), path[1]
             )
             self.cardRemove.emit(self.menuItem)
+        ElePyMessageBox().confirm(
+            '是否确认删除该右键菜单', '确认'
+            , leftIcon='&#xe710;'
+            , confirmBtnText='确认', confirmCallback=remove
+            , cancelBtnText='取消'
+        )
 
     def _initEvent(self):
         try:
