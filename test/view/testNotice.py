@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from PyQt5.QtWidgets import QPushButton, QWidget, QApplication, QMainWindow
+from PyQt5.QtWidgets import QPushButton, QWidget, QApplication, QMainWindow, QHBoxLayout
 
+from src.rightClickHelper.component.form.elePyButton import ElePyButton
 from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
 from src.rightClickHelper.component.notice.elePyMessageBox import ElePyMessageBox
 from src.rightClickHelper.config import configData
@@ -52,14 +53,26 @@ class TestNotice(unittest.TestCase):
         def setMainWindowContent(app: QApplication, window: QMainWindow):
             mainW = QWidget(None)
             window.setCentralWidget(mainW)
+            mainW.setLayout(QHBoxLayout())
 
-            def btnA(c):
-                dialog = ElePyMessageBox()
-                dialog.alert(
+            def alert():
+                ElePyMessageBox().alert(
                     '是否删除该文件?', '请确认'
                     , confirmBtnText='确定'
                 )
-            showMessage = QPushButton(mainW)
-            showMessage.setText('show message')
-            showMessage.clicked.connect(btnA)
+            showMessage = ElePyButton(mainW)
+            showMessage.setText('alert')
+            showMessage.clicked.connect(alert)
+            mainW.layout().addWidget(showMessage)
+
+            def confirm():
+                ElePyMessageBox().confirm(
+                    '是否删除该文件?', '请确认'
+                    , confirmBtnText='确定'
+                    , cancelBtnText='取消'
+                )
+            showMessage = ElePyButton(mainW)
+            showMessage.setText('confirm')
+            showMessage.clicked.connect(confirm)
+            mainW.layout().addWidget(showMessage)
         TestTool.createTestWindow(setMainWindowContent, (400, 400))

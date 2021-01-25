@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from enum import Enum
-from typing import Union, Callable, Any
+from typing import Callable, Any
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QHBoxLayout, QWidget, QVBoxLayout, QPushButton, QTextBrowser
+from PyQt5.QtWidgets import QHBoxLayout, QWidget, QVBoxLayout, QTextBrowser
 
 from src.rightClickHelper.component.elePyDialog import ElePyDialog
 from src.rightClickHelper.component.form.elePyButton import ElePyButton
@@ -47,7 +47,6 @@ class ElePyMessageBox(
         self.mainWidget = mainWidget
 
         mainWidget.setLayout(QVBoxLayout())
-        mainWidget.layout().setContentsMargins(10, 10, 10, 10)
         mainWidget.layout().setSpacing(0)
 
         top = QWidget()
@@ -98,7 +97,12 @@ class ElePyMessageBox(
         bottom = QWidget()
         bottom.setProperty('class', 'bottom')
         bottom.setFixedSize(mainWidget.width() - 20, 60)
+        bottom.setLayout(QHBoxLayout())
         self.bottom = bottom
+        self.cancelBtn = self.pushBtn()
+        self.confirmBtn = self.pushBtn(properties={
+            'type': ElePyButton.Type.PRIMARY
+        })
 
         mainWidget.layout().addWidget(bottom)
 
@@ -124,6 +128,10 @@ class ElePyMessageBox(
         self.top.mouseMoveEvent    = mouseMoveEvent
         self.top.mouseReleaseEvent = mouseReleaseEvent
 
+    def exec(self) -> int:
+        self.setWindowModality(Qt.ApplicationModal)
+        self.show()
+
     def show(self) -> None:
         super(ElePyMessageBox, self).show()
         AnimationTool.createReverse(
@@ -136,6 +144,48 @@ class ElePyMessageBox(
         )()
         return True
 
+    def setBaseData(
+        self
+        , content: str, title: str = 'Please confirm'
+        , leftIcon: str = '&#xe6a8;'
+    ):
+        self.contentText.setHtml(content)
+        self.title.setText(title)
+        self.leftIcon.setText(leftIcon)
+
+    def pushBtn(
+        self
+        , text: str = ''
+        , properties: dict = {}
+    ) -> ElePyButton:
+        self.bottom.layout().setAlignment(
+            Qt.AlignRight
+        )
+        btn = ElePyButton(self.bottom, {
+            'text': text,
+            'el-size': ElePyButton.Size.SMALL.value
+            , **properties
+        })
+        self.bottom.layout().addWidget(btn)
+        return btn
+
+    def setBtn(
+        self, btn: ElePyButton, isShow: bool = True
+        , text: str = ''
+        , callback: Callable[[AlertAction], Any] = None
+        , alertAction: AlertAction = AlertAction.CONFIRM
+    ):
+        def clicked():
+            if callback:
+                val = callback(alertAction)
+                if val is None or val is True:
+                    self.close()
+            else:
+                self.close()
+        btn.setVisible(isShow)
+        btn.setText(text)
+        btn.clicked.connect(clicked)
+
     def alert(
         self
         , content: str, title: str = 'Please confirm'
@@ -143,24 +193,31 @@ class ElePyMessageBox(
         , confirmBtnText: str = 'confirm'
         , callback: Callable[[AlertAction], Any] = None
     ):
-        self.contentText.setHtml(content)
-        self.title.setText(title)
-        self.leftIcon.setText(leftIcon)
+        self.setBaseData(content, title, leftIcon)
+        self.setBtn(
+            self.cancelBtn, False)
+        self.setBtn(
+            self.confirmBtn, True
+            , confirmBtnText, callback
+            , AlertAction.CONFIRM)
+        self.exec()
 
-        self.bottom.setLayout(QHBoxLayout())
-        self.bottom.layout().setAlignment(
-            Qt.AlignRight
-        )
-        confirmBtn = ElePyButton(self.bottom, {
-            'text': confirmBtnText,
-            'type': ElePyButton.Type.PRIMARY,
-            'el-size': ElePyButton.Size.SMALL.value
-        })
-        self.bottom.layout().addWidget(confirmBtn)
-
-        def clicked():
-            if callback: callback(AlertAction.CONFIRM)
-            self.close()
-        confirmBtn.clicked.connect(clicked)
-
-        self.show()
+    def confirm(
+        self
+        , content: str, title: str = 'Please confirm'
+        , leftIcon: str = '&#xe6a8;'
+        , confirmBtnText: str = 'confirm'
+        , confirmCallback: Callable[[AlertAction], Any] = None
+        , cancelBtnText: str = 'cancel'
+        , cancelCallback: Callable[[AlertAction], Any] = None
+    ):
+        self.setBaseData(content, title, leftIcon)
+        self.setBtn(
+            self.confirmBtn, True
+            , confirmBtnText, confirmCallback
+            , AlertAction.CANCEL)
+        self.setBtn(
+            self.cancelBtn, True
+            , cancelBtnText, cancelCallback
+            , AlertAction.CONFIRM)
+        self.exec()
