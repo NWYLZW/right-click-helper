@@ -297,9 +297,9 @@ QLabel {
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="content" stretch="1,22">
+      <layout class="QHBoxLayout" name="content" stretch="1,18">
        <property name="spacing">
-        <number>10</number>
+        <number>0</number>
        </property>
        <property name="leftMargin">
         <number>10</number>
@@ -315,23 +315,20 @@ QLabel {
        </property>
        <item>
         <widget class="QWidget" name="leftMenu" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>650</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>650</height>
+          </size>
+         </property>
          <property name="styleSheet">
-          <string notr="true">#mannagement {
-	border: none;
-	border-image: url(:/icon/image/icon/right-click-helper.ico);
-}
-#about {
-	border: none;
-	border-image: url(:/icon/image/icon/about.png);
-}
-#setting {
-	border: none;
-	border-image: url(:/icon/image/icon/setting.png);
-}
-#warehouse {
-	border: none;
-	border-image: url(:/icon/image/icon/warehouse.png);
-}</string>
+          <string notr="true"/>
          </property>
          <widget class="QWidget" name="verticalLayoutWidget_2">
           <property name="geometry">
@@ -339,7 +336,7 @@ QLabel {
             <x>0</x>
             <y>0</y>
             <width>51</width>
-            <height>181</height>
+            <height>241</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="leftMenuVL">
@@ -359,7 +356,7 @@ QLabel {
             <number>10</number>
            </property>
            <item>
-            <widget class="QPushButton" name="mannagement">
+            <widget class="ElePyButton" name="management">
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -381,7 +378,7 @@ QLabel {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="warehouse">
+            <widget class="ElePyButton" name="warehouse">
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -403,7 +400,7 @@ QLabel {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="setting">
+            <widget class="ElePyButton" name="setting">
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -425,7 +422,7 @@ QLabel {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="about">
+            <widget class="ElePyButton" name="about">
              <property name="minimumSize">
               <size>
                <width>30</width>
@@ -451,7 +448,20 @@ QLabel {
         </widget>
        </item>
        <item>
-        <widget class="ManagementController" name="showPage" native="true"/>
+        <widget class="Management" name="showPage" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>1100</width>
+           <height>650</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>1100</width>
+           <height>650</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -461,10 +471,15 @@ QLabel {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ManagementController</class>
+   <class>Management</class>
    <extends>QWidget</extends>
-   <header>src/rightClickHelper/controller/management/controller.h</header>
+   <header>src/rightClickHelper/controller/management.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ElePyButton</class>
+   <extends>QPushButton</extends>
+   <header>src/rightClickHelper/component/form/elePyButton.h</header>
   </customwidget>
  </customwidgets>
  <resources>

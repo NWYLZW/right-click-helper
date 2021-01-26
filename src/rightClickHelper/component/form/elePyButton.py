@@ -74,10 +74,11 @@ class ElePyButton(
         if self.__initData__.get('icon-data', None):
             self.__initData__['icon-data']()
 
-    def setText(self, text: str) -> 'ElePyButton':
-        self.__label.setText(text)
+    def refreshSize(self, elSize=None):
+        text = self.__label.text()
         size = QSize()
-        elSize = int(self.property('el-size'))
+        if elSize is None:
+            elSize = int(self.property('el-size'))
         if text == '':
             self.layout().setContentsMargins(5, 5, 5, 5)
             self.__label.setVisible(False)
@@ -86,22 +87,25 @@ class ElePyButton(
             self.layout().setContentsMargins(20, 5, 20, 5)
             self.__label.setVisible(True)
             width = int(
-                (WidgetTool.getTextWidth(self.__label) + 60)
-                * (elSize/int(ElePyButton.Size.COMMON.value))
+                (WidgetTool.getTextWidth(self.__label) + 60) * (elSize/int(ElePyButton.Size.COMMON.value))
             )
             if self.property('icon') or self.property('icon-path'):
                 width += int(int(elSize/2.5))
             size.setWidth(width)
         size.setHeight(elSize)
         WidgetTool.setFont(self.__label, int(elSize/4))
-        self.__icon.setFontPixel(int(elSize/2.5))
+        self.__icon.setFontPixel(int(elSize/2))
         self.setFixedSize(size)
+
+    def setText(self, text: str) -> 'ElePyButton':
+        self.__label.setText(text)
+        self.refreshSize()
         return self
 
     def text(self) -> str:
         return self.__label.text()
 
-    def setIcon(
+    def __setIcon(
         self
         , iconUnicode: str = '', iconPath: str = ''
         , iconPos: IconPos = IconPos.LEFT
@@ -131,6 +135,7 @@ class ElePyButton(
         else:
             icon.show()
 
+        self.refreshSize()
         return self
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
@@ -168,11 +173,11 @@ class ElePyButton(
     ):
         def __setData():
             if name == 'icon':
-                self.setIcon(newVal)
+                self.__setIcon(newVal)
             elif name == 'icon-path':
-                self.setIcon('', newVal)
+                self.__setIcon('', newVal)
             elif name == 'icon-pos':
-                self.setIcon(iconPos=newVal)
+                self.__setIcon(iconPos=newVal)
         if self._lifeStage in [
             LifeStage.INIT_DATA,
             LifeStage.INITED,
@@ -192,3 +197,9 @@ class ElePyButton(
             LifeStage.INIT_DATA, LifeStage.INITED
         ]: self.__initData__['text'] = newText
         else: self.setText(newText)
+
+    @watchProperty({'el-size': {'type': str}})
+    def sizeChange(self, *args):
+        if self._lifeStage in [
+            LifeStage.INIT_DATA, LifeStage.INITED
+        ]: self.refreshSize(int(args[0]))

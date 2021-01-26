@@ -14,8 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_management(object):
     def setupUi(self, management):
         management.setObjectName("management")
-        management.resize(1100, 649)
-        management.setMinimumSize(QtCore.QSize(1100, 649))
+        management.resize(1100, 650)
+        management.setMinimumSize(QtCore.QSize(1100, 650))
         management.setMaximumSize(QtCore.QSize(1100, 650))
         management.setStyleSheet("QScrollBar:vertical {\n"
 "    background-color: rgb(250, 250, 250);\n"
