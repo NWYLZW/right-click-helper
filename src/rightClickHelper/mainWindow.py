@@ -8,6 +8,7 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow
 
+from src.rightClickHelper.controller.about import About
 from src.rightClickHelper.controller.management import Management
 from src.rightClickHelper.controller.setting import Setting
 from src.rightClickHelper.tool.pathTool import PathTool
@@ -69,7 +70,8 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
     def changeShowPage(self, pageName: str):
         pages = {
             'management': Management,
-            'setting': Setting
+            'setting': Setting,
+            'about': About
         }
 
         def __fun():
@@ -108,4 +110,7 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
         )
         self.setting.clicked.connect(
             self.changeShowPage('setting')
+        )
+        self.about.clicked.connect(
+            self.changeShowPage('about')
         )

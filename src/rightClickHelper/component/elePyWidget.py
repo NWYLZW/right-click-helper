@@ -73,12 +73,16 @@ class ElePyWidget(
     def setSQSS(self, sqss: str) -> None:
         self.setStyleSheet(str(Compiler.deal_str(sqss)))
 
-    @staticmethod
-    def getResource(path):
-        with open(os.path.join(
-            PathTool.appPath(), 'src/resource', path
-        ), 'r') as f:
+    @classmethod
+    def getResource(cls, path):
+        with open(cls.getResourcePath(path), 'r') as f:
             return f.read()
+
+    @staticmethod
+    def getResourcePath(path):
+        return os.path.join(
+            PathTool.appPath(), r'src\resource', path
+        )
 
 def watchProperty(
     properties: dict[str, object] or list[str]

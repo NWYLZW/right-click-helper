@@ -1,7 +1,8 @@
 [tool.poetry]
-name = "right-click-helper"
-version = "0.1.0"
-description = ""
+name        = "right-click-helper"
+appName     = "Right Click Helper"
+version     = "1.0.4.0"
+description = "由python pyqt模块开发的一款windows环境下卡片化右键菜单选项管理工具."
 authors = ["yijie4188 <yijie4188@gmail.com>"]
 
   [[tool.poetry.source]]
