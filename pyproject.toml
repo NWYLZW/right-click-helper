@@ -1,9 +1,15 @@
+[config]
+  [config.project]
+  appName         = "Right Click Helper"
+  lastPublishDate = "2020-1-27"
+
 [tool.poetry]
 name        = "right-click-helper"
-appName     = "Right Click Helper"
 version     = "1.0.4.0"
-description = "由python pyqt模块开发的一款windows环境下卡片化右键菜单选项管理工具."
-authors = ["yijie4188 <yijie4188@gmail.com>"]
+description = "由python pyqt模块开发的一款windows 10环境下卡片化右键菜单选项管理工具."
+homepage    = "https://github.com/NWYLZW/right-click-helper"
+repository  = "https://github.com/NWYLZW/right-click-helper"
+authors     = ["yijie4188 <yijie4188@gmail.com>"]
 
   [[tool.poetry.source]]
   name = "aliyun"
@@ -22,6 +28,8 @@ authors = ["yijie4188 <yijie4188@gmail.com>"]
   pywin32-ctypes            = "^0.2.0"
   tqdm                      = "^4.54.1"
   sqss                      = "^0.1.3"
+  requests                  = "^2.25.1"
+  markdown                  = "^3.3.3"
 
   [tool.poetry.dev-dependencies]
 

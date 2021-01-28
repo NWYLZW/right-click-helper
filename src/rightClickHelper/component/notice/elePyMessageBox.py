@@ -4,6 +4,7 @@ from enum import Enum
 from typing import Callable, Any
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QVBoxLayout, QTextBrowser
 
 from src.rightClickHelper.component.elePyDialog import ElePyDialog
@@ -51,7 +52,7 @@ class ElePyMessageBox(
 
         top = QWidget()
         top.setProperty('class', 'top')
-        top.setFixedSize(mainWidget.width() - 20, 40)
+        top.setFixedHeight(40)
         top.setLayout(QHBoxLayout())
         top.setCursor(Qt.SizeAllCursor)
         self.top = top
@@ -90,13 +91,14 @@ class ElePyMessageBox(
             Qt.IBeamCursor
         )
         content.layout().addWidget(contentText)
+        self.content = content
         self.contentText = contentText
 
         mainWidget.layout().addWidget(content)
 
         bottom = QWidget()
         bottom.setProperty('class', 'bottom')
-        bottom.setFixedSize(mainWidget.width() - 20, 60)
+        bottom.setFixedHeight(60)
         bottom.setLayout(QHBoxLayout())
         self.bottom = bottom
         self.cancelBtn = self.pushBtn()
@@ -128,6 +130,11 @@ class ElePyMessageBox(
         self.top.mouseMoveEvent    = mouseMoveEvent
         self.top.mouseReleaseEvent = mouseReleaseEvent
 
+        self.contentText.setOpenLinks(False)
+        self.contentText.anchorClicked.connect(
+            lambda url: QDesktopServices.openUrl(url)
+        )
+
     def exec(self) -> int:
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
@@ -148,8 +155,17 @@ class ElePyMessageBox(
         self
         , content: str, title: str = 'Please confirm'
         , leftIcon: str = '&#xe6a8;'
+        , contentWidth: int = -1
+        , contentHeight: int = -1
     ):
         self.contentText.setHtml(content)
+
+        if contentWidth != -1:
+            self.setFixedWidth(contentWidth + 40)
+        if contentHeight != -1:
+            self.setFixedHeight(contentHeight + 100)
+
+        self.mainWidget.setFixedSize(self.size())
         self.title.setText(title)
         self.leftIcon.setText(leftIcon)
 
@@ -192,8 +208,13 @@ class ElePyMessageBox(
         , leftIcon: str = '&#xe6a8;'
         , confirmBtnText: str = 'confirm'
         , callback: Callable[[AlertAction], Any] = None
+        , contentWidth: int = -1
+        , contentHeight: int = -1
     ):
-        self.setBaseData(content, title, leftIcon)
+        self.setBaseData(
+            content, title, leftIcon
+            , contentWidth=contentWidth, contentHeight=contentHeight
+        )
         self.setBtn(
             self.cancelBtn, False)
         self.setBtn(
@@ -210,8 +231,13 @@ class ElePyMessageBox(
         , confirmCallback: Callable[[AlertAction], Any] = None
         , cancelBtnText: str = 'cancel'
         , cancelCallback: Callable[[AlertAction], Any] = None
+        , contentWidth: int = -1
+        , contentHeight: int = -1
     ):
-        self.setBaseData(content, title, leftIcon)
+        self.setBaseData(
+            content, title, leftIcon
+            , contentWidth=contentWidth, contentHeight=contentHeight
+        )
         self.setBtn(
             self.confirmBtn, True
             , confirmBtnText, confirmCallback

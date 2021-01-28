@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 import sys, os
 
-from src.rightClickHelper.config import envs
+from src.rightClickHelper.config.envs import data as envsData
 
 class PathTool:
     @staticmethod
@@ -16,7 +16,7 @@ class PathTool:
             path = os.path.dirname(sys.executable)
         else:
             path = os.getcwd()
-        if isTest or envs.data['name'] == 'test':
+        if isTest or envsData['name'] == 'test':
             path = os.path.join(path, '../../')
         return path
 

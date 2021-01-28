@@ -7,10 +7,10 @@ from PyQt5.QtWidgets import QPushButton, QWidget, QApplication, QMainWindow, QHB
 from src.rightClickHelper.component.form.elePyButton import ElePyButton
 from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
 from src.rightClickHelper.component.notice.elePyMessageBox import ElePyMessageBox
-from src.rightClickHelper.config import configData
+from src.rightClickHelper.config.envs import data as envsData
 from test.tool.testTool import TestTool
 
-configData['environment'] = 'test'
+envsData['name'] = 'test'
 
 class TestNotice(unittest.TestCase):
     def test_message(self):

@@ -7,10 +7,16 @@ from src.rightClickHelper.tool.pathTool import PathTool
 
 tomlData = toml.load(fr"{PathTool.appPath()}\pyproject.toml")
 tomlConfig = tomlData['tool']['poetry']
+projectConfig = tomlData['config']['project']
 
 configData = {
-    'appName':     tomlConfig['appName'],
-    'appVersion':  tomlConfig['version'],
-    'environment': envs.data['name']
+    'appName':         projectConfig['appName'],
+    'appDesc':         tomlConfig['description'],
+    'appMode':         'Beta' if envs.data['name'] == 'development' else '',
+    'appVersion':      tomlConfig['version'],
+
+    'homepage':        tomlConfig['homepage'],
+    'repository':      tomlConfig['repository'],
+    'lastPublishDate': projectConfig['lastPublishDate'],
+    'environment':     envs.data['name']
 }
-configData['appMode'] = f'[{configData["environment"]}]'

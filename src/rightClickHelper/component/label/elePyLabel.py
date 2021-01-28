@@ -5,17 +5,16 @@ from PyQt5.QtWidgets import QLabel
 
 from src.rightClickHelper.component.core import LifeStage
 from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
-from src.rightClickHelper.tool.pathTool import PathTool
 
 class ElePyLabel(
     QLabel, ElePyWidget
 ):
-    ICON_FONT: QFont     = None
+    ICON_FONT: QFont = None
 
     def __init__(self, parent=None, properties: dict = None):
         if ElePyLabel.ICON_FONT is None:
             fontId = QFontDatabase.addApplicationFont(
-                PathTool.appPath() + r'\src\resource\font\elePy.ttf'
+                ElePyLabel.getResourcePath(r'font\elePy.ttf')
             )
             fontFamilies = QFontDatabase.applicationFontFamilies(fontId)
             if len(fontFamilies) > 0:
