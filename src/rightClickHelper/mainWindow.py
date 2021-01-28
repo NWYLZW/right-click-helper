@@ -8,6 +8,7 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow
 
+from src.rightClickHelper.config import configData
 from src.rightClickHelper.controller.about import About
 from src.rightClickHelper.controller.management import Management
 from src.rightClickHelper.controller.setting import Setting
@@ -114,3 +115,7 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
         self.about.clicked.connect(
             self.changeShowPage('about')
         )
+
+        setting = configData['userData'].get('setting', {})
+        if setting.get('isAutoCheck', False):
+            Setting.checkUpdate()

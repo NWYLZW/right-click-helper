@@ -58,6 +58,38 @@ class Setting(
             'sel-index-list': [2],
         })
 
+        setting = configData['userData'].get('setting', {})
+        self.isAutoCheck.setChecked(
+            setting.get('isAutoCheck', False)
+        )
+        self.isAutoCheckBeta.setChecked(
+            setting.get('isAutoCheckBeta', False)
+        )
+
+    def _initEvent(self):
+        self.checkoutUpdateBtn.clicked.connect(
+            Setting.checkUpdate
+        )
+
+        def openLogDir():
+            logFilePath = os.path.join(
+                PathTool.appPath(), 'log'
+            )
+            if not os.path.exists(logFilePath):
+                os.mkdir(logFilePath)
+            os.startfile(logFilePath)
+        self.openLogFileBtn.clicked.connect(openLogDir)
+
+        def setUserData(name):
+            def fun(c):
+                if configData['userData'].get('setting') is None:
+                    configData['userData']['setting'] = {}
+                configData['userData']['setting'][name] = c
+                configData['saveUserData']()
+            return fun
+        self.isAutoCheck.clicked.connect((setUserData('isAutoCheck')))
+        self.isAutoCheckBeta.clicked.connect((setUserData('isAutoCheckBeta')))
+
     @staticmethod
     def getUpdate(alertAction: AlertAction):
         newChangeLogUrl = configData['repository'] + '/releases/download/1.0.3.0/Right.Click.Helper.zip'
@@ -151,17 +183,3 @@ class Setting(
             1000
             , lambda: cls.getTheNewChangeLog(dealContent)
         )
-
-    def _initEvent(self):
-        self.checkoutUpdateBtn.clicked.connect(
-            Setting.checkUpdate
-        )
-
-        def openLogDir():
-            logFilePath = os.path.join(
-                PathTool.appPath(), 'log'
-            )
-            if not os.path.exists(logFilePath):
-                os.makedirs(logFilePath)
-            os.startfile(logFilePath)
-        self.openLogFileBtn.clicked.connect(openLogDir)
