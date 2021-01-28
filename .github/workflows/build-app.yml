@@ -26,4 +26,5 @@ jobs:
         pip install poetry
         poetry install
         poetry shell
+        pwd
         python ./build-scripts/build.py
