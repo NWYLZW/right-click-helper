@@ -5,7 +5,7 @@
 
 [tool.poetry]
 name        = "right-click-helper"
-version     = "1.0.4.0"
+version     = "1.0.3.0"
 description = "由python pyqt模块开发的一款windows 10环境下卡片化右键菜单选项管理工具."
 homepage    = "https://github.com/NWYLZW/right-click-helper"
 repository  = "https://github.com/NWYLZW/right-click-helper"

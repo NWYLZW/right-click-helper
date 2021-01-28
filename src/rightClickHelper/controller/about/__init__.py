@@ -76,10 +76,10 @@ class About(
         with open(os.path.join(
             PathTool.appPath(), 'external-dependencies-LICENSE.md'
         ), encoding='utf-8') as f:
-            changeLogMDStr = f.read()
+            externalDependenciesLICENSE = f.read()
         self.openResourceLicenseBtn.clicked.connect(
             lambda: ElePyMessageBox().alert(
-                MarkDownTool.generate(changeLogMDStr), '开源许可'
+                MarkDownTool.generate(externalDependenciesLICENSE), '开源许可'
                 , confirmBtnText='我知道了'
                 , contentWidth=600, contentHeight=400
             )

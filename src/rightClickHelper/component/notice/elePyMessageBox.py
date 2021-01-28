@@ -241,9 +241,9 @@ class ElePyMessageBox(
         self.setBtn(
             self.confirmBtn, True
             , confirmBtnText, confirmCallback
-            , AlertAction.CANCEL)
+            , AlertAction.CONFIRM)
         self.setBtn(
             self.cancelBtn, True
             , cancelBtnText, cancelCallback
-            , AlertAction.CONFIRM)
+            , AlertAction.CANCEL)
         self.exec()

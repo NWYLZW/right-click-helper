@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QPushButton, QWidget, QApplication, QMainWindow, QHB
 from src.rightClickHelper.component.form.elePyButton import ElePyButton
 from src.rightClickHelper.component.notice.elePyMessage import ElePyMessage, ElePyMessageType
 from src.rightClickHelper.component.notice.elePyMessageBox import ElePyMessageBox
-from src.rightClickHelper.config.envs import data as envsData
+from src.rightClickHelper.config.env import data as envsData
 from test.tool.testTool import TestTool
 
 envsData['name'] = 'test'
@@ -55,10 +55,14 @@ class TestNotice(unittest.TestCase):
             window.setCentralWidget(mainW)
             mainW.setLayout(QHBoxLayout())
 
+            def fun(alertAction):
+                print(alertAction)
+
             def alert():
                 ElePyMessageBox().alert(
                     '是否删除该文件?', '请确认'
                     , confirmBtnText='确定'
+                    , callback=fun
                 )
             showMessage = ElePyButton(mainW)
             showMessage.setText('alert')
@@ -69,7 +73,9 @@ class TestNotice(unittest.TestCase):
                 ElePyMessageBox().confirm(
                     '是否删除该文件?', '请确认'
                     , confirmBtnText='确定'
+                    , confirmCallback=fun
                     , cancelBtnText='取消'
+                    , cancelCallback=fun
                 )
             showMessage = ElePyButton(mainW)
             showMessage.setText('confirm')

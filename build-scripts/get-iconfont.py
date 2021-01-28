@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-import json
-
-import requests
+import json, requests
 
 ttfUrlFormat = 'http://at.alicdn.com/t/font_{project-id}_{version}.ttf'
 ttfSavePath  = '../src/resource/font'
