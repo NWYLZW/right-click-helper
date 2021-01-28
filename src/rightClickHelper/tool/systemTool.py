@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 __all__ = ['SystemTool']
 import ctypes, win32ui, win32gui
+import os
 
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWinExtras import QtWin
 
@@ -25,11 +27,15 @@ class SystemTool:
         except: (path, index) = (dataStr, 0)
 
         path = path.replace('/', '\\')
-        large, small = win32gui.ExtractIconEx(path, int(index) + (0 if path.find('.dll') == -1 else 1))
-        win32gui.DestroyIcon(small[0])
-        pixMap = QtWin.fromHBITMAP(SystemTool.__bitmapFromHIcon(large[0]), 2)
-        win32gui.DestroyIcon(large[0])
-        return pixMap
+        if os.path.exists(path):
+            large, small = win32gui.ExtractIconEx(
+                path, int(index) + (0 if path.find('.dll') == -1 else 1)
+            )
+            win32gui.DestroyIcon(small[0])
+            pixMap = QtWin.fromHBITMAP(SystemTool.__bitmapFromHIcon(large[0]), 2)
+            win32gui.DestroyIcon(large[0])
+            return pixMap
+        return QPixmap()
 
     @staticmethod
     def __bitmapFromHIcon(hIcon):

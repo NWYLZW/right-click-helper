@@ -12,6 +12,10 @@ appConfig = {
 datas = [
     ('./src/resource/', './src/resource/'),
     ('./lib/dll/Python.Runtime.dll', '.'),
+    ('./LICENSE', '.'),
+    ('./README.md', '.'),
+    ('./CHANGELOG.en-US.md', '.'),
+    ('./CHANGELOG.zh-CN.md', '.'),
 ]
 
 analysis = Analysis(

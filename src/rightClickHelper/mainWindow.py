@@ -2,12 +2,18 @@
 # -*- coding: utf-8 -*-
 __all__ = ['MainWindow']
 
+from typing import ClassVar
+
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow
 
+from src.rightClickHelper.controller.about import About
+from src.rightClickHelper.controller.management import Management
+from src.rightClickHelper.controller.setting import Setting
 from src.rightClickHelper.tool.pathTool import PathTool
 from src.rightClickHelper.tool.effectTool import EffectTool
+from src.rightClickHelper.tool.widgetTool import WidgetTool
 from src.rightClickHelper.view import mainInterFace
 
 class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
@@ -40,6 +46,16 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
         import ctypes
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("com.yijie.rightClickHelper")
 
+        WidgetTool.setSqss(self.leftMenu, """\
+        @mixin image-icon($name, $path)
+          ##{$name}
+            border-image: url(:/icon/image/icon/#{$path})
+        @include image-icon(management, right-click-helper.ico)
+        @include image-icon(about,       about.png)
+        @include image-icon(setting,     setting.png)
+        @include image-icon(warehouse,   warehouse.png)
+        """)
+
     def _initData(self):
         self.mDrag = False
 
@@ -51,7 +67,24 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
         self.appMode\
             .setText(configData['appMode'])
 
-        # self.test.setPixmap(SystemHelper.getIcon(r'%systemroot%\system32\themecpl.dll,-1'))
+    def changeShowPage(self, pageName: str):
+        pages = {
+            'management': Management,
+            'setting': Setting,
+            'about': About
+        }
+
+        def __fun():
+            self.showPage.deleteLater()
+
+            clazz: ClassVar = pages.get(pageName)
+            self.showPage = clazz(self.verticalLayoutWidget)
+            self.showPage.setFixedHeight(
+                self.leftMenu.height()
+            )
+            self.showPage.setObjectName("showPage")
+            self.content.addWidget(self.showPage)
+        return __fun
 
     def _initEvent(self):
         def mousePressEvent(event):
@@ -71,3 +104,13 @@ class MainWindow(QMainWindow, mainInterFace.Ui_MainWindow):
         self.headBar.mousePressEvent   = mousePressEvent
         self.headBar.mouseMoveEvent    = mouseMoveEvent
         self.headBar.mouseReleaseEvent = mouseReleaseEvent
+
+        self.management.clicked.connect(
+            self.changeShowPage('management')
+        )
+        self.setting.clicked.connect(
+            self.changeShowPage('setting')
+        )
+        self.about.clicked.connect(
+            self.changeShowPage('about')
+        )

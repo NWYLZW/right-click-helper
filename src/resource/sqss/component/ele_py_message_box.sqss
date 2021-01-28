@@ -1,0 +1,14 @@
+.ElePyMessageBox >QWidget
+  margin: 10px
+  border-radius: 4px
+  background-color: white
+  .top
+    #delete:!hover
+      color: rgb(150, 150, 150)
+    #delete:hover
+      color: rgb(77, 164, 255)
+
+  .content QTextBrowser
+    border-width: 0
+    border-style: outset
+    background-color: rgba(0, 0, 0, 0)

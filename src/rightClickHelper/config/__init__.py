@@ -1,8 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import toml
+
+from src.rightClickHelper.config import envs
+from src.rightClickHelper.tool.pathTool import PathTool
+
+tomlData = toml.load(fr"{PathTool.appPath()}\pyproject.toml")
+tomlConfig = tomlData['tool']['poetry']
+projectConfig = tomlData['config']['project']
 
 configData = {
-    'appName': 'Right Click Helper',
-    'appVersion': '1.0.3.0',
-    'appMode': '[development]',
+    'appName':         projectConfig['appName'],
+    'appDesc':         tomlConfig['description'],
+    'appMode':         'Beta' if envs.data['name'] == 'development' else '',
+    'appVersion':      tomlConfig['version'],
+
+    'homepage':        tomlConfig['homepage'],
+    'repository':      tomlConfig['repository'],
+    'lastPublishDate': projectConfig['lastPublishDate'],
+    'environment':     envs.data['name']
 }

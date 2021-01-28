@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QLabel
+from sqss import Compiler
+
 
 class WidgetTool:
     @staticmethod
@@ -28,8 +30,19 @@ class WidgetTool:
         ).width()
 
     @staticmethod
-    def setFont(label: QLabel, family: str = 'Microsoft YaHei UI', size: int = 10):
+    def setFont(
+        label: QLabel
+        , size: int = 10
+        , family: str = 'Microsoft YaHei UI'
+    ):
         font = QFont()
         font.setFamily(family)
         font.setPointSize(size)
         label.setFont(font)
+
+    @staticmethod
+    def setSqss(
+        widget: QWidget
+        , sqss: str
+    ):
+        widget.setStyleSheet(str(Compiler.deal_str(sqss)))

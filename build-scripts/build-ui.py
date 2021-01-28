@@ -13,9 +13,7 @@ toBeBuiltRcFile = [
     '../src/resource/main.qrc'
 ]
 toBeBuiltUiFile = [
-    *glob(r'../src/rightClickHelper/view/*.ui'),
-    *glob(r'../src/rightClickHelper/view/management/*.ui'),
-    *glob(r'../src/rightClickHelper/view/management/**/*.ui')
+    *glob(r'../src/rightClickHelper/view/**/*.ui', recursive=True)
 ]
 ignoreFolders = [
 ]

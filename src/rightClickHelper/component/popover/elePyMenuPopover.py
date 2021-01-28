@@ -4,10 +4,11 @@ from enum import Enum
 from typing import Callable, Any
 
 from PyQt5 import QtGui
-from PyQt5.QtCore import pyqtSignal, Qt, QSize
+from PyQt5.QtCore import pyqtSignal, Qt, QSize, QEvent, QTimer
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
+from src.rightClickHelper.component.core import LifeStage
 from src.rightClickHelper.component.elePyWidget import ElePyWidget, watchProperty
 from src.rightClickHelper.component.popover.elePyPopover import ElePyPopover
 from src.rightClickHelper.tool.widgetTool import WidgetTool
@@ -83,43 +84,53 @@ class ElePyMenuPopover(
     itemClicked = pyqtSignal(PopoverMenuItem)
 
     def __init__(
-        self, parent=None, properties: dict = {}
+        self, parent=None, properties: dict = None
     ):
-        super().__init__(parent, properties)
+        if properties is None: properties = {}
+        super().__init__(parent, {
+            'menu-popover-mode': MenuPopoverMode.LIGHT,
+            **properties
+        })
         self.menuItemWs = []        # type: list[PopoverMenuItem]
-        self.propertyChange.connect(
-            lambda name, value, returnData:
-                self.refreshData(value) if name == 'menu-popover-items' else None
-        )
+
+    def _initUi(self):
+        super(ElePyMenuPopover, self)._initUi()
+        self.setStyleSheet(f'''\
+        .ElePyMenuPopover[__is-show='1'] .PopoverMenuItem[status='']:hover {{
+            border-radius: 4px;
+            background-color: rgba(200, 200, 200, 100);
+        }}
+        .ElePyMenuPopover[__is-show='1'][mode='light'] .PopoverMenuItem[status=''] QLabel {{
+            color: black;
+        }}
+        .ElePyMenuPopover[__is-show='1'][mode='dark'] .PopoverMenuItem[status=''] QLabel {{
+            color: white;
+        }}
+        .ElePyMenuPopover[__is-show='1'] .PopoverMenuItem[status=''] QLabel:hover {{
+            color: rgba(50, 150, 220);
+        }}
+        .ElePyMenuPopover[__is-show='1'] .PopoverMenuItem[status='forbidden'] QLabel {{
+            color: rgb(200, 200, 200);
+        }}''')
+
+    @watchProperty({'menu-popover-mode': {'type': MenuPopoverMode}})
+    def modeChange(self, mode: MenuPopoverMode, *args):
+        self.setProperty('mode', mode.name.lower())
+
+    @watchProperty({'menu-popover-items': {'type': list}})
+    def menuPopoverItemsChange(self, newVal, *args):
+        if self._lifeStage is LifeStage.INITED:
+            self.refreshData()
 
     def setWidget(self, widget: QWidget) -> None:
         super(ElePyMenuPopover, self).setWidget(widget)
         self.refreshData()
 
-    def refreshData(self, items: [dict[str, str]] = None):
-        if items is None: items = WidgetTool.getProperty('menu-popover-items', [])(self)
+    def refreshData(self):
+        items = WidgetTool.getProperty('menu-popover-items', [])(self)
 
         menuItems = self.widget().popoverContent    # type: QWidget
         menuItemsHL = menuItems.layout()            # type: QVBoxLayout
-        mode = WidgetTool.getProperty(
-            'menu-popover-mode', MenuPopoverMode.LIGHT
-        )(self)
-        menuItems.setStyleSheet(f'''\
-        .PopoverMenuItem[status='']:hover {{
-            border-radius: 4px;
-            background-color: rgba(200, 200, 200, 100);
-        }}
-        .PopoverMenuItem[status=''] QLabel {{
-            color: {
-                'black' if mode == MenuPopoverMode.LIGHT else 'white'
-            };
-        }}
-        .PopoverMenuItem[status='forbidden'] QLabel {{
-            color: rgb(200, 200, 200);
-        }}
-        .PopoverMenuItem[status=''] QLabel:hover {{
-            color: rgba(50, 150, 220);
-        }}''')
 
         menuItemsHL.setContentsMargins(0, 5, 0, 5)
         menuItemsHL.setSpacing(0)

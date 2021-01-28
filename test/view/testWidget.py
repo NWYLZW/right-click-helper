@@ -10,7 +10,7 @@ from test.tool.testTool import TestTool
 class TestWidget(unittest.TestCase):
     def test_watchProperty(self):
 
-        class TestWidget(ElePyWidget):
+        class __TestWidget(ElePyWidget):
             def __init__(self, parent=None, properties: dict = {}):
                 super().__init__(parent, properties)
 
@@ -28,7 +28,7 @@ class TestWidget(unittest.TestCase):
 
         def setMainWindowContent(app, window):
             count = {'val': 0}
-            mainW = TestWidget(None)
+            mainW = __TestWidget(None)
 
             changeTestProperty = QPushButton(mainW)
             changeTestProperty.setText('change test property')

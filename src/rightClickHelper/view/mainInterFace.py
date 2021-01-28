@@ -149,55 +149,42 @@ class Ui_MainWindow(object):
         self.mainVL.addWidget(self.headBar)
         self.content = QtWidgets.QHBoxLayout()
         self.content.setContentsMargins(10, 10, 10, 10)
-        self.content.setSpacing(10)
+        self.content.setSpacing(0)
         self.content.setObjectName("content")
         self.leftMenu = QtWidgets.QWidget(self.verticalLayoutWidget)
-        self.leftMenu.setStyleSheet("#mannagement {\n"
-"    border: none;\n"
-"    border-image: url(:/icon/image/icon/right-click-helper.ico);\n"
-"}\n"
-"#about {\n"
-"    border: none;\n"
-"    border-image: url(:/icon/image/icon/about.png);\n"
-"}\n"
-"#setting {\n"
-"    border: none;\n"
-"    border-image: url(:/icon/image/icon/setting.png);\n"
-"}\n"
-"#warehouse {\n"
-"    border: none;\n"
-"    border-image: url(:/icon/image/icon/warehouse.png);\n"
-"}")
+        self.leftMenu.setMinimumSize(QtCore.QSize(0, 650))
+        self.leftMenu.setMaximumSize(QtCore.QSize(16777215, 650))
+        self.leftMenu.setStyleSheet("")
         self.leftMenu.setObjectName("leftMenu")
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.leftMenu)
-        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(0, 0, 51, 181))
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(0, 0, 51, 241))
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
         self.leftMenuVL = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
         self.leftMenuVL.setContentsMargins(10, 10, 10, 10)
         self.leftMenuVL.setSpacing(10)
         self.leftMenuVL.setObjectName("leftMenuVL")
-        self.mannagement = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
-        self.mannagement.setMinimumSize(QtCore.QSize(30, 30))
-        self.mannagement.setMaximumSize(QtCore.QSize(30, 30))
-        self.mannagement.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.mannagement.setText("")
-        self.mannagement.setObjectName("mannagement")
-        self.leftMenuVL.addWidget(self.mannagement)
-        self.warehouse = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.management = ElePyButton(self.verticalLayoutWidget_2)
+        self.management.setMinimumSize(QtCore.QSize(30, 30))
+        self.management.setMaximumSize(QtCore.QSize(30, 30))
+        self.management.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.management.setText("")
+        self.management.setObjectName("management")
+        self.leftMenuVL.addWidget(self.management)
+        self.warehouse = ElePyButton(self.verticalLayoutWidget_2)
         self.warehouse.setMinimumSize(QtCore.QSize(30, 30))
         self.warehouse.setMaximumSize(QtCore.QSize(30, 30))
         self.warehouse.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.warehouse.setText("")
         self.warehouse.setObjectName("warehouse")
         self.leftMenuVL.addWidget(self.warehouse)
-        self.setting = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.setting = ElePyButton(self.verticalLayoutWidget_2)
         self.setting.setMinimumSize(QtCore.QSize(30, 30))
         self.setting.setMaximumSize(QtCore.QSize(30, 30))
         self.setting.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.setting.setText("")
         self.setting.setObjectName("setting")
         self.leftMenuVL.addWidget(self.setting)
-        self.about = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.about = ElePyButton(self.verticalLayoutWidget_2)
         self.about.setMinimumSize(QtCore.QSize(30, 30))
         self.about.setMaximumSize(QtCore.QSize(30, 30))
         self.about.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -205,11 +192,13 @@ class Ui_MainWindow(object):
         self.about.setObjectName("about")
         self.leftMenuVL.addWidget(self.about)
         self.content.addWidget(self.leftMenu)
-        self.showPage = ManagementController(self.verticalLayoutWidget)
+        self.showPage = Management(self.verticalLayoutWidget)
+        self.showPage.setMinimumSize(QtCore.QSize(1100, 650))
+        self.showPage.setMaximumSize(QtCore.QSize(1100, 650))
         self.showPage.setObjectName("showPage")
         self.content.addWidget(self.showPage)
         self.content.setStretch(0, 1)
-        self.content.setStretch(1, 22)
+        self.content.setStretch(1, 18)
         self.mainVL.addLayout(self.content)
         MainWindow.setCentralWidget(self.main)
 
@@ -224,5 +213,6 @@ class Ui_MainWindow(object):
         self.appTitle.setText(_translate("MainWindow", "Right Click Helper"))
         self.appVersion.setText(_translate("MainWindow", "1.0.0.0"))
         self.appMode.setText(_translate("MainWindow", "Mod"))
-from src.rightClickHelper.controller.management.controller import ManagementController
+from src.rightClickHelper.component.form.elePyButton import ElePyButton
+from src.rightClickHelper.controller.management import Management
 from src.resource import main_rc
