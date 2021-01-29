@@ -66,6 +66,9 @@ jobs:
         latestChangeLog="$(cat ./latestChangeLog.md)"
         echo '::set-output name=latestChangeLog::${latestChangeLog}'
 
+    - name: test
+      run: echo ${{ steps.save-changelog.outputs.save-changelog }}
+
     - name: Create Release
       id: create-release
       uses: actions/create-release@v1
@@ -74,7 +77,7 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: ${{steps.save-changelog.outputs.save-changelog}}
+        body: ${{ steps.save-changelog.outputs.save-changelog }}
         draft: false
         prerelease: false
 
