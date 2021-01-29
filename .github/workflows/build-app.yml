@@ -63,8 +63,8 @@ jobs:
       id: save-changelog
       run: |
         latestChangeLog=`cat ./latestChangeLog.md`
-        echo $latestChangeLog
-        echo ::set-output name=latestChangeLog::$latestChangeLog
+        echo "$latestChangeLog"
+        echo ::set-output name=latestChangeLog::"$latestChangeLog"
         echo ${{ steps.save-changelog.outputs.latestChangeLog }}
 
     - name: Create Release
