@@ -12,7 +12,6 @@ repository  = "https://github.com/NWYLZW/right-click-helper"
 authors     = ["yijie4188 <yijie4188@gmail.com>"]
 packages = [
     { include = "scripts" },
-    { include = "build-scripts" },
 ]
 
   [[tool.poetry.source]]
@@ -38,7 +37,6 @@ packages = [
   [tool.poetry.dev-dependencies]
 
   [tool.poetry.scripts]
-  build = 'build-scripts.build:main'
   generateChangeLog = 'scripts.getLatestChangeLog:main'
 
 [build-system]

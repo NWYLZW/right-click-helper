@@ -13,7 +13,7 @@ def main():
             if flag: curChangeLog.append(line)
     with open('./latestChangeLog.md', 'w', encoding='utf-8') as f:
         f.write(''.join(curChangeLog))
-    print('最新变动生成成功.')
+    print('The latest changes are generated successfully.')
 
 
 if __name__ == '__main__':
