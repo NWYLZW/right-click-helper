@@ -33,10 +33,10 @@ jobs:
         poetry run python ./build-scripts/build.py
 
     - name: Upload release
-        uses: actions/upload-artifact@v2
-        with:
-          name: releases
-          path: releases
+      uses: actions/upload-artifact@v2
+      with:
+        name: releases
+        path: releases
 
   publish-release:
     needs: [build-release]
