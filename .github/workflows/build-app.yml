@@ -31,7 +31,7 @@ jobs:
     - name: Build Release
       id: biuld-release
       run: |
-        poetry run build
+        poetry run python ./build-scripts/build.py
         poetry run generateChangeLog
 
     - name: Upload release
@@ -67,7 +67,9 @@ jobs:
         echo '::set-output name=latestChangeLog::${latestChangeLog}'
 
     - name: test
-      run: echo ${{ steps.save-changelog.outputs.save-changelog }}
+      run: |
+        cat ./latestChangeLog.md
+        echo ${{ steps.save-changelog.outputs.save-changelog }}
 
     - name: Create Release
       id: create-release
