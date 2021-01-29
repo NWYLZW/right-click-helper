@@ -63,9 +63,10 @@ jobs:
       id: save-changelog
       run: |
         latestChangeLog="$(cat ./latestChangeLog.md)"
-        echo "::set-output name=latestChangeLog eof=EOF::"
-        echo "$latestChangeLog"
-        echo "EOF"
+        latestChangeLog="${latestChangeLog//'%'/'%25'}"
+        latestChangeLog="${latestChangeLog//$'\n'/'%0A'}"
+        latestChangeLog="${latestChangeLog//$'\r'/'%0D'}"
+        echo "::set-output name=latestChangeLog::$latestChangeLog"
         echo "---------------------------------------------------"
         echo "${{ steps.save-changelog.outputs.latestChangeLog }}"
 
