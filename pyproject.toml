@@ -10,6 +10,10 @@ description = "由python pyqt模块开发的一款windows 10环境下卡片化�
 homepage    = "https://github.com/NWYLZW/right-click-helper"
 repository  = "https://github.com/NWYLZW/right-click-helper"
 authors     = ["yijie4188 <yijie4188@gmail.com>"]
+packages = [
+    { include = "scripts" },
+    { include = "build-scripts" },
+]
 
   [[tool.poetry.source]]
   name = "aliyun"
@@ -32,6 +36,10 @@ authors     = ["yijie4188 <yijie4188@gmail.com>"]
   markdown                  = "^3.3.3"
 
   [tool.poetry.dev-dependencies]
+
+  [tool.poetry.scripts]
+  build = 'build-scripts.build:main'
+  generateChangeLog = 'scripts.getLatestChangeLog:main'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

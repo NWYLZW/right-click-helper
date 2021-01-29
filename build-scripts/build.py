@@ -4,7 +4,7 @@ import os, toml, shutil, zipfile
 
 from tqdm import tqdm
 
-if __name__ == '__main__':
+def main():
     if os.path.exists('./dist/'):
         shutil.rmtree('./dist/')
     os.system(
@@ -31,3 +31,7 @@ if __name__ == '__main__':
     z.close()
     print('compressed.')
     shutil.copy(newZipFilePath, latestZipFilePath)
+
+
+if __name__ == '__main__':
+    main()

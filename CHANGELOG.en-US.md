@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.4.1] - 2020-01-29
+
+### Added
+
+* Automated deployment project
+
 ## [1.0.4.0] - 2020-01-27
 
 ### Refactor
