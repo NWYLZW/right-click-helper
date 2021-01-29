@@ -2,5 +2,5 @@
 # -*- encoding: utf-8 -*-
 
 data = {
-    'name': 'development'
+    'name': 'production'
 }

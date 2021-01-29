@@ -68,7 +68,7 @@ jobs:
     - name: test
       run: |
         cat ./latestChangeLog.md
-        echo ${{ steps.save-changelog.outputs.save-changelog }}
+        echo ${{ steps.save-changelog.outputs.latestChangeLog }}
 
     - name: Create Release
       id: create-release
@@ -78,7 +78,7 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: version ${{ github.ref }}
-        body: ${{ steps.save-changelog.outputs.save-changelog }}
+        body: ${{ steps.save-changelog.outputs.latestChangeLog }}
         draft: false
         prerelease: false
 
