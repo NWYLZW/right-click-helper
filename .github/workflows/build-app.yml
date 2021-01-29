@@ -23,13 +23,13 @@ jobs:
         python-version: 3.9
 
     - name: Install dependencies
-      id: install-dependencies
       run: |
         pip install poetry
         poetry install
 
     - name: Build Release
-      run: poetry run python ./build-scripts/build.py
+      run: |
+        poetry run python ./build-scripts/build.py
 
     - name: Upload release
       uses: actions/upload-artifact@v2
@@ -38,7 +38,8 @@ jobs:
         path: releases
 
     - name: Generate changeLog
-      run: poetry run generateChangeLog
+      run: |
+        poetry run generateChangeLog
 
     - name: Upload changelog
       uses: actions/upload-artifact@v2
