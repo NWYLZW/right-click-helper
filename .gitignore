@@ -9,7 +9,9 @@ dist
 venv
 env
 
+.data
 # build tool data
+releases
 build-scripts/.data
 
 # Editor directories and files

@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 import sys, os
 
-from src.rightClickHelper.config.envs import data as envsData
+from src.rightClickHelper.config.env import data as envsData
 
 class PathTool:
     @staticmethod

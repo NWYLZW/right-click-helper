@@ -132,7 +132,7 @@ class Ui_setting(object):
         self.label_2.setText(_translate("setting", "常规"))
         self.label_3.setText(_translate("setting", "语言"))
         self.label_4.setText(_translate("setting", "日志"))
-        self.openLogFileBtn.setText(_translate("setting", "打开日志文件"))
+        self.openLogFileBtn.setText(_translate("setting", "打开日志文件夹"))
         self.label.setText(_translate("setting", "更新"))
         self.checkoutUpdateBtn.setText(_translate("setting", "手动检查"))
         self.isAutoCheck.setText(_translate("setting", "启动自动检查更新"))

@@ -5,10 +5,10 @@ import unittest
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout
 
 from src.rightClickHelper.component.form.elePyButton import ElePyButton
-from src.rightClickHelper.config import configData
+from src.rightClickHelper.config.env import data as envsData
 from test.tool.testTool import TestTool
 
-configData['environment'] = 'test'
+envsData['name'] = 'test'
 
 class TestNotice(unittest.TestCase):
     def test_buttons(self):
