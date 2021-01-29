@@ -63,9 +63,10 @@ jobs:
       id: save-changelog
       run: |
         latestChangeLog="$(cat ./latestChangeLog.md)"
-        echo "::set-output name=report eof=EOF::"
+        echo "::set-output name=latestChangeLog eof=EOF::"
         echo "$latestChangeLog"
         echo "EOF"
+        echo "---------------------------------------------------"
         echo "${{ steps.save-changelog.outputs.latestChangeLog }}"
 
     - name: Create Release
