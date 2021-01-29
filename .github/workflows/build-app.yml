@@ -51,7 +51,7 @@ jobs:
   publish-release:
     needs: [ build-release ]
     name: Publish Release
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Download changelog
