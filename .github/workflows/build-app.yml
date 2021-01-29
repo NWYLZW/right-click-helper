@@ -29,5 +29,5 @@ jobs:
         poetry install
 
     - name: Build Release
-        run: |
-          poetry run python ./build-scripts/build.py
+      run: |
+        poetry run python ./build-scripts/build.py
