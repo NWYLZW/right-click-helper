@@ -67,8 +67,6 @@ jobs:
         latestChangeLog="${latestChangeLog//$'\n'/'%0A'}"
         latestChangeLog="${latestChangeLog//$'\r'/'%0D'}"
         echo "::set-output name=latestChangeLog::$latestChangeLog"
-        echo "---------------------------------------------------"
-        echo "${{ steps.save-changelog.outputs.latestChangeLog }}"
 
     - name: Create Release
       id: create-release
