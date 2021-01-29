@@ -5,9 +5,8 @@ name: Python application
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+    - '*.*.*.*'
 
 jobs:
   build-release:
@@ -38,34 +37,56 @@ jobs:
         name: releases
         path: releases
 
+    - name: Generate changeLog
+      run: |
+        poetry run generateChangeLog
+
+    - name: Upload changelog
+      uses: actions/upload-artifact@v2
+      with:
+        name: latestChangeLog.md
+        path: latestChangeLog.md
+
   publish-release:
-    needs: [build-release]
+    needs: [ build-release ]
     name: Publish Release
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
+    - name: Download changelog
+      id: download-changelog
+      uses: actions/download-artifact@v2
+      with:
+        name: latestChangeLog.md
+
+    - name: Save changelog to env
+      id: save-changelog
+      run: |
+        latestChangeLog="$(cat ./latestChangeLog.md)"
+        latestChangeLog="${latestChangeLog//'%'/'%25'}"
+        latestChangeLog="${latestChangeLog//$'\n'/'%0A'}"
+        latestChangeLog="${latestChangeLog//$'\r'/'%0D'}"
+        echo "::set-output name=latestChangeLog::$latestChangeLog"
+        echo "---------------------------------------------------"
+        echo "${{ steps.save-changelog.outputs.latestChangeLog }}"
+
     - name: Create Release
-      id: create_release
+      id: create-release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: |
-          Changes in this Release
-          - First Change
+        release_name: version ${{ github.ref }}
+        body: ${{ steps.save-changelog.outputs.latestChangeLog }}
         draft: false
         prerelease: false
 
     - name: Download release
+      id: download-release
       uses: actions/download-artifact@v2
       with:
         name: releases
-
-    - shell: bash
-      run: |
-        ls -all
 
     - name: Upload Release Asset
       id: upload-release-asset
@@ -75,7 +96,7 @@ jobs:
       with:
         # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`.
         # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./releases/right-click-helper-latest.zip
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
+        asset_path: ./right-click-helper-latest.zip
         asset_name: right-click-helper-${{ github.ref }}.zip
         asset_content_type: application/zip

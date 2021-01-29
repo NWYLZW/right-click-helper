@@ -5,11 +5,14 @@
 
 [tool.poetry]
 name        = "right-click-helper"
-version     = "1.0.4.0"
+version     = "1.0.4.3"
 description = "由python pyqt模块开发的一款windows 10环境下卡片化右键菜单选项管理工具."
 homepage    = "https://github.com/NWYLZW/right-click-helper"
 repository  = "https://github.com/NWYLZW/right-click-helper"
 authors     = ["yijie4188 <yijie4188@gmail.com>"]
+packages = [
+    { include = "scripts" },
+]
 
   [[tool.poetry.source]]
   name = "aliyun"
@@ -32,6 +35,9 @@ authors     = ["yijie4188 <yijie4188@gmail.com>"]
   markdown                  = "^3.3.3"
 
   [tool.poetry.dev-dependencies]
+
+  [tool.poetry.scripts]
+  generateChangeLog = 'scripts.getLatestChangeLog:main'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
