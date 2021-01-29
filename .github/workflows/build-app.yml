@@ -62,11 +62,8 @@ jobs:
     - name: Save changelog to env
       id: save-changelog
       run: |
-        latestChangeLog="$(cat ./latestChangeLog.md)"
-        echo '::set-output name=latestChangeLog::${latestChangeLog}'
-
-    - name: test
-      run: |
+        latestChangeLog=`cat ./latestChangeLog.md`
+        echo ::set-output name=latestChangeLog::$latestChangeLog
         cat ./latestChangeLog.md
         echo ${{ steps.save-changelog.outputs.latestChangeLog }}
 
