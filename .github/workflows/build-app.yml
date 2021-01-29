@@ -29,20 +29,18 @@ jobs:
         poetry install
 
     - name: Build Release
-      id: biuld-release
-      run: |
-        poetry run python ./build-scripts/build.py
-        poetry run generateChangeLog
+      run: poetry run python ./build-scripts/build.py
 
     - name: Upload release
-      id: upload-release
       uses: actions/upload-artifact@v2
       with:
         name: releases
         path: releases
 
+    - name: Generate changeLog
+      run: poetry run generateChangeLog
+
     - name: Upload changelog
-      id: upload-changelog
       uses: actions/upload-artifact@v2
       with:
         name: latestChangeLog.md
@@ -78,7 +76,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        release_name: version ${{ github.ref }}
         body: ${{ steps.save-changelog.outputs.save-changelog }}
         draft: false
         prerelease: false
