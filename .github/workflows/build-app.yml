@@ -10,8 +10,8 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  build-release:
+    name: Build Release
     runs-on: windows-latest
 
     steps:
@@ -31,3 +31,51 @@ jobs:
     - name: Build Release
       run: |
         poetry run python ./build-scripts/build.py
+
+    - name: Upload release
+      uses: actions/upload-artifact@v2
+      with:
+        name: releases
+        path: releases
+
+  publish-release:
+    needs: [build-release]
+    name: Publish Release
+    runs-on: windows-latest
+
+    steps:
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes in this Release
+          - First Change
+        draft: false
+        prerelease: false
+
+    - name: Download release
+      uses: actions/download-artifact@v2
+      with:
+        name: releases
+
+    - shell: bash
+      run: |
+        ls -all
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`.
+        # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./releases/right-click-helper-latest.zip
+        asset_name: right-click-helper-${{ github.ref }}.zip
+        asset_content_type: application/zip
