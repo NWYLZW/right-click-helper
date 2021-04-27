@@ -69,12 +69,17 @@ class RequestTool:
 
         def run(self) -> None:
             if self.chunkSize == -1:
-                response = requests.get(self.url)
-                if response.status_code == 200:
-                    self.getData.emit(
-                        response.content, response.headers['content-length'], response.headers['content-length']
-                        , True
-                    )
+                # if not catch this exception ,the application will be crash
+                try:
+                    response = requests.get(self.url)
+                except Exception as e:
+                    print(e)
+                else:
+                    if response.status_code == 200:
+                        self.getData.emit(
+                            response.content, response.headers['content-length'], response.headers['content-length']
+                            , True
+                        )
             else:
                 self.chunkDownload()
 
