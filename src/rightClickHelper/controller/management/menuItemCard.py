@@ -66,7 +66,7 @@ class MenuItemCard_itf:
         return changeStatus
 
     def doCardRemove(self):
-        def remove():
+        def remove(a):
             path = self.menuItem.regData['__path__']
             RegTool.delKey(
                 RegEnv.find(path[0]), path[1]

@@ -31,10 +31,12 @@ class SystemTool:
             large, small = win32gui.ExtractIconEx(
                 path, int(index) + (0 if path.find('.dll') == -1 else 1)
             )
-            win32gui.DestroyIcon(small[0])
-            pixMap = QtWin.fromHBITMAP(SystemTool.__bitmapFromHIcon(large[0]), 2)
-            win32gui.DestroyIcon(large[0])
-            return pixMap
+            if len(small) >= 1:
+                win32gui.DestroyIcon(small[0])
+            if len(large) >= 1:
+                pixMap = QtWin.fromHBITMAP(SystemTool.__bitmapFromHIcon(large[0]), 2)
+                win32gui.DestroyIcon(large[0])
+                return pixMap
         return QPixmap()
 
     @staticmethod
